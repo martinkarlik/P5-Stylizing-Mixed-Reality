@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Varjo.XR;
 
+
 public class VarjoMarkerManager : MonoBehaviour
 {
     // Serializable struct to make it easy to add tracked objects in the Inspector. 
-    [Serializable]
+
+    [System.Serializable]
     public struct TrackedObject
     {
         public long id;
@@ -15,8 +17,6 @@ public class VarjoMarkerManager : MonoBehaviour
 
     // An public array for all the tracked objects. 
     public TrackedObject[] trackedObjects = new TrackedObject[1];
-
-
 
     // A list for found markers.
     private List<VarjoMarker> markers = new List<VarjoMarker>();
