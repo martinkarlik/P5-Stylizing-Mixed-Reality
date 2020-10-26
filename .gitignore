@@ -6,6 +6,10 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 .vs/
+
+/Resources/varjo-camera-stylization/build
+
+
 Varjo/Library/APIUpdater/project-dependencies.graph
 Varjo/Library/EditorOnlyScriptingSettings.json
 Varjo/Library/EditorSnapSettings.asset
