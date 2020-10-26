@@ -2904,3 +2904,6 @@ Varjo/Packages/manifest.json
 Varjo/Packages/packages-lock.json
 Varjo/Temp/UnityTempFile-a4659e11a810a4a5393c98c37bd70ee0
 Varjo/Temp/UnityTempFile-eac5ede1d6c624597a93cbc0a40e82c9
+P5-we-are-live.sln
+Assembly-CSharp.csproj
+Assembly-CSharp-Editor.csproj
