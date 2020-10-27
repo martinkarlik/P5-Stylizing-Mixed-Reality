@@ -70,7 +70,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O2 /Ob2 /DNDEBUG"
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG"
 				}
 			],
 			"defines" : 
@@ -164,11 +164,11 @@
 	"dependencies" : 
 	[
 		{
-			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
-		},
-		{
 			"backtrace" : 4,
 			"id" : "copyLibs::@6890427a1f51a3e7e1df"
+		},
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
 		}
 	],
 	"folder" : 
@@ -181,26 +181,26 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O2 /Ob2 /DNDEBUG",
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /INCREMENTAL:NO /subsystem:console /SUBSYSTEM:WINDOWS",
+				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console /SUBSYSTEM:WINDOWS",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\ImGuiSDK\\lib\\x86_64\\Release\\ImGui.lib",
+				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\OpenVR\\lib\\x86_64\\RelWithDebInfo\\ImGui.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\ImGuiSDK\\lib\\x86_64\\Release\\ImGuiBackends.lib",
+				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\OpenVR\\lib\\x86_64\\RelWithDebInfo\\ImGuiBackends.lib",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\Glew\\lib\\x86_64\\Release\\libglew32.lib",
+				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\Glew\\lib\\x86_64\\RelWithDebInfo\\libglew32.lib",
 				"role" : "libraries"
 			},
 			{

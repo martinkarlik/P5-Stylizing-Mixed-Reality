@@ -169,5 +169,7 @@ float3 hsvToRGB(in float3 HSV)
     // If we linearized input value, we need to gamma correct it back here before write.
 
     // Write output pixel. Alpha contains chroma key mask if enabled, so we keep original.
-    outputTex[thisThread.xy] = float4(1.0, 1.0, 1.0, 1.0);
+
+    float value = (color.r + color.g + color.b) / 3;
+    outputTex[thisThread.xy] = float4(value, value, value, 1.0);
 }
