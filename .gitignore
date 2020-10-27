@@ -7,8 +7,6 @@
 /[Uu]ser[Ss]ettings/
 .vs/
 
-/Resources/varjo-camera-stylization/build
-
 P5-we-are-live.sln
 Assembly-CSharp.csproj
 Assembly-CSharp-Editor.csproj
