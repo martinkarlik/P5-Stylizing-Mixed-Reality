@@ -94,8 +94,7 @@ float3 hueToRGB(in float H)
 }
 
 // Converts given HSV color to RGB color. HSV = [0..1], RGB = [0..1].
-float3 hsvToRGB(in float3 HSV)
-{
+float3 hsvToRGB(in float3 HSV) {
     float3 RGB = hueToRGB(HSV.x);
     return ((RGB - 1.0f) * HSV.y + 1.0f) * HSV.z;
 }
@@ -113,63 +112,52 @@ float3 hsvToRGB(in float3 HSV)
     float4 origColor = inputTex.Load(int3(thisThread.xy, 0)).rgba;
     float4 color = origColor;
 
-    // Apply box blur
-    if (blurScale > 0.0) {
-        // Kernel radius and count
-        const int kernelD = blurKernelSize;
-        const int kernelR = (kernelD >> 1);
-        const int kernelN = (kernelD * kernelD);
+    int cluster_size = 8;
 
-        const float2 kernelScale = float2(1.0, 1.0) / sourceSize;
-        const float2 kernelOffs = (float2(kernelD, kernelD) * 0.5 - 0.5);
+    // Grayscale clustering
+    float grayscale_value = round((color.r + color.g + color.b) / 3 * cluster_size) / cluster_size;
+    float3 clustered_color = float3(grayscale_value, grayscale_value, grayscale_value);
 
-        color = float4(0.0, 0.0, 0.0, 0.0);
-        for (int y = 0; y < kernelD; y++) {
-            for (int x = 0; x < kernelD; x++) {
-                const float2 uvOffs = ((float2(x, y) - kernelOffs) * blurScale) * kernelScale;
-                color += inputTex.SampleLevel(SamplerLinearClamp, uv + uvOffs, 0.0, 0.0);
-            }
+    //Color clustering
+    // float3 clustered_color = round(color.rgb * cluster_size) / cluster_size;
+
+
+    float3x3 gx = float3x3(
+        -1, 0, 1,
+        -2, 0, 2,
+        -1, 0, 1
+    );
+
+    float3x3 gy = float3x3(
+        -1, -2, -1,
+        0, 0, 0,
+        1, 2, 1
+    );
+
+    float pixel_sum_x = 0.0;
+    float pixel_sum_y = 0.0;
+
+    for (int y = -1; y < 2; y++) {
+        for (int x = -1; x < 2; x++) {
+        
+            float4 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) y / sourceSize[0], (float) x / sourceSize[1]), 0.0, 0.0);
+
+            float grayscale_value = (pixel.r + pixel.g + pixel.b) / 3;
+        
+            pixel_sum_x += grayscale_value * gx[y + 1][x + 1];
+            pixel_sum_y += grayscale_value * gy[y + 1][x + 1];
         }
-        color /= kernelN;
     }
 
-    // Apply color grading
-    if (colorFactor > 0.0) {
-        float f = colorFactor;
+    float edge_value = abs(pixel_sum_x / 3) + abs(pixel_sum_y / 3);
 
-        if (colorPreserveSaturated > 0.0) {
-            float3 hsv = convertRGBtoHSV(color.rgb);
-            const float floorS = 0.2;
-            const float floorV = 0.2;
-            const float expS = 2.0;
-            const float expV = 2.0;
-            float preserveS = pow(saturate(hsv.y - floorS) / (1.0 - floorS), expS);
-            float preserveV = pow(saturate(hsv.z - floorV) / (1.0 - floorV), expV);
-            f *= lerp(1.0, 1.0 - saturate(preserveS * preserveV), colorPreserveSaturated);
-        }
 
-        color.rgb = lerp(color.rgb, pow(max(0.0, color.rgb), colorExp.rgb) * colorValue.rgb, f);
+    float3 final_color;
+    if (edge_value > 0.1) {
+        final_color = float3(0.0, 0.0, 0.0);
+    } else {
+        final_color = clustered_color.rgb;
     }
 
-    // Apply noise texture
-    if (noiseAmount > 0.0) {
-        float4 noise = noiseTexture.SampleLevel(SamplerLinearWrap, (uv - 0.5) * noiseScale + 0.5, 0.0, 0.0);
-        color.rgb += (noise.rgb - 0.5) * noiseAmount;
-
-#if (DEBUG_TEXTURE_OUT == DEBUG_TEXTURE_OUT_RGB)
-        // Debug: Write texture out as is
-        color.rgb = noise.rgb;
-#elif (DEBUG_TEXTURE_OUT == DEBUG_TEXTURE_OUT_RG_A)
-        // Debug: Write texture alpha to RGB as is
-        color.rgb = float3(noise.r, noise.g, noise.a);
-#endif
-    }
-
-    // NOTICE! This is written to sRGBA texture so we need to write this in screen gamma.
-    // If we linearized input value, we need to gamma correct it back here before write.
-
-    // Write output pixel. Alpha contains chroma key mask if enabled, so we keep original.
-
-    float value = (color.r + color.g + color.b) / 3;
-    outputTex[thisThread.xy] = float4(value, value, value, 1.0);
+    outputTex[thisThread.xy] = float4(final_color, origColor.a);
 }
