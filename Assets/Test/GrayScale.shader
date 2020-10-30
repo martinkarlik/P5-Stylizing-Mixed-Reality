@@ -90,7 +90,7 @@
             for (int x = -1; x < 2; x++) {
 
                 
-                float4 pixel = tex2D( outColor, input.texcoord + float2( x, y)); 
+                float4 pixel = tex2D(_InputTexture,  float2(0.2, 0.3)); 
 
                 float grayscale_value = (pixel.r + pixel.g + pixel.b) / 3;
             
