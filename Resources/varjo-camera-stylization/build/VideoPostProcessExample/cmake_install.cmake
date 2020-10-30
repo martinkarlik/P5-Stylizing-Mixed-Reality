@@ -1,8 +1,8 @@
-# Install script for directory: C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/VideoPostProcessExample
+# Install script for directory: C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/VideoPostProcessExample
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/VarjoExamples")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files/VarjoExamples")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

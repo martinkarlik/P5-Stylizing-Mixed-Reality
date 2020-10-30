@@ -1,8 +1,8 @@
-# Install script for directory: C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples
+# Install script for directory: C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "C:/Program Files (x86)/VarjoExamples")
+  set(CMAKE_INSTALL_PREFIX "C:/Program Files/VarjoExamples")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -34,7 +34,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/VideoPostProcessExample/cmake_install.cmake")
+  include("C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build/VideoPostProcessExample/cmake_install.cmake")
 
 endif()
 
@@ -46,5 +46,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

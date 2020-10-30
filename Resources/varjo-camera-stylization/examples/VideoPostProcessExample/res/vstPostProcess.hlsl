@@ -112,14 +112,14 @@ float3 hsvToRGB(in float3 HSV) {
     float4 origColor = inputTex.Load(int3(thisThread.xy, 0)).rgba;
     float4 color = origColor;
 
-    int cluster_size = 8;
+    int cluster_size = 10;
 
-    // Grayscale clustering
-    float grayscale_value = round((color.r + color.g + color.b) / 3 * cluster_size) / cluster_size;
-    float3 clustered_color = float3(grayscale_value, grayscale_value, grayscale_value);
+    // // Grayscale clustering
+    // float grayscale_value = round((color.r + color.g + color.b) / 3 * cluster_size) / cluster_size;
+    // float3 clustered_color = float3(grayscale_value, grayscale_value, grayscale_value);
 
     //Color clustering
-    // float3 clustered_color = round(color.rgb * cluster_size) / cluster_size;
+    float3 clustered_color = round(color.rgb * cluster_size) / cluster_size;
 
 
     float3x3 gx = float3x3(
