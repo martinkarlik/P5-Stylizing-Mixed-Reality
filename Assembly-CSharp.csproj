@@ -55,6 +55,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Clean Project\Scripts\GameInit.cs" />
+     <Compile Include="Assets\Clean Project\Scripts\VarjoMarkerManager.cs" />
      <Compile Include="Assets\CockpitDemoHacked\Assets\Scripts\Assembly-CSharp\Analytics.cs" />
      <Compile Include="Assets\CockpitDemoHacked\Assets\Scripts\Assembly-CSharp\DemoController.cs" />
      <Compile Include="Assets\CockpitDemoHacked\Assets\Scripts\Assembly-CSharp\DoorController.cs" />
@@ -152,9 +154,7 @@
      <Compile Include="Assets\CockpitDemoHacked\Assets\Scripts\Unity.TextMeshPro\TMPro\TextureMappingOptions.cs" />
      <Compile Include="Assets\CockpitDemoHacked\Assets\Scripts\Unity.TextMeshPro\TMPro\VertexGradient.cs" />
      <Compile Include="Assets\CockpitDemoHacked\Assets\Scripts\Unity.TextMeshPro\TMPro\VertexSortingOrder.cs" />
-     <Compile Include="Assets\Scripts\GameInit.cs" />
      <Compile Include="Assets\Scripts\SimpleCameraController.cs" />
-     <Compile Include="Assets\Scripts\VarjoMarkerManager.cs" />
      <Compile Include="Assets\Shaders\GrayScale.cs" />
      <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserManager.cs" />
      <Compile Include="Assets\Sketchfab For Unity\Scripts\AssetBrowser\SketchfabBrowserWindow.cs" />
