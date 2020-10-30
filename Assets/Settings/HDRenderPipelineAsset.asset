@@ -351,3 +351,4 @@ MonoBehaviour:
   beforePostProcessCustomPostProcesses: []
   afterPostProcessCustomPostProcesses:
   - GrayScale, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  - GreyScale, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null

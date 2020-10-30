@@ -6,13 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Shader sample scene.unity
-    guid: 966fa1acf7d6841478adc0d0f48d5904
+    path: Assets/Scenes/SampleScene (REDUNDANT).unity
+    guid: cbfe36cfddfde964d9dfce63a355d5dd
   m_configObjects:
-    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 6a64bdde473c8a24e992f6381906111b,
-      type: 2}
-    Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: bb0f9f2f22a8e444f829da65ac9226fb,
-      type: 2}
     Varjo.XR.Settings: {fileID: 11400000, guid: 36e2646ba886ac741b74effce116c8d5,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: cc1754bebde8cb84d8eab49646577ea7,

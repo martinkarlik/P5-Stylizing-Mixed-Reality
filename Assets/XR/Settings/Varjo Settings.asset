@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Varjo Settings
   m_EditorClassIdentifier: 
   separateCullPassForFocusDisplay: 0
-  stereoRenderingMode: 1
+  stereoRenderingMode: 0
   contextScalingFactor: 1
   focusScalingFactor: 1
   flipY: 0

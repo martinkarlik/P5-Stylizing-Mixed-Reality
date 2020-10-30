@@ -1,7 +1,6 @@
 ﻿Shader "Hidden/Shader/GrayScale"
 
 {
-
     HLSLINCLUDE
 
     #pragma target 4.5
@@ -90,7 +89,7 @@
             for (int x = -1; x < 2; x++) {
 
                 
-                float4 pixel = tex2D(_InputTexture,  float2(0.2, 0.3)); 
+                float4 pixel = LOAD_TEXTURE2D_X(_InputTexture, float2(pixel_y + y/_ScreenSize.y, pixel_x + x /_ScreenSize.x)); 
 
                 float grayscale_value = (pixel.r + pixel.g + pixel.b) / 3;
             
@@ -101,7 +100,7 @@
 
         float edge_value = abs(pixel_sum_x / 3) + abs(pixel_sum_y / 3);
 
-        return float4(outColor, 1);
+        return float4(1,1,1, 1);
 
     }
 
