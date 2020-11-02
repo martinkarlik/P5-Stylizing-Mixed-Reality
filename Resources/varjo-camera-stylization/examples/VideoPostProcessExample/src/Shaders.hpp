@@ -19,8 +19,9 @@ struct PostProcessConstantBuffer {
     float noiseScale = 1.0f;                       //!< Noise texture scale
 
     int clusterSize = 10;
+    float outlineStrength = 0.5f;
     glm::vec4 outlineColor{0.4f, 0.5f, 0.7f, 1.0f};
-    float outlineStrength = 1.0f;
+    
 };
 
 // Shader parameters

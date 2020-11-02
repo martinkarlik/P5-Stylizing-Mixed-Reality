@@ -50,11 +50,9 @@ cbuffer ConstantBuffer : register(b1)
     float noiseScale;   // Noise scale
 
     int clusterSize;
-    float4 outlineColor;
     float outlineStrength;
-
-    float blah;
-
+    float4 outlineColor;
+    
 }
 
 // Shader specific textures
@@ -145,14 +143,13 @@ float sobelEdgeDetection(in float2 uv) {
     }
 
 
-    // if (outlineStrength > 0.0f) {
-    //     float edgeValue = sobelEdgeDetection(uv);
+    if (outlineStrength > 0.0f) {
+        float edgeValue = sobelEdgeDetection(uv);
 
-    //     if (edgeValue > 0.1) {
-    //         color.rgb = outlineColor.rgb;
-    //         //color.rgb = hsvToRGB(outlineColor.rgb);
-    //     } 
-    // }
+        if (edgeValue > 0.1) {
+            color.rgb = outlineColor.rgb;
+        } 
+    }
 
-    outputTex[thisThread.xy] = float4(blah, blah, blah, origColor.a);
+    outputTex[thisThread.xy] = float4(color.rgb, origColor.a);
 }

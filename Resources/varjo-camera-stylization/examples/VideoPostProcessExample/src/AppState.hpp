@@ -40,8 +40,9 @@ struct AppState {
 
         // Outlines params
         bool outlinesEnabled = true;
-        glm::vec4 outlineColor = glm::vec4(0.4f, 0.5f, 0.7f, 1.0f);
         float outlineStrength = 1.0f;
+        glm::vec4 outlineColor = glm::vec4(0.4f, 0.5f, 0.7f, 1.0f);
+        
 
         // Texture params
         bool textureEnabled = true;

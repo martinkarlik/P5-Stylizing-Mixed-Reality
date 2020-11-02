@@ -75,14 +75,14 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
         {
             false, PostProcess::ShaderSource::None, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise, 
             false, 0,
-            false, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), 0.0f,
+            false, 0.0f, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f),
             false, true, 0.0f, 0.0f                                                                            
         }},
     {"Default",
         {
             true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
             true, 10,
-            true, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), 0.5f,            
+            true, 0.5f, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f),             
             true, true, 0.1f, 1.0f                                                    
         }}
 

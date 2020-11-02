@@ -323,13 +323,16 @@ void AppLogic::updatePostProcessing()
 
     // Noise texture params
     cBuffer.noiseAmount = state.textureEnabled ? state.textureAmount * static_cast<float>(o + a * (0.25 * (sin(t * 1.158693) + sin(t * 1.51397)) - 0.5)) : 0.0f;
-    //cBuffer.noiseScale = state.textureScale;
-
     cBuffer.noiseScale = state.textureEnabled ? state.textureScale : 0.0f;
 
     cBuffer.clusterSize = state.colorClusteringEnabled ? state.clusterSize : 0;
-    cBuffer.outlineColor = state.outlinesEnabled ? state.outlineColor : glm::vec4(0.0f);
+
     cBuffer.outlineStrength = state.outlinesEnabled ? state.outlineStrength : 0.0f;
+    
+    memcpy(&cBuffer.outlineColor, &state.outlineColor, sizeof(cBuffer.outlineColor));
+    cBuffer.outlineColor = state.outlinesEnabled ? state.outlineColor : glm::vec4(0.0f);
+
+    
     
 
 
