@@ -44,20 +44,17 @@ cbuffer ConstantBuffer : register(b0)
 // Shader specific constants
 cbuffer ConstantBuffer : register(b1)
 {
-    // Color grading
-    float colorFactor;             // Color grading factor: 0=off, 1=full
-    float colorPreserveSaturated;  // Color grading saturated preservation
-    float2 _padding_b1_0;          // Padding
-    float4 colorValue;             // Color grading value
-    float4 colorExp;               // Color grading exponent
 
     // Noise texture
     float noiseAmount;  // Noise amount: 0=off, 1=full
     float noiseScale;   // Noise scale
 
-    // Blur filter
-    float blurScale;     // Blur kernel scale: 0=off, 1=full
-    int blurKernelSize;  // Blur kernel size
+    int clusterSize;
+    float4 outlineColor;
+    float outlineStrength;
+
+    float blah;
+
 }
 
 // Shader specific textures
@@ -99,6 +96,29 @@ float3 hsvToRGB(in float3 HSV) {
     return ((RGB - 1.0f) * HSV.y + 1.0f) * HSV.z;
 }
 
+float sobelEdgeDetection(in float2 uv) {
+
+    float3x3 gx = float3x3(-1, 0, 1, -2, 0, 2, -1, 0, 1);
+    float3x3 gy = float3x3(-1, -2, -1, 0, 0, 0, 1, 2, 1);
+
+    float pixelSumX = 0.0;
+    float pixelSumY = 0.0;
+
+    for (int y = -1; y < 2; y++) {
+        for (int x = -1; x < 2; x++) {
+        
+            float4 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) y / sourceSize[0], (float) x / sourceSize[1]), 0.0, 0.0);
+
+            float grayscaleValue = (pixel.r + pixel.g + pixel.b) / 3;
+        
+            pixelSumX += grayscaleValue * gx[y + 1][x + 1];
+            pixelSumY += grayscaleValue * gy[y + 1][x + 1];
+        }
+    }
+
+    return abs(pixelSumX / 3) + abs(pixelSumY / 3);
+}
+
 // -------------------------------------------------------------------------
 
 // Shader entrypoint
@@ -112,52 +132,27 @@ float3 hsvToRGB(in float3 HSV) {
     float4 origColor = inputTex.Load(int3(thisThread.xy, 0)).rgba;
     float4 color = origColor;
 
-    int cluster_size = 10;
 
     // // Grayscale clustering
-    // float grayscale_value = round((color.r + color.g + color.b) / 3 * cluster_size) / cluster_size;
-    // float3 clustered_color = float3(grayscale_value, grayscale_value, grayscale_value);
+    // float grayscaleValue = round((color.r + color.g + color.b) / 3 * clusterSize) / clusterSize;
+    // float3 clusteredColor = float3(grayscaleValue, grayscaleValue, grayscaleValue);
 
     //Color clustering
-    float3 clustered_color = round(color.rgb * cluster_size) / cluster_size;
 
 
-    float3x3 gx = float3x3(
-        -1, 0, 1,
-        -2, 0, 2,
-        -1, 0, 1
-    );
-
-    float3x3 gy = float3x3(
-        -1, -2, -1,
-        0, 0, 0,
-        1, 2, 1
-    );
-
-    float pixel_sum_x = 0.0;
-    float pixel_sum_y = 0.0;
-
-    for (int y = -1; y < 2; y++) {
-        for (int x = -1; x < 2; x++) {
-        
-            float4 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) y / sourceSize[0], (float) x / sourceSize[1]), 0.0, 0.0);
-
-            float grayscale_value = (pixel.r + pixel.g + pixel.b) / 3;
-        
-            pixel_sum_x += grayscale_value * gx[y + 1][x + 1];
-            pixel_sum_y += grayscale_value * gy[y + 1][x + 1];
-        }
+    if (clusterSize > 0) {
+        color.rgb = round(color.rgb * clusterSize) / clusterSize;
     }
 
-    float edge_value = abs(pixel_sum_x / 3) + abs(pixel_sum_y / 3);
 
+    // if (outlineStrength > 0.0f) {
+    //     float edgeValue = sobelEdgeDetection(uv);
 
-    float3 final_color;
-    if (edge_value > 0.1) {
-        final_color = float3(0.0, 0.0, 0.0);
-    } else {
-        final_color = clustered_color.rgb;
-    }
+    //     if (edgeValue > 0.1) {
+    //         color.rgb = outlineColor.rgb;
+    //         //color.rgb = hsvToRGB(outlineColor.rgb);
+    //     } 
+    // }
 
-    outputTex[thisThread.xy] = float4(final_color, origColor.a);
+    outputTex[thisThread.xy] = float4(blah, blah, blah, origColor.a);
 }

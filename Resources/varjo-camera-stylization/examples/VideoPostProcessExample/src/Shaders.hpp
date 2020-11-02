@@ -14,15 +14,13 @@
 
 //! Post process constant buffer. Must match with the shader exactly!
 struct PostProcessConstantBuffer {
-    float colorFactor = 1.0f;             //!< Color grading amount: 0=off, 1=full
-    float colorPreserveSaturated = 1.0f;  //!< Color grading saturated preservation factor
-    float _padding0[2];
-    glm::vec4 colorValue{0.4f, 0.5f, 0.7f, 1.0f};  //!< Color grading value
-    glm::vec4 colorExp{2.0f, 1.5f, 1.0f, 1.0f};    //!< Color grading exponent
+    
     float noiseAmount = 1.0f;                      //!< Noise amount: 0=off, 1=full
     float noiseScale = 1.0f;                       //!< Noise texture scale
-    float blurScale = 1.0f;                        //!< Blur scale: 0=off, 1=full
-    int blurKernelSize = 1;                        //!< Blur kernel size
+
+    int clusterSize = 10;
+    glm::vec4 outlineColor{0.4f, 0.5f, 0.7f, 1.0f};
+    float outlineStrength = 1.0f;
 };
 
 // Shader parameters

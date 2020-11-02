@@ -1,4 +1,4 @@
-C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build/CMakeFiles/copyLibs.dir
-C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build/CMakeFiles/ALL_BUILD.dir
-C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build/CMakeFiles/ZERO_CHECK.dir
-C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build/VideoPostProcessExample/CMakeFiles/VideoPostProcess.dir
+C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/CMakeFiles/copyLibs.dir
+C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/CMakeFiles/ALL_BUILD.dir
+C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/CMakeFiles/ZERO_CHECK.dir
+C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/VideoPostProcessExample/CMakeFiles/VideoPostProcess.dir
