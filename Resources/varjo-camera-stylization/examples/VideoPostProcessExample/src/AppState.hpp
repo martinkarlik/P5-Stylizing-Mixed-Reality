@@ -1,4 +1,3 @@
-
 // Copyright 2020 Varjo Technologies Oy. All rights reserved.
 
 #pragma once
@@ -34,22 +33,13 @@ struct AppState {
         VarjoExamples::PostProcess::GraphicsAPI graphicsAPI = VarjoExamples::PostProcess::GraphicsAPI::None;
         TestTexture::Type textureType = TestTexture::Type::Noise;
 
-        // Color clustering params
-        bool colorClusteringEnabled = true;
-        int clusterSize = 10;
-
-        // Outlines params
-        bool outlinesEnabled = true;
-        float outlineStrength = 1.0f;
-        glm::vec4 outlineColor = glm::vec4(0.4f, 0.5f, 0.7f, 1.0f);
-        
-
         // Texture params
         bool textureEnabled = true;
         bool textureGeneratedOnGPU = true;
-        float textureAmount = 0.1f;
-        float textureScale = 1.0f;
-#
+
+        bool grayscale = false;
+        int clusterSize = 10;
+        float outlineStrength = 1.0f;
 
     } postProcess;
 };

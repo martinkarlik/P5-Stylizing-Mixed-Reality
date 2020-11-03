@@ -14,14 +14,11 @@
 
 //! Post process constant buffer. Must match with the shader exactly!
 struct PostProcessConstantBuffer {
-    
-    float noiseAmount = 1.0f;                      //!< Noise amount: 0=off, 1=full
-    float noiseScale = 1.0f;                       //!< Noise texture scale
 
+    bool grayscale = false;
     int clusterSize = 10;
-    float outlineStrength = 0.5f;
-    glm::vec4 outlineColor{0.4f, 0.5f, 0.7f, 1.0f};
-    
+    float outlineStrength = 1.0f;
+  
 };
 
 // Shader parameters
