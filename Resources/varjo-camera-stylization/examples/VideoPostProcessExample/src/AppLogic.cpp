@@ -316,13 +316,25 @@ void AppLogic::updatePostProcessing()
 
     // Set shader constant parameter values
     PostProcessConstantBuffer cBuffer{};
+    const double a = state.animAmpl;
+    const double o = state.animOffs;
+    const double t = state.animTime;
 
-    memcpy(&cBuffer.grayscale, &state.grayscale, sizeof(cBuffer.grayscale));
-    cBuffer.grayscale = true;
-    memcpy(&cBuffer.clusterSize, &state.clusterSize, sizeof(cBuffer.clusterSize));
-    cBuffer.clusterSize = 10;
-    memcpy(&cBuffer.outlineStrength, &state.outlineStrength, sizeof(cBuffer.outlineStrength));
-    cBuffer.outlineStrength = 1.0f;
+    // Color grade params
+    cBuffer.colorFactor = state.colorEnabled ? state.colorFactor * static_cast<float>(o + a * (0.25 * (sin(t * 1.071657) + sin(t * 1.32674)) - 0.5)) : 0.0f;
+    memcpy(&cBuffer.colorExp, &state.colorExp, sizeof(cBuffer.colorExp));
+    cBuffer.colorExp = glm::vec4(1.0f) / glm::max(glm::vec4(0.01f), (cBuffer.colorExp / state.colorExpScale));
+    memcpy(&cBuffer.colorValue, &state.colorValue, sizeof(cBuffer.colorValue));
+    cBuffer.colorValue = glm::max(glm::vec4(0.0f), cBuffer.colorValue * state.colorScale);
+    cBuffer.colorPreserveSaturated = state.colorPreserveSaturated;
+
+    // Noise texture params
+    cBuffer.noiseAmount = state.textureEnabled ? state.textureAmount * static_cast<float>(o + a * (0.25 * (sin(t * 1.158693) + sin(t * 1.51397)) - 0.5)) : 0.0f;
+    cBuffer.noiseScale = state.textureScale;
+
+    // Blur filter params
+    cBuffer.blurScale = state.blurEnabled ? state.blurScale * static_cast<float>(o + a * (0.25 * (sin(t * 1.013575) + sin(t * 1.26575)) - 0.5)) : 0.0f;
+    cBuffer.blurKernelSize = state.blurKernelSize;
 
 
     // List of shader input texture indices updated
