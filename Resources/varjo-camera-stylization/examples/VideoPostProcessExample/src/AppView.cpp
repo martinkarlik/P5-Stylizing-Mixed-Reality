@@ -63,7 +63,7 @@ const std::map<Action, ActionInfo> c_actions = {
 constexpr int c_windowMargin = 8;
 
 // Window client area size and log height
-constexpr glm::ivec2 c_windowClientSize(720, 800);
+constexpr glm::ivec2 c_windowClientSize(720, 900);
 constexpr int c_logHeight = 230;
 
 // Default preset
@@ -73,24 +73,20 @@ constexpr int c_defaultPresetIndex = 1;
 const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = {
     {"Off",
         {
-            false, PostProcess::ShaderSource::None, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise, 
-            false, 0,
-            false, 0.0f, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f),
-            false, true, 0.0f, 0.0f                                                                            
+            false, PostProcess::ShaderSource::None, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
+            true, true,
+            false, 0, 0.0f
         }},
     {"Default",
         {
-            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
-            true, 10,
-            true, 0.5f, glm::vec4(0.0f, 0.0f, 0.0f, 0.0f),             
-            true, true, 0.1f, 1.0f                                                    
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,                                  //
+            true, true,
+            false, 10, 1.0f
         }}
 
 };
 
-
-
-}  
+}
 
 AppView::AppView(AppLogic& logic)
     : m_logic(logic)
@@ -103,7 +99,7 @@ AppView::AppView(AppLogic& logic)
     // Create user interface instance
     m_ui = std::make_unique<UI>(std::bind(&AppView::onFrame, this, std::placeholders::_1),    //
         std::bind(&AppView::onKeyPress, this, std::placeholders::_1, std::placeholders::_2),  //
-        _T("Varjo Stylization Interface"), c_windowClientSize.x, c_windowClientSize.y);
+        _T("Varjo Demo Application"), c_windowClientSize.x, c_windowClientSize.y);
 
     // Set log function
     LOG_INIT(std::bind(&UI::writeLogEntry, m_ui.get(), std::placeholders::_1, std::placeholders::_2), LogLevel::Info);
@@ -292,10 +288,6 @@ void AppView::updateUI()
         }
 
         ImGui::Checkbox("Render video", &appState.general.vstEnabled);
-// #if (!USE_HEADLESS_MODE)
-//         ImGui::SameLine();
-//         ImGui::Checkbox("Render VR scene", &appState.general.vrEnabled);
-// #endif
 
         ImGui::SameLine();
         ImGui::Checkbox("Post process video", &appState.postProcess.enabled);
@@ -326,7 +318,6 @@ void AppView::updateUI()
 
         ImGui::Dummy(ImVec2(0.0f, h));
 
-
 #define _TAG "##noise"
 
         ImGui::Checkbox("Enable texture" _TAG, &appState.postProcess.textureEnabled);
@@ -335,27 +326,9 @@ void AppView::updateUI()
         ImGui::Checkbox("GPU generated" _TAG, &appState.postProcess.textureGeneratedOnGPU);
         _POPDISABLEDIF(gpuGenerateDisabled);
 
-        ImGui::SliderFloat("Amount" _TAG, &appState.postProcess.textureAmount, 0.0f, 1.0f);
-        ImGui::SliderFloat("Scale" _TAG, &appState.postProcess.textureScale, 0.0f, 5.0f);
         ImGui::Dummy(ImVec2(0.0f, h));
 
-#undef _TAG
-
-#define _TAG "##color_clustering"
-
-        ImGui::Checkbox("Color clustering" _TAG, &appState.postProcess.colorClusteringEnabled);
-        ImGui::SliderInt("Cluster size" _TAG, &appState.postProcess.clusterSize, 1, 30);
-        ImGui::Dummy(ImVec2(0.0f, h));
-
-#undef _TAG
-
-#define _TAG "##outlines"
-
-        ImGui::Checkbox("Outlines" _TAG, &appState.postProcess.outlinesEnabled);
-        ImGui::ColorEdit3("Outline color" _TAG, (float*)&appState.postProcess.outlineColor);
-        ImGui::SliderFloat("Outline strength" _TAG, &appState.postProcess.outlineStrength, 0.0f, 1.0f);
-        ImGui::Dummy(ImVec2(0.0f, h));
-
+// Define section tag for unique names
 #undef _TAG
 
 

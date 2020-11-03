@@ -316,25 +316,13 @@ void AppLogic::updatePostProcessing()
 
     // Set shader constant parameter values
     PostProcessConstantBuffer cBuffer{};
-    const double a = 0.5;
-    const double o = 0.5;
-    const double t = 0.1;
 
-
-    // Noise texture params
-    cBuffer.noiseAmount = state.textureEnabled ? state.textureAmount * static_cast<float>(o + a * (0.25 * (sin(t * 1.158693) + sin(t * 1.51397)) - 0.5)) : 0.0f;
-    cBuffer.noiseScale = state.textureEnabled ? state.textureScale : 0.0f;
-
-    cBuffer.clusterSize = state.colorClusteringEnabled ? state.clusterSize : 0;
-
-    cBuffer.outlineStrength = state.outlinesEnabled ? state.outlineStrength : 0.0f;
-    
-    memcpy(&cBuffer.outlineColor, &state.outlineColor, sizeof(cBuffer.outlineColor));
-    cBuffer.outlineColor = state.outlinesEnabled ? state.outlineColor : glm::vec4(0.0f);
-
-    
-    
-
+    memcpy(&cBuffer.grayscale, &state.grayscale, sizeof(cBuffer.grayscale));
+    cBuffer.grayscale = true;
+    memcpy(&cBuffer.clusterSize, &state.clusterSize, sizeof(cBuffer.clusterSize));
+    cBuffer.clusterSize = 10;
+    memcpy(&cBuffer.outlineStrength, &state.outlineStrength, sizeof(cBuffer.outlineStrength));
+    cBuffer.outlineStrength = 1.0f;
 
 
     // List of shader input texture indices updated

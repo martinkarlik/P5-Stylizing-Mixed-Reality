@@ -45,14 +45,10 @@ cbuffer ConstantBuffer : register(b0)
 cbuffer ConstantBuffer : register(b1)
 {
 
-    // Noise texture
-    float noiseAmount;  // Noise amount: 0=off, 1=full
-    float noiseScale;   // Noise scale
-
+    bool grayscale;
     int clusterSize;
     float outlineStrength;
-    float4 outlineColor;
-    
+
 }
 
 // Shader specific textures
@@ -131,23 +127,23 @@ float sobelEdgeDetection(in float2 uv) {
     float4 color = origColor;
 
 
-    // // Grayscale clustering
-    // float grayscaleValue = round((color.r + color.g + color.b) / 3 * clusterSize) / clusterSize;
-    // float3 clusteredColor = float3(grayscaleValue, grayscaleValue, grayscaleValue);
+    // Grayscale
+    if (grayscale) {
+        float grayscaleValue = round((color.r + color.g + color.b) / 3 * clusterSize) / clusterSize;
+        color.rgb = float3(grayscaleValue, grayscaleValue, grayscaleValue);
+    } 
 
     //Color clustering
-
-
     if (clusterSize > 0) {
         color.rgb = round(color.rgb * clusterSize) / clusterSize;
     }
 
 
-    if (outlineStrength > 0.0f) {
+    if (outlineStrength >= 0.0f) {
         float edgeValue = sobelEdgeDetection(uv);
 
         if (edgeValue > 0.1) {
-            color.rgb = outlineColor.rgb;
+            color.rgb = float3(1.0f, 1.0f, 1.0f);
         } 
     }
 
