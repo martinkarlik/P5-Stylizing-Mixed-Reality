@@ -316,25 +316,26 @@ void AppLogic::updatePostProcessing()
 
     // Set shader constant parameter values
     PostProcessConstantBuffer cBuffer{};
-    const double a = state.animAmpl;
-    const double o = state.animOffs;
-    const double t = state.animTime;
+    const double a = 0.5;
+    const double o = 0.5;
+    const double t = 0.1;
 
-    // Color grade params
-    cBuffer.colorFactor = state.colorEnabled ? state.colorFactor * static_cast<float>(o + a * (0.25 * (sin(t * 1.071657) + sin(t * 1.32674)) - 0.5)) : 0.0f;
-    memcpy(&cBuffer.colorExp, &state.colorExp, sizeof(cBuffer.colorExp));
-    cBuffer.colorExp = glm::vec4(1.0f) / glm::max(glm::vec4(0.01f), (cBuffer.colorExp / state.colorExpScale));
-    memcpy(&cBuffer.colorValue, &state.colorValue, sizeof(cBuffer.colorValue));
-    cBuffer.colorValue = glm::max(glm::vec4(0.0f), cBuffer.colorValue * state.colorScale);
-    cBuffer.colorPreserveSaturated = state.colorPreserveSaturated;
 
     // Noise texture params
     cBuffer.noiseAmount = state.textureEnabled ? state.textureAmount * static_cast<float>(o + a * (0.25 * (sin(t * 1.158693) + sin(t * 1.51397)) - 0.5)) : 0.0f;
-    cBuffer.noiseScale = state.textureScale;
+    cBuffer.noiseScale = state.textureEnabled ? state.textureScale : 0.0f;
 
-    // Blur filter params
-    cBuffer.blurScale = state.blurEnabled ? state.blurScale * static_cast<float>(o + a * (0.25 * (sin(t * 1.013575) + sin(t * 1.26575)) - 0.5)) : 0.0f;
-    cBuffer.blurKernelSize = state.blurKernelSize;
+    cBuffer.clusterSize = state.colorClusteringEnabled ? state.clusterSize : 0;
+
+    cBuffer.outlineStrength = state.outlinesEnabled ? state.outlineStrength : 0.0f;
+    
+    memcpy(&cBuffer.outlineColor, &state.outlineColor, sizeof(cBuffer.outlineColor));
+    cBuffer.outlineColor = state.outlinesEnabled ? state.outlineColor : glm::vec4(0.0f);
+
+    
+    
+
+
 
     // List of shader input texture indices updated
     std::vector<int32_t> updatedTextures;
@@ -376,10 +377,6 @@ void AppLogic::update()
     m_appState.general.frameTime += m_varjoView->getDeltaTime();
     m_appState.general.frameCount = m_varjoView->getFrameNumber();
 
-    // Update animation time
-    if (m_appState.postProcess.animate) {
-        m_appState.postProcess.animTime += m_appState.postProcess.animFreq * m_varjoView->getDeltaTime();
-    }
 
     // Update scene
     m_scene->update(m_varjoView->getFrameTime(), m_varjoView->getDeltaTime(), m_varjoView->getFrameNumber(), Scene::UpdateParams());

@@ -1,158 +1,158 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\main.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppLogic.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppLogic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppView.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\GfxContext.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\GfxContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTexture.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D11.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D12.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D12.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureGL.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestScene.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\D3D11LayerView.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\D3D11LayerView.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\D3D11Renderer.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\D3D11Renderer.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\D3D11Shaders.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\D3D11Shaders.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\Globals.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\Globals.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\HeadlessView.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\HeadlessView.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\LayerView.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\LayerView.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\Renderer.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\Renderer.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\Scene.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\Scene.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\SyncView.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\SyncView.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\CommonExperimental\PostProcess.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\CommonExperimental\PostProcess.cpp">
       <Filter>CommonExperimental</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\CommonExperimental\UI.cpp">
+    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\CommonExperimental\UI.cpp">
       <Filter>CommonExperimental</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppLogic.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppLogic.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppState.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppState.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppView.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\AppView.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\GfxContext.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\GfxContext.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTexture.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTexture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D11.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D11.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D12.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D12.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureGL.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureGL.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestScene.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\Shaders.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\Shaders.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\D3D11LayerView.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\D3D11LayerView.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\D3D11Renderer.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\D3D11Renderer.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\D3D11Shaders.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\D3D11Shaders.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\ExampleShaders.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\ExampleShaders.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\Globals.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\Globals.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\HeadlessView.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\HeadlessView.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\LayerView.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\LayerView.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\Renderer.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\Renderer.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\Scene.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\Scene.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\Common\SyncView.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\SyncView.hpp">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\CommonExperimental\PostProcess.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\CommonExperimental\PostProcess.hpp">
       <Filter>CommonExperimental</Filter>
     </ClInclude>
-    <ClInclude Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\CommonExperimental\UI.hpp">
+    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\CommonExperimental\UI.hpp">
       <Filter>CommonExperimental</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\CMakeLists.txt" />
+    <CustomBuild Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <FXCompile Include="C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\res\vstPostProcess.hlsl">
+    <FXCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\res\vstPostProcess.hlsl">
       <Filter>Shaders</Filter>
     </FXCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
-      <UniqueIdentifier>{26C6A848-101A-34E1-8FD7-A288D1005E6C}</UniqueIdentifier>
+      <UniqueIdentifier>{AFAAF316-10CD-3607-B085-AEEB7500B02B}</UniqueIdentifier>
     </Filter>
     <Filter Include="CommonExperimental">
-      <UniqueIdentifier>{4049AFCA-77EE-3627-A2CC-F11CD52A976C}</UniqueIdentifier>
+      <UniqueIdentifier>{0E6982F1-5B1B-31C3-BC69-9FD8CFFD59BE}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{0FF43224-CB4B-3E34-BFF3-ED1619BB84A1}</UniqueIdentifier>
+      <UniqueIdentifier>{4B4E8978-CC4F-3112-BD21-0B1803D01915}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shaders">
-      <UniqueIdentifier>{A9A8FE5A-56E3-396C-A493-2F41BAE1CF6C}</UniqueIdentifier>
+      <UniqueIdentifier>{67F5583F-E453-34F7-B72D-37040EF619AA}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{1EB6BC09-2BCB-32AF-B449-EA80FF3C9990}</UniqueIdentifier>
+      <UniqueIdentifier>{F4F5423C-B78E-3D29-9381-6467CDE54A4C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

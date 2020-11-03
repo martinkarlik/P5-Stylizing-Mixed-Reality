@@ -1,4 +1,4 @@
-# Install script for directory: C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/VideoPostProcessExample
+# Install script for directory: C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/VideoPostProcessExample
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
