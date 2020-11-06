@@ -16,6 +16,10 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
 
     public ClampedFloatParameter intensity = new ClampedFloatParameter(0f, 0f, 1f);
 
+    [Tooltip("Controls the strength of the line effect")]
+
+    public clampedFloatParameter lineStrength = new clampedFloatParameter(0f, 0f, 1f);
+
     Material m_Material;
 
     public bool IsActive() => m_Material != null && intensity.value > 0f;
@@ -43,6 +47,9 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
         m_Material.SetFloat("_Intensity", intensity.value);
 
         m_Material.SetTexture("_InputTexture", source);
+
+        // our variables
+        m_Material.SetTexture("_LineStrength", lineStrength.value);
 
         HDUtils.DrawFullScreen(cmd, m_Material, destination);
 

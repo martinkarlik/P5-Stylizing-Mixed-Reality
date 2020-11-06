@@ -57,6 +57,10 @@
 
     TEXTURE2D_X(_InputTexture);
 
+    // our custom variables
+
+    float _LineStrength;
+
     int radius = 15;
 
     float3 watercolor (uint2 positionSS, float3 outColor){
@@ -135,13 +139,10 @@
 
         // for sketch color
         float4 FragColor;
-
-
-        // water color 
+ 
         
 
-
-        // sketch
+        //#region
         float3 W = float3(0.2125, 0.7154, 0.0721);
         float2 stp0 = float2(1.0 / _ScreenSize[1], 0.0);
         float2 st0p = float2(0.0, 1.0 / _ScreenSize[0]);
@@ -163,6 +164,7 @@
         float3 target = float3(mag, mag, mag);
 
         FragColor = float4(lerp(outColor, target, _Intensity), 1.0);
+        //#endregion
 
         // edge detection
         float3x3 gx = float3x3(
@@ -199,8 +201,8 @@
             outputColor = float3(0,0,0);
         }
 
-        return float4(lerp(outColor, outputColor, _Intensity), 1);
-        // return float4(watercolor(positionSS, outColor),1);
+        // return float4(lerp(outColor, outputColor, _Intensity), 1);
+        return float4(watercolor(positionSS, outColor),1);
 
 
     }
