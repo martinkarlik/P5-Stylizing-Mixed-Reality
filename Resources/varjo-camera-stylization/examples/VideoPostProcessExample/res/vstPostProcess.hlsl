@@ -45,9 +45,20 @@ cbuffer ConstantBuffer : register(b0)
 cbuffer ConstantBuffer : register(b1)
 {
 
-    bool grayscale;
-    int clusterSize;
-    float outlineStrength;
+    // Color grading
+    float colorFactor;             // Color grading factor: 0=off, 1=full
+    float colorPreserveSaturated;  // Color grading saturated preservation
+    float2 _padding_b1_0;          // Padding
+    float4 colorValue;             // Color grading value
+    float4 colorExp;               // Color grading exponent
+
+    // Noise texture
+    float noiseAmount;  // Noise amount: 0=off, 1=full
+    float noiseScale;   // Noise scale
+
+    // Blur filter
+    float blurScale;     // Blur kernel scale: 0=off, 1=full
+    int blurKernelSize;  // Blur kernel size
 
 }
 
@@ -90,7 +101,7 @@ float3 hsvToRGB(in float3 HSV) {
     return ((RGB - 1.0f) * HSV.y + 1.0f) * HSV.z;
 }
 
-float sobelEdgeDetection(in float2 uv) {
+float applyOutlines(in float2 uv) {
 
     float3x3 gx = float3x3(-1, 0, 1, -2, 0, 2, -1, 0, 1);
     float3x3 gy = float3x3(-1, -2, -1, 0, 0, 0, 1, 2, 1);
@@ -110,7 +121,92 @@ float sobelEdgeDetection(in float2 uv) {
         }
     }
 
-    return abs(pixelSumX / 3) + abs(pixelSumY / 3);
+    float outputColor = abs(pixelSumX / 3) + abs(pixelSumY / 3);
+    return outputColor;
+}
+
+float3 applyBlur(in float2 uv, in int radius) {
+
+    float n = float((radius * 2) * (radius * 2));
+
+
+    float3 sum = float3(0.0f, 0.0f, 0.0f);
+
+    for (int x = -radius; x < radius; x++)  {
+        for (int y = -radius; y < radius; y++)  {
+            float3 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) x / sourceSize[0], (float) y / sourceSize[1]), 0.0, 0.0).rgb;
+            sum += pixel;
+        }
+    }
+
+    float3 outputColor = sum / n;
+    return outputColor;
+}
+
+
+float3 applyWatercolor(in float2 uv, in int radius) {
+
+    float n = float((radius + 1) * (radius + 1));
+
+    float4x3 mat;
+    float4x3 matSquared;
+
+
+    for (int i = 0; i < 4; i++) {
+        mat[i] = float3(0.0f, 0.0f, 0.0f);
+        matSquared[i] = float3(0.0f, 0.0f, 0.0f);
+    }
+
+    for (int y = -radius; y <= 0; y++)  {
+        for (int x = -radius; x <= 0; x++)  {
+            float3 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) y / sourceSize[0], (float) x / sourceSize[1]), 0.0, 0.0).rgb;
+            mat[0] += pixel;
+            matSquared[0] += pixel * pixel;
+        }
+    }
+
+    for (int y = -radius; y <= 0; y++)  {
+        for (int x = 0; x <= radius; x++)  {
+            float3 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) y / sourceSize[0], (float) x / sourceSize[1]), 0.0, 0.0).rgb;
+            mat[1] += pixel;
+            matSquared[1] += pixel * pixel;
+        }
+    }
+
+    for (int y = 0; y <= radius; y++)  {
+        for (int x = 0; x <= radius; x++)  {
+            float3 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) y / sourceSize[0], (float) x / sourceSize[1]), 0.0, 0.0).rgb;
+            mat[2] += pixel;
+            matSquared[2] += pixel * pixel;
+        }
+    }
+
+    for (int y = 0; y <= radius; y++)  {
+        for (int x = -radius; x <= 0; x++)  {
+            float3 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) y / sourceSize[0], (float) x / sourceSize[1]), 0.0, 0.0).rgb;
+            mat[3] += pixel;
+            matSquared[3] += pixel * pixel;
+        }
+    }
+
+
+    float3 outputColor = float3(0.0f, 0.0f, 0.0f);
+
+    float min_sigma2 = 100.0f;
+
+    for (int i = 0; i < 4; i++) {
+        mat[i] /= n;
+        matSquared[i] = abs(matSquared[i] / n - mat[i] * mat[i]);
+
+        float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outputColor = mat[i];
+        }
+    }
+
+
+    return outputColor;
 }
 
 // -------------------------------------------------------------------------
@@ -126,6 +222,12 @@ float sobelEdgeDetection(in float2 uv) {
     float4 origColor = inputTex.Load(int3(thisThread.xy, 0)).rgba;
     float4 color = origColor;
 
+    bool grayscale = false;
+    int clusterSize = 0;
+    float outlineStrength = 0.0f;
+
+    int watercolorRadius = 15;
+    int blurRadius = 30;
 
     // Grayscale
     if (grayscale) {
@@ -139,13 +241,23 @@ float sobelEdgeDetection(in float2 uv) {
     }
 
 
-    if (outlineStrength >= 0.0f) {
-        float edgeValue = sobelEdgeDetection(uv);
+    if (outlineStrength > 0.0f) {
+        float edgeValue = applyOutlines(uv);
 
         if (edgeValue > 0.1) {
-            color.rgb = float3(1.0f, 1.0f, 1.0f);
+            color.rgb = float3(0.0f, 0.0f, 0.0f);
         } 
     }
+
+    int a = 5;
+
+    // if (watercolorRadius > 0) {
+    //     color.rgb = applyWatercolor(uv, watercolorRadius);
+    // }
+
+    
+    color.rgb = applyWatercolor(uv, watercolorRadius);
+
 
     outputTex[thisThread.xy] = float4(color.rgb, origColor.a);
 }

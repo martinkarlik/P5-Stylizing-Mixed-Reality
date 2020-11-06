@@ -73,20 +73,141 @@ constexpr int c_defaultPresetIndex = 1;
 const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = {
     {"Off",
         {
-            false, PostProcess::ShaderSource::None, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
-            true, true,
-            false, 0, 0.0f
+            false, PostProcess::ShaderSource::None, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,  //
+            false, 0.0f, 0.0f, glm::vec4(0.0f), glm::vec4(0.0f), 0.0f, 0.0f,                                    // Color
+            false, true, 0.0f, 0.0f,                                                                            // Noise
+            false, 0.0f, 0,                                                                                     // Blur
+            false, 0.0f, 0.0f, 0.0f                                                                             // Animate
         }},
     {"Default",
         {
             true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,                                  //
-            true, true,
-            false, 10, 1.0f
-        }}
+            true, 1.0f, 0.0f, glm::vec4(210.0f, 220.0f, 130.0f, 255.0f) / 255.0f, glm::vec4(20.0f, 80.0f, 140.0f, 255.0f) / 255.0f, 1.0f, 2.0f,  // Color
+            true, true, 0.1f, 1.0f,                                                                                                              // Noise
+            true, 5.0f, 7,                                                                                                                       // Blur
+            true, 3.0f, 0.5f, 0.75f                                                                                                              // Animate
+        }},
+    {"Night Light",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,                                  //
+            true, 1.0f, 1.0f, glm::vec4(28.0f, 97.0f, 225.0f, 255.0f) / 255.0f, glm::vec4(150.0f, 178.0f, 230.0f, 255.0f) / 255.0f, 0.4f, 4.0f,  // Color
+            false, true, 0.0f, 0.0f,                                                                                                             // Noise
+            false, 0.0f, 0,                                                                                                                      // Blur
+            true, 1.5f, 0.2f, 0.9f                                                                                                               // Animate
+        }},
+    {"IR Goggles",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,  //
+            true, 1.0f, 0.0f, glm::vec4(0.0f, 1.0f, 0.0f, 1.0f), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f), 1.2f, 1.0f,  // Color
+            true, true, 0.1f, 1.0f,                                                                              // Noise
+            true, 1.5f, 3,                                                                                       // Blur
+            true, 6.0f, 0.15f, 1.0f                                                                              // Animate
+        }},
+    {"Purple Haze",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,                                  //
+            true, 1.0f, 0.0f, glm::vec4(120.0f, 50.0f, 165.0f, 255.0f) / 255.0f, glm::vec4(190.0f, 50.0f, 225.0f, 255.0f) / 255.0f, 1.5f, 0.8f,  // Color
+            true, true, 0.1f, 0.06f,                                                                                                             // Noise
+            true, 2.0f, 5,                                                                                                                       // Blur
+            true, 4.0f, 0.4f, 1.0f                                                                                                               // Animate
+        }},
+    {"Sunshine",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,                                    //
+            true, 1.0f, 0.0f, glm::vec4(224.0f, 220.0f, 155.0f, 255.0f) / 255.0f, glm::vec4(224.0f, 177.0f, 124.0f, 255.0f) / 255.0f, 2.0f, 1.0f,  // Color
+            true, true, 0.03f, 0.07f,                                                                                                              // Noise
+            false, 0.0f, 0,                                                                                                                        // Blur
+            true, 3.0f, 0.2f, 0.8f                                                                                                                 // Animate
+        }},
+    {"Blurry",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Gradient,  //
+            false, 0.0f, 0.0f, glm::vec4(0.0f), glm::vec4(0.0f), 0.0f, 0.0f,                                        // Color
+            false, true, 0.0f, 0.0f,                                                                                // Noise
+            true, 3.0f, 9,                                                                                          // Blur
+            true, 3.0f, 0.2f, 1.0f                                                                                  // Animate
+        }},
 
 };
 
-}
+// Post process test presets
+const std::vector<std::pair<std::string, AppState::PostProcess>> c_testPresets = {
+    {"Off",
+        {
+            false, PostProcess::ShaderSource::None, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Gradient,  //
+            false, 0.0f, 0.0f, glm::vec4(0.0f), glm::vec4(0.0f), 0.0f, 0.0f,                                       // Color
+            false, false, 0.0f, 0.0f,                                                                              // Noise
+            false, 0.0f, 0,                                                                                        // Blur
+            false, 0.0f, 0.0f, 0.0f                                                                                // Animate
+        }},
+    {"Binary Blob",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Gradient,       //
+            true, 1.0f, 0.0f, glm::vec4(255, 192, 128, 255) / 255.0f, glm::vec4(32, 64, 128, 255) / 255.0f, 1.0f, 2.0f,  // Color
+            true, true, 1.0f, 2.0f,                                                                                      // Noise
+            true, 5.0f, 6,                                                                                               // Blur
+            false, 0.0f, 1.0f, 1.0f                                                                                      // Animate
+        }},
+    {"HLSL Source",
+        {
+            true, PostProcess::ShaderSource::Source, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Gradient,       //
+            true, 1.0f, 0.0f, glm::vec4(255, 192, 128, 255) / 255.0f, glm::vec4(32, 64, 128, 255) / 255.0f, 1.0f, 2.0f,  // Color
+            true, true, 1.0f, 2.0f,                                                                                      // Noise
+            true, 5.0f, 6,                                                                                               // Blur
+            false, 0.0f, 1.0f, 1.0f                                                                                      // Animate
+        }},
+    {"D3D11-CPU",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Gradient,       //
+            true, 1.0f, 0.0f, glm::vec4(255, 192, 128, 255) / 255.0f, glm::vec4(32, 64, 128, 255) / 255.0f, 1.0f, 2.0f,  // Color
+            true, false, 1.0f, 2.0f,                                                                                     // Noise
+            true, 5.0f, 6,                                                                                               // Blur
+            false, 0.0f, 1.0f, 1.0f                                                                                      // Animate
+        }},
+    {"D3D11-GPU",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Gradient,       //
+            true, 1.0f, 0.0f, glm::vec4(255, 192, 128, 255) / 255.0f, glm::vec4(32, 64, 128, 255) / 255.0f, 1.0f, 2.0f,  // Color
+            true, true, 1.0f, 2.0f,                                                                                      // Noise
+            true, 5.0f, 6,                                                                                               // Blur
+            false, 0.0f, 1.0f, 1.0f                                                                                      // Animate
+        }},
+    {"GL-CPU",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::OpenGL, TestTexture::Type::Gradient,      //
+            true, 1.0f, 0.0f, glm::vec4(255, 192, 128, 255) / 255.0f, glm::vec4(32, 64, 128, 255) / 255.0f, 1.0f, 2.0f,  // Color
+            true, false, 1.0f, 2.0f,                                                                                     // Noise
+            true, 5.0f, 6,                                                                                               // Blur
+            false, 0.0f, 1.0f, 1.0f                                                                                      // Animate
+        }},
+    {"GL-GPU",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::OpenGL, TestTexture::Type::Gradient,      //
+            true, 1.0f, 0.0f, glm::vec4(255, 192, 128, 255) / 255.0f, glm::vec4(32, 64, 128, 255) / 255.0f, 1.0f, 2.0f,  // Color
+            true, true, 1.0f, 2.0f,                                                                                      // Noise
+            true, 5.0f, 6,                                                                                               // Blur
+            false, 0.0f, 1.0f, 1.0f                                                                                      // Animate
+        }},
+    {"D3D12-CPU",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D12, TestTexture::Type::Gradient,       //
+            true, 1.0f, 0.0f, glm::vec4(255, 192, 128, 255) / 255.0f, glm::vec4(32, 64, 128, 255) / 255.0f, 1.0f, 2.0f,  // Color
+            true, false, 1.0f, 2.0f,                                                                                     // Noise
+            true, 5.0f, 6,                                                                                               // Blur
+            false, 0.0f, 1.0f, 1.0f                                                                                      // Animate
+        }},
+    // Not supported yet
+    //{"D3D12-GPU",
+    //    {
+    //        true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D12, TestTexture::Type::Gradient,       //
+    //        true, 1.0f, 0.0f, glm::vec4(255, 192, 128, 255) / 255.0f, glm::vec4(32, 64, 128, 255) / 255.0f, 1.0f, 2.0f,  // Color
+    //        true, true, 1.0f, 2.0f,                                                                                      // Noise
+    //        true, 5.0f, 6,                                                                                               // Blur
+    //        false, 0.0f, 1.0f, 1.0f                                                                                      // Animate
+    //    }},
+};
+
+}  // namespace
 
 AppView::AppView(AppLogic& logic)
     : m_logic(logic)
@@ -223,7 +344,7 @@ void AppView::onKeyPress(UI& ui, int keyCode)
         case Action::ApplyPreset_8:
         case Action::ApplyPreset_9: {
             int i = static_cast<int>(action) - static_cast<int>(Action::ApplyPreset_0);
-            const auto& presets = c_guiPresets;
+            const auto& presets = (m_uiState.testPresets ? c_testPresets : c_guiPresets);
             if (i >= 0 && i < static_cast<int>(presets.size())) {
                 const auto& preset = presets[i];
                 LOGI("Apply preset: %s", preset.first.c_str());
@@ -288,6 +409,10 @@ void AppView::updateUI()
         }
 
         ImGui::Checkbox("Render video", &appState.general.vstEnabled);
+#if (!USE_HEADLESS_MODE)
+        ImGui::SameLine();
+        ImGui::Checkbox("Render VR scene", &appState.general.vrEnabled);
+#endif
 
         ImGui::SameLine();
         ImGui::Checkbox("Post process video", &appState.postProcess.enabled);
@@ -318,6 +443,20 @@ void AppView::updateUI()
 
         ImGui::Dummy(ImVec2(0.0f, h));
 
+// Define section tag for unique names
+#define _TAG "##color"
+
+        ImGui::Checkbox("Color grading" _TAG, &appState.postProcess.colorEnabled);
+        ImGui::SliderFloat("Amount" _TAG, &appState.postProcess.colorFactor, 0.0f, 1.0f);
+        ImGui::SliderFloat("Preserve saturated" _TAG, &appState.postProcess.colorPreserveSaturated, 0.0f, 1.0f);
+        ImGui::ColorEdit3("Color tone" _TAG, (float*)&appState.postProcess.colorValue);
+        ImGui::SliderFloat("Color scale" _TAG, &appState.postProcess.colorScale, 0.0f, 2.0f);
+        ImGui::ColorEdit3("Exponent tone" _TAG, (float*)&appState.postProcess.colorExp);
+        ImGui::SliderFloat("Exponent scale" _TAG, &appState.postProcess.colorExpScale, 0.0f, 8.0f);
+        ImGui::Dummy(ImVec2(0.0f, h));
+
+// Define section tag for unique names
+#undef _TAG
 #define _TAG "##noise"
 
         ImGui::Checkbox("Enable texture" _TAG, &appState.postProcess.textureEnabled);
@@ -326,14 +465,42 @@ void AppView::updateUI()
         ImGui::Checkbox("GPU generated" _TAG, &appState.postProcess.textureGeneratedOnGPU);
         _POPDISABLEDIF(gpuGenerateDisabled);
 
+        ImGui::SliderFloat("Amount" _TAG, &appState.postProcess.textureAmount, 0.0f, 1.0f);
+        ImGui::SliderFloat("Scale" _TAG, &appState.postProcess.textureScale, 0.0f, 5.0f);
         ImGui::Dummy(ImVec2(0.0f, h));
 
 // Define section tag for unique names
 #undef _TAG
+#define _TAG "##blur"
 
+        ImGui::Checkbox("Blur filter" _TAG, &appState.postProcess.blurEnabled);
+        ImGui::SliderFloat("Scale" _TAG, &appState.postProcess.blurScale, 0.0f, 5.0f);
+        ImGui::SliderInt("Kernel Size" _TAG, &appState.postProcess.blurKernelSize, 1, 20);
+        ImGui::Dummy(ImVec2(0.0f, h));
+
+// Define section tag for unique names
+#undef _TAG
+#define _TAG "##anim"
+
+        ImGui::Checkbox("Animation" _TAG, &appState.postProcess.animate);
+        ImGui::SameLine();
+        if (ImGui::Button("Reset" _TAG)) {
+            appState.postProcess.animAmpl = 0.0f;
+            appState.postProcess.animFreq = 0.0f;
+            appState.postProcess.animOffs = 1.0f;
+            appState.postProcess.animTime = 0.0f;
+            appState.postProcess.animate = false;
+        }
+        ImGui::SliderFloat("Frequency" _TAG, &appState.postProcess.animFreq, 0.0f, 10.0f);
+        ImGui::SliderFloat("Amplitude" _TAG, &appState.postProcess.animAmpl, 0.0f, 1.0f);
+        ImGui::SliderFloat("Offset" _TAG, &appState.postProcess.animOffs, 0.0f, 1.0f);
+        ImGui::Dummy(ImVec2(0.0f, h));
+
+// Undefine section tag
+#undef _TAG
 
         ImGui::Text("Apply preset: ");
-        const auto presets = c_guiPresets;
+        const auto presets = m_uiState.testPresets ? c_testPresets : c_guiPresets;
         for (const auto preset : presets) {
             ImGui::SameLine();
             if (ImGui::Button(preset.first.c_str())) {
