@@ -57,19 +57,12 @@
 
     TEXTURE2D_X(_InputTexture);
 
-    float3 gl_FragColor;
+    int radius = 15;
 
-    int radius = 30;
+    float3 watercolor (uint2 positionSS, float3 outColor){
 
-    float4 CustomPostProcess(VertexOutput input) : SV_Target {
-
-        UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-
-        uint2 positionSS = input.texcoord * _ScreenSize.xy;
-
-        float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).xyz;
-
-
+        // for water color
+        float3 gl_FragColor = outColor;
         // water color effect
         float n = float((radius + 1) * (radius + 1));
         float4x3 mat;
@@ -84,7 +77,7 @@
 
         for (int y = -radius; y <= 0; y++)  {
             for (int x = -radius; x <= 0; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).rgb;
                 mat[0] += pixel;
                 matSquared[0] += pixel * pixel;
             }
@@ -92,7 +85,7 @@
 
         for (int y = -radius; y <= 0; y++)  {
             for (int x = 0; x <= radius; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).rgb;
                 mat[1] += pixel;
                 matSquared[1] += pixel * pixel;
             }
@@ -100,7 +93,7 @@
 
         for (int y = 0; y <= radius; y++)  {
             for (int x = 0; x <= radius; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).rgb;
                 mat[2] += pixel;
                 matSquared[2] += pixel * pixel;
             }
@@ -108,27 +101,70 @@
 
         for (int y = 0; y <= radius; y++)  {
             for (int x = -radius; x <= 0; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).rgb;
                 mat[3] += pixel;
                 matSquared[3] += pixel * pixel;
             }
         }
 
-
-
         float min_sigma2 = 100.0f;
-
         for (int i = 0; i < 4; i++) {
-            mat[int(i)] /= n;
-            matSquared[int(i)] = abs(matSquared[i] / n - mat[i] * mat[i]);
+            mat[i] /= n;
+            matSquared[i] = abs(matSquared[i] / n - mat[i] * mat[i]);
 
             float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
             if (sigma2 < min_sigma2) {
                 min_sigma2 = sigma2;
-                outColor.rgb = mat[i];
+                gl_FragColor.rgb = mat[i];
             }
         }
 
+        return gl_FragColor.rgb;
+    }
+
+    float4 CustomPostProcess(VertexOutput input) : SV_Target {
+
+        UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+
+        uint2 positionSS = input.texcoord * _ScreenSize.xy;
+
+        float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).xyz;
+
+        // for water color
+        float3 gl_FragColor = outColor;
+
+        // for sketch color
+        float4 FragColor;
+
+
+        // water color 
+        
+
+
+        // sketch
+        float3 W = float3(0.2125, 0.7154, 0.0721);
+        float2 stp0 = float2(1.0 / _ScreenSize[1], 0.0);
+        float2 st0p = float2(0.0, 1.0 / _ScreenSize[0]);
+        float2 stpp = float2(1.0 / _ScreenSize[1], 1.0 / _ScreenSize[0]);
+        float2 stpm = float2(1.0 / _ScreenSize[1], -1.0 / _ScreenSize[0]);
+
+        float im1m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stpp)).rgb, W);
+        float ip1p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stpp)).rgb, W);
+        float im1p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stpm)).rgb, W);
+        float ip1m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stpm)).rgb, W);
+        float im10 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stp0)).rgb, W);
+        float ip10 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stp0)).rgb, W);
+        float i0m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - st0p)).rgb, W);
+        float i0p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + st0p)).rgb, W);
+        float h = -im1p1 - 2.0 * i0p1 - ip1p1 + im1m1 + 2.0 * i0m1 + ip1m1;
+        float v = -im1m1 - 2.0 * im10 - im1p1 + ip1m1 + 2.0 * ip10 + ip1p1;
+
+        float mag = 1.0 - length(float2(h, v));
+        float3 target = float3(mag, mag, mag);
+
+        FragColor = float4(lerp(outColor, target, _Intensity), 1.0);
+
+        // edge detection
         float3x3 gx = float3x3(
         -1, 0, 1,
         -2, 0, 2,
@@ -143,7 +179,6 @@
 
         float pixel_sum_x = 0.0;
         float pixel_sum_y = 0.0;
-
         for (int y = -1; y < 2; y++) {
             for (int x = -1; x < 2; x++) {
 
@@ -164,9 +199,9 @@
             outputColor = float3(0,0,0);
         }
 
-        float3 final_color = (gl_FragColor*0.5) + (outputColor*0.5);
+        return float4(lerp(outColor, outputColor, _Intensity), 1);
+        // return float4(watercolor(positionSS, outColor),1);
 
-        return float4(outColor, 1);
 
     }
 
