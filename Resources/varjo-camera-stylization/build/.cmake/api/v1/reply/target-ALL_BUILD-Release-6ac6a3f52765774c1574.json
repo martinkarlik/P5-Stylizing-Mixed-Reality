@@ -17,13 +17,13 @@
 	"dependencies" : 
 	[
 		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		},
+		{
 			"id" : "copyLibs::@6890427a1f51a3e7e1df"
 		},
 		{
 			"id" : "VideoPostProcess::@2907c505a2256c39cd64"
-		},
-		{
-			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
 		}
 	],
 	"folder" : 
