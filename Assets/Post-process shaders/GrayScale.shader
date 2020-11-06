@@ -51,67 +51,90 @@
 
     }
 
-    float3 WaterColor(TEXTURE2D_X(_InputTexture), uint2 positionSS, float3 outColor, int radius){
+    
+    float3 WaterColor(uint2 positionSS, int radius) {
 
-        // for water color
-        float3 gl_FragColor = outColor;
-        // water color effect
-        float n = float((radius + 1) * (radius + 1));
-        float4x3 mat;
-        float4x3 matSquared;
-        uint2 uv = positionSS;
+        float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).rgb;
+
+        float3 matTR = float3(0.0f, 0.0f, 0.0f);
+        float3 matTR2 = float3(0.0f, 0.0f, 0.0f);
+        float3 matTL = float3(0.0f, 0.0f, 0.0f);
+        float3 matTL2 = float3(0.0f, 0.0f, 0.0f);
+        float3 matBL = float3(0.0f, 0.0f, 0.0f);
+        float3 matBL2 = float3(0.0f, 0.0f, 0.0f);
+        float3 matBR = float3(0.0f, 0.0f, 0.0f);
+        float3 matBR2 = float3(0.0f, 0.0f, 0.0f);
+
+        float3 pixel_sum = float3(0.0f, 0.0f, 0.0f);
+        int n = (radius + 1) * (radius + 1);
 
 
-        for (int i = 0; i < 4; i++) {
-            mat[i] = float3(0.0f, 0.0f, 0.0f);
-            matSquared[i] = float3(0.0f, 0.0f, 0.0f);
-        }
-
-        for (int y = -radius; y <= 0; y++)  {
-            for (int x = -radius; x <= 0; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).rgb;
-                mat[0] += pixel;
-                matSquared[0] += pixel * pixel;
+        for (int ii = -radius; ii <= 0; ii++) {
+            for (int jj = -radius; jj <= 0; jj++) {
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, int2(positionSS.x + ii, positionSS.y + jj)).rgb;
+                matTL += pixel;
+                matTL2 += pixel * pixel;
             }
         }
 
-        for (int y = -radius; y <= 0; y++)  {
-            for (int x = 0; x <= radius; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).rgb;
-                mat[1] += pixel;
-                matSquared[1] += pixel * pixel;
+        for (int ii = -radius; ii <= 0; ii++) {
+            for (int jj = 0; jj <= radius; jj++) {
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, int2(positionSS.x + ii, positionSS.y + jj)).rgb;
+                matTR += pixel;
+                matTR2 += pixel * pixel;
             }
         }
 
-        for (int y = 0; y <= radius; y++)  {
-            for (int x = 0; x <= radius; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).rgb;
-                mat[2] += pixel;
-                matSquared[2] += pixel * pixel;
+        for (int ii = 0; ii <= radius; ii++) {
+            for (int jj = 0; jj <= radius; jj++) {
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, int2(positionSS.x + ii, positionSS.y + jj)).rgb;
+                matBL += pixel;
+                matBL2 += pixel * pixel;
             }
         }
 
-        for (int y = 0; y <= radius; y++)  {
-            for (int x = -radius; x <= 0; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).rgb;
-                mat[3] += pixel;
-                matSquared[3] += pixel * pixel;
+        for (int ii = 0; ii <= radius; ii++) {
+            for (int jj = -radius; jj <= 0; jj++) {
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, int2(positionSS.x + ii, positionSS.y + jj)).rgb;
+                matBR += pixel;
+                matBR2 += pixel * pixel;
             }
         }
 
         float min_sigma2 = 100.0f;
-        for (int i = 0; i < 4; i++) {
-            mat[i] /= n;
-            matSquared[i] = abs(matSquared[i] / n - mat[i] * mat[i]);
-
-            float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
-            if (sigma2 < min_sigma2) {
-                min_sigma2 = sigma2;
-                gl_FragColor.rgb = mat[i];
-            }
+        matTL /= n;
+        matTL2 = abs(matTL2 / n - matTL * matTL);
+        float sigma2 = matTL2.r + matTL2.g + matTL2.b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outColor = matTL;
         }
 
-        return gl_FragColor.rgb;
+        matTR /= n;
+        matTR2 = abs(matTR2 / n - matTR * matTR);
+        sigma2 = matTR2.r + matTR2.g + matTR2.b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outColor = matTR;
+        }
+
+        matBR /= n;
+        matBR2 = abs(matBR2 / n - matBR * matBR);
+        sigma2 = matBR2.r + matBR2.g + matBR2.b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outColor = matBR;
+        }
+
+        matBL /= n;
+        matBL2 = abs(matBL2 / n - matBL * matBL);
+        sigma2 = matBL2.r + matBL2.g + matBL2.b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outColor = matBL;
+        }
+
+        return outColor;
     }
 
     float3 Outline(TEXTURE2D_X(_InputTexture), uint2 positionSS, float3 outColor, int _LineStrength, int radius){
@@ -176,14 +199,14 @@
 
     float3 Blur(TEXTURE2D_X(_InputTexture), uint2 positionSS, int radius){
         float3 pixel_sum = float3(0,0,0);
+        int n = (radius*2+1)*(radius*2+1);
         for (int yy = -radius; yy < radius; yy++) {
             for (int xx = -radius; xx < radius; xx++) {
 
                 pixel_sum += LOAD_TEXTURE2D_X(_InputTexture, int2(positionSS.x + yy,positionSS.y + xx)).xyz; 
             }
         }
-
-        return pixel_sum;
+        return pixel_sum/n;
     }
 
     // List of properties to control your post process effect
@@ -193,8 +216,6 @@
     float _LineStrength;
 
     int _Radius;
-
-    int n;
 
     TEXTURE2D_X(_InputTexture);
 
@@ -208,13 +229,11 @@
 
         float3 outputColor = outColor;
 
-        n = (_Radius+1)*(_Radius+1);
-
         // Blur
-        float3 blurColor = Blur(_InputTexture, positionSS, _Radius)/n;
+        float3 blurColor = Blur(_InputTexture, positionSS, _Radius);
 
         // for water color
-        float3 waterColor = WaterColor(_InputTexture, positionSS, outColor, _Radius);
+        float3 waterColor = WaterColor(positionSS, _Radius);
 
         // for sketch color
         float3 sketchColor = Sketch(_InputTexture, positionSS);
