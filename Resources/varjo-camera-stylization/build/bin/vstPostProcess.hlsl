@@ -209,6 +209,35 @@ float3 applyWatercolor(in float2 uv, in int radius) {
     return outputColor;
 }
 
+float3 applyPencilSketch(in float2 uv) {
+
+    float3 W = float3(0.2125, 0.7154, 0.0721);
+    float2 stp0 = float2(1.0 / sourceSize[0], 0.0);
+    float2 st0p = float2(0.0, 1.0 / sourceSize[1]);
+    float2 stpp = float2(1.0 / sourceSize[0], 1.0 / sourceSize[1]);
+    float2 stpm = float2(1.0 / sourceSize[0], -1.0 / sourceSize[1]);
+
+    float im1m1 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv - stpp, 0.0, 0.0).rgb, W);
+    float ip1p1 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv + stpp, 0.0, 0.0).rgb, W);
+    float im1p1 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv - stpm, 0.0, 0.0).rgb, W);
+    float ip1m1 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv + stpm, 0.0, 0.0).rgb, W);
+    float im10 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv - stp0, 0.0, 0.0).rgb, W);
+    float ip10 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv + stp0, 0.0, 0.0).rgb, W);
+    float i0m1 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv - st0p, 0.0, 0.0).rgb, W);
+    float i0p1 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv + st0p, 0.0, 0.0).rgb, W);
+
+    float h = -im1p1 - 2.0 * i0p1 - ip1p1 + im1m1 + 2.0 * i0m1 + ip1m1;
+    float v = -im1m1 - 2.0 * im10 - im1p1 + ip1m1 + 2.0 * ip10 + ip1p1;
+
+    float magnitude = 1.0 - length(float2(h, v));
+    float3 outputColor = float3(magnitude, magnitude, magnitude);
+
+    // FragColor = float4(lerp(outColor, target, _Intensity), 1.0);
+
+
+    return outputColor;
+}
+
 // -------------------------------------------------------------------------
 
 // Shader entrypoint
@@ -226,7 +255,7 @@ float3 applyWatercolor(in float2 uv, in int radius) {
     int clusterSize = 0;
     float outlineStrength = 0.0f;
 
-    int watercolorRadius = 15;
+    int watercolorRadius = 0;
     int blurRadius = 30;
 
     // Grayscale
@@ -241,22 +270,21 @@ float3 applyWatercolor(in float2 uv, in int radius) {
     }
 
 
-    if (outlineStrength > 0.0f) {
-        float edgeValue = applyOutlines(uv);
 
-        if (edgeValue > 0.1) {
+    if (watercolorRadius > 0) {
+        color.rgb = applyWatercolor(uv, watercolorRadius);
+    }
+
+
+    if (outlineStrength > 0.0f) {
+
+        if (applyOutlines(uv) > 0.1) {
             color.rgb = float3(0.0f, 0.0f, 0.0f);
         } 
     }
 
-    int a = 5;
+    color.rgb = applyPencilSketch(uv);
 
-    // if (watercolorRadius > 0) {
-    //     color.rgb = applyWatercolor(uv, watercolorRadius);
-    // }
-
-    
-    color.rgb = applyWatercolor(uv, watercolorRadius);
 
 
     outputTex[thisThread.xy] = float4(color.rgb, origColor.a);

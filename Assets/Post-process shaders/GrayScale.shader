@@ -72,45 +72,52 @@
 
         // water color effect
         float n = float((radius + 1) * (radius + 1));
-        float4x3 mat;
-        float4x3 matSquared;
+
+        float3 matTR = float3(0.0f, 0.0f, 0.0f);
+        float3 matTL = float3(0.0f, 0.0f, 0.0f);
+        float3 matBR = float3(0.0f, 0.0f, 0.0f);
+        float3 matBL = float3(0.0f, 0.0f, 0.0f);
+
+        float3 matTR2 = float3(0.0f, 0.0f, 0.0f);
+        float3 matTL2 = float3(0.0f, 0.0f, 0.0f);
+        float3 matBR2 = float3(0.0f, 0.0f, 0.0f);
+        float3 matBL2 = float3(0.0f, 0.0f, 0.0f);
+
         uint2 uv = positionSS;
 
 
-        for (int i = 0; i < 4; i++) {
-            mat[i] = float3(0.0f, 0.0f, 0.0f);
-            matSquared[i] = float3(0.0f, 0.0f, 0.0f);
+
+
+
+        for (int y = -radius; y <= 0; y++)  {
+            for (int x = -radius; x <= 0; x++)  {
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
+                matTR += pixel;
+                matTR2 += pixel * pixel;
+            }
         }
 
         for (int y = -radius; y <= 0; y++)  {
             for (int x = -radius; x <= 0; x++)  {
                 float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
-                mat[0] += pixel;
-                matSquared[0] += pixel * pixel;
+                matTL += pixel;
+                matTL += pixel * pixel;
             }
         }
 
         for (int y = -radius; y <= 0; y++)  {
-            for (int x = 0; x <= radius; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
-                mat[1] += pixel;
-                matSquared[1] += pixel * pixel;
-            }
-        }
-
-        for (int y = 0; y <= radius; y++)  {
-            for (int x = 0; x <= radius; x++)  {
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
-                mat[2] += pixel;
-                matSquared[2] += pixel * pixel;
-            }
-        }
-
-        for (int y = 0; y <= radius; y++)  {
             for (int x = -radius; x <= 0; x++)  {
                 float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
-                mat[3] += pixel;
-                matSquared[3] += pixel * pixel;
+                matBR += pixel;
+                matBR2 += pixel * pixel;
+            }
+        }
+
+        for (int y = -radius; y <= 0; y++)  {
+            for (int x = -radius; x <= 0; x++)  {
+                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uv + float2((float) y / _ScreenSize[0], (float) x / _ScreenSize[1])).rgb;
+                matBL += pixel;
+                matBL2 += pixel * pixel;
             }
         }
 
@@ -118,53 +125,76 @@
 
         float min_sigma2 = 100.0f;
 
-        for (int i = 0; i < 4; i++) {
-            mat[int(i)] /= n;
-            matSquared[int(i)] = abs(matSquared[i] / n - mat[i] * mat[i]);
-
-            float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
-            if (sigma2 < min_sigma2) {
-                min_sigma2 = sigma2;
-                outColor.rgb = mat[i];
-            }
+        matTR = matTR / n;
+        matTR2 = abs(matTR2 / n - matTR2 * matTR2);
+        float sigma2 = matTR2.r + matTR2.g + matTR2.b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outColor.rgb = matTR;
         }
 
-        float3x3 gx = float3x3(
-        -1, 0, 1,
-        -2, 0, 2,
-        -1, 0, 1
-        );
+        matTL = matTL / n;
+        matTL2 = abs(matTL2 / n - matTL2 * matTL2);
+        sigma2 = matTL2.r + matTL2.g + matTL2.b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outColor.rgb = matTL;
+        }
 
-        float3x3 gy = float3x3(
-            -1, -2, -1,
-            0, 0, 0,
-            1, 2, 1
-        );
+        matBR = matBR / n;
+        matBR2 = abs(matBR2 / n - matBR2 * matBR2);
+        sigma2 = matBR2.r + matBR2.g + matBR2.b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outColor.rgb = matBR;
+        }
 
-        float pixel_sum_x = 0.0;
-        float pixel_sum_y = 0.0;
+        matBL = matBL / n;
+        matBL2 = abs(matBL2 / n - matBL2 * matBL2);
+        sigma2 = matBL2.r + matBL2.g + matBL2.b;
+        if (sigma2 < min_sigma2) {
+            min_sigma2 = sigma2;
+            outColor.rgb = matBL;
+        }
 
-        for (int y = -1; y < 2; y++) {
-            for (int x = -1; x < 2; x++) {
+
+
+        // float3x3 gx = float3x3(
+        // -1, 0, 1,
+        // -2, 0, 2,
+        // -1, 0, 1
+        // );
+
+        // float3x3 gy = float3x3(
+        //     -1, -2, -1,
+        //     0, 0, 0,
+        //     1, 2, 1
+        // );
+
+        // float pixel_sum_x = 0.0;
+        // float pixel_sum_y = 0.0;
+
+        // for (int y = -1; y < 2; y++) {
+        //     for (int x = -1; x < 2; x++) {
 
                 
-                float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).xyz; 
+        //         float3 pixel = LOAD_TEXTURE2D_X(_InputTexture, uint2((positionSS.x + x),(positionSS.y + y))).xyz; 
 
-                float grayscale_value = (pixel.r + pixel.g + pixel.b) / 3;
+        //         float grayscale_value = (pixel.r + pixel.g + pixel.b) / 3;
             
-                pixel_sum_x += grayscale_value * gx[y + 1][x + 1];
-                pixel_sum_y += grayscale_value * gy[y + 1][x + 1];
-            }
-        }
+        //         pixel_sum_x += grayscale_value * gx[y + 1][x + 1];
+        //         pixel_sum_y += grayscale_value * gy[y + 1][x + 1];
+        //     }
+        // }
 
-        float edge_value = abs(pixel_sum_x / 3) + abs(pixel_sum_y / 3);
-        float3 outputColor = outColor;
+        // float edge_value = abs(pixel_sum_x / 3) + abs(pixel_sum_y / 3);
+        // float3 outputColor = outColor;
 
-        if (edge_value > 0.05){
-            outputColor = float3(0,0,0);
-        }
+        // if (edge_value > 0.05){
+        //     outputColor = float3(0,0,0);
+        // }
 
-        float3 final_color = (gl_FragColor*0.5) + (outputColor*0.5);
+        // float3 final_color = (gl_FragColor*0.5) + (outputColor*0.5);
 
         return float4(outColor, 1);
 
@@ -188,9 +218,9 @@
 
             HLSLPROGRAM
 
-                #pragma fragment CustomPostProcess
-
                 #pragma vertex Vert
+
+                #pragma fragment CustomPostProcess
 
             ENDHLSL }
             
