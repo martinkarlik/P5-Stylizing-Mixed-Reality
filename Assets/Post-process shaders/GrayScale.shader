@@ -51,63 +51,8 @@
 
     }
 
-    // List of properties to control your post process effect
-
-    float _Intensity;
-
-    TEXTURE2D_X(_InputTexture);
-
-
-    float _LineStrength;
-
-
-    float3 Sketch(uint2 positionSS) {
-
-        float3 W = float3(0.2125, 0.7154, 0.0721);
-        float2 stp0 = float2(1.0 / _ScreenSize[1], 0.0);
-        float2 st0p = float2(0.0, 1.0 / _ScreenSize[0]);
-        float2 stpp = float2(1.0 / _ScreenSize[1], 1.0 / _ScreenSize[0]);
-        float2 stpm = float2(1.0 / _ScreenSize[1], -1.0 / _ScreenSize[0]);
-
-        float im1m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stpp)).rgb, W);
-        float ip1p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stpp)).rgb, W);
-        float im1p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stpm)).rgb, W);
-        float ip1m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stpm)).rgb, W);
-        float im10 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stp0)).rgb, W);
-        float ip10 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stp0)).rgb, W);
-        float i0m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - st0p)).rgb, W);
-        float i0p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + st0p)).rgb, W);
-        float h = -im1p1 - 2.0 * i0p1 - ip1p1 + im1m1 + 2.0 * i0m1 + ip1m1;
-        float v = -im1m1 - 2.0 * im10 - im1p1 + ip1m1 + 2.0 * ip10 + ip1p1;
-
-        float mag = 1.0 - length(float2(h, v));
-        float3 target = float3(mag, mag, mag);
-        return target;
-    }
-
-    float3 Blur(uint2 positionSS) {
-
-        int radius = 5;
-
-        float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).rgb;
-        float3 pixel_sum = float3(0.0f, 0.0f, 0.0f);
-        int n = (radius * 2 + 1) * (radius * 2 + 1);
-
-
-        for (int ii = -radius; ii <= radius; ii++) {
-            for (int jj = -radius; jj <= radius; jj++) {
-                pixel_sum += LOAD_TEXTURE2D_X(_InputTexture, int2(positionSS.x + ii, positionSS.y + jj)).rgb;
-            }
-        }
-
-        outColor = pixel_sum / n;
-
-        return outColor;
-    }
-
-    float3 WaterColor(uint2 positionSS) {
-
-        int radius = 6;
+    
+    float3 WaterColor(uint2 positionSS, int radius) {
 
         float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).rgb;
 
@@ -157,7 +102,6 @@
         }
 
         float min_sigma2 = 100.0f;
-
         matTL /= n;
         matTL2 = abs(matTL2 / n - matTL * matTL);
         float sigma2 = matTL2.r + matTL2.g + matTL2.b;
@@ -193,8 +137,7 @@
         return outColor;
     }
 
-    float3 Outline(uint2 positionSS, float3 outColor){
-        
+    float3 Outline(TEXTURE2D_X(_InputTexture), uint2 positionSS, float3 outColor, int _LineStrength, int radius){
         float3x3 gx = float3x3(
         -1, 0, 1,
         -2, 0, 2,
@@ -230,29 +173,78 @@
         return outColor;
     }
 
+    float3 Sketch(TEXTURE2D_X(_InputTexture), uint2 positionSS){
+        float3 W = float3(0.2125, 0.7154, 0.0721);
+        float2 stp0 = float2(1.0 / _ScreenSize[1], 0.0);
+        float2 st0p = float2(0.0, 1.0 / _ScreenSize[0]);
+        float2 stpp = float2(1.0 / _ScreenSize[1], 1.0 / _ScreenSize[0]);
+        float2 stpm = float2(1.0 / _ScreenSize[1], -1.0 / _ScreenSize[0]);
+
+        float im1m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stpp)).rgb, W);
+        float ip1p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stpp)).rgb, W);
+        float im1p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stpm)).rgb, W);
+        float ip1m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stpm)).rgb, W);
+        float im10 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - stp0)).rgb, W);
+        float ip10 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + stp0)).rgb, W);
+        float i0m1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy - st0p)).rgb, W);
+        float i0p1 = dot( LOAD_TEXTURE2D_X(_InputTexture, uint2(positionSS.xy + st0p)).rgb, W);
+        float h = -im1p1 - 2.0 * i0p1 - ip1p1 + im1m1 + 2.0 * i0m1 + ip1m1;
+        float v = -im1m1 - 2.0 * im10 - im1p1 + ip1m1 + 2.0 * ip10 + ip1p1;
+
+        float mag = 1.0 - length(float2(h, v));
+        float3 target = float3(mag, mag, mag);
+        return target;
+    }
+
+    float3 Blur(TEXTURE2D_X(_InputTexture), uint2 positionSS, int radius){
+        float3 pixel_sum = float3(0,0,0);
+        int n = (radius*2+1)*(radius*2+1);
+        for (int yy = -radius; yy < radius; yy++) {
+            for (int xx = -radius; xx < radius; xx++) {
+
+                pixel_sum += LOAD_TEXTURE2D_X(_InputTexture, int2(positionSS.x + yy,positionSS.y + xx)).xyz; 
+            }
+        }
+        return pixel_sum/n;
+    }
+
+    // List of properties to control your post process effect
+
+    float _Intensity;
+
+    float _LineStrength;
+
+    int _Radius;
+
+    TEXTURE2D_X(_InputTexture);
+
     float4 CustomPostProcess(VertexOutput input) : SV_Target {
 
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
         uint2 positionSS = input.texcoord * _ScreenSize.xy;
-        float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).rgb;
 
-        // // for water color
-        // float3 waterColor = WaterColor(_InputTexture, positionSS, outColor);
+        float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).xyz;
 
-        // // for sketch color
-        // float3 sketchColor = Sketch(_InputTexture, positionSS);
+        float3 outputColor = outColor;
 
-        // // edge detection
-        // float3 linecolor = Outline(_InputTexture, positionSS, outColor);
+        // Blur
+        float3 blurColor = Blur(_InputTexture, positionSS, _Radius);
 
-        float3 waterColor = WaterColor(positionSS);
+        // for water color
+        float3 waterColor = WaterColor(positionSS, _Radius);
 
-       
-        return float4(lerp(outColor, waterColor, _Intensity), 1.0f);
+        // for sketch color
+        float3 sketchColor = Sketch(_InputTexture, positionSS);
+
+        // edge detection
+        float3 linecolor = Outline(_InputTexture, positionSS, outColor, _LineStrength, _Radius);
 
 
+        return float4(blurColor, 1);
+        // return float4(watercolor(positionSS, outColor),1);
     }
+
 
     ENDHLSL
 
