@@ -316,26 +316,15 @@ void AppLogic::updatePostProcessing()
 
     // Set shader constant parameter values
     PostProcessConstantBuffer cBuffer{};
-    const double a = state.animAmpl;
-    const double o = state.animOffs;
-    const double t = state.animTime;
 
-    // Color grade params
-    cBuffer.colorFactor = state.colorEnabled ? state.colorFactor * static_cast<float>(o + a * (0.25 * (sin(t * 1.071657) + sin(t * 1.32674)) - 0.5)) : 0.0f;
-    memcpy(&cBuffer.colorExp, &state.colorExp, sizeof(cBuffer.colorExp));
-    cBuffer.colorExp = glm::vec4(1.0f) / glm::max(glm::vec4(0.01f), (cBuffer.colorExp / state.colorExpScale));
-    memcpy(&cBuffer.colorValue, &state.colorValue, sizeof(cBuffer.colorValue));
-    cBuffer.colorValue = glm::max(glm::vec4(0.0f), cBuffer.colorValue * state.colorScale);
-    cBuffer.colorPreserveSaturated = state.colorPreserveSaturated;
-
-    // Noise texture params
-    cBuffer.noiseAmount = state.textureEnabled ? state.textureAmount * static_cast<float>(o + a * (0.25 * (sin(t * 1.158693) + sin(t * 1.51397)) - 0.5)) : 0.0f;
-    cBuffer.noiseScale = state.textureScale;
-
-    // Blur filter params
-    cBuffer.blurScale = state.blurEnabled ? state.blurScale * static_cast<float>(o + a * (0.25 * (sin(t * 1.013575) + sin(t * 1.26575)) - 0.5)) : 0.0f;
-    cBuffer.blurKernelSize = state.blurKernelSize;
-
+    cBuffer.grayscale = m_appState.postProcess.grayscaleEnabled ? 1 : 0;
+    cBuffer.clusterSize = m_appState.postProcess.clustersEnabled ? m_appState.postProcess.clusterSize : 0;
+    cBuffer.watercolorRadius = m_appState.postProcess.watercolorEnabled ? m_appState.postProcess.watercolorRadius : 0;
+    cBuffer.outlineIntensity = m_appState.postProcess.outlinesEnabled ? m_appState.postProcess.outlineIntensity : 0.0f;
+    cBuffer.sketchIntensity = m_appState.postProcess.sketchEnabled ? m_appState.postProcess.sketchIntensity : 0.0f;
+    cBuffer.mirrorMatrix[0] = m_appState.postProcess.horizontalMirrorFuckery ? 1.0f : 0.0f; 
+    cBuffer.mirrorMatrix[1] = m_appState.postProcess.verticalMirrorFuckery ? 1.0f : 0.0f;
+    cBuffer.puzzle = m_appState.postProcess.puzzleFuckery ? 1 : 0;
 
     // List of shader input texture indices updated
     std::vector<int32_t> updatedTextures;

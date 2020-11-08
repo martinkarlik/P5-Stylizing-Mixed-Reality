@@ -1,9 +1,5 @@
 // Copyright 2020 Varjo Technologies Oy. All rights reserved.
 
-// This is example shader for showcasing how to use video post process filters from
-// your own application. In your application, implement your own shader that suits
-// your needs.
-
 // Compute shader thread block size
 #define BLOCK_SIZE (8)
 
@@ -39,69 +35,26 @@ cbuffer ConstantBuffer : register(b0)
     int4 destRect;     // Destination rectangle: x, y, w, h
 }
 
-// -------------------------------------------------------------------------
 
 // Shader specific constants
 cbuffer ConstantBuffer : register(b1)
-{
+{        
 
-    // Color grading
-    float colorFactor;             // Color grading factor: 0=off, 1=full
-    float colorPreserveSaturated;  // Color grading saturated preservation
-    float2 _padding_b1_0;          // Padding
-    float4 colorValue;             // Color grading value
-    float4 colorExp;               // Color grading exponent
+    int grayscale;
+    int clusterSize;
+    int watercolorRadius;
+    float outlineIntensity;
+    float sketchIntensity;
 
-    // Noise texture
-    float noiseAmount;  // Noise amount: 0=off, 1=full
-    float noiseScale;   // Noise scale
+    float2 mirror_mat;
+    int puzzle;
 
-    // Blur filter
-    float blurScale;     // Blur kernel scale: 0=off, 1=full
-    int blurKernelSize;  // Blur kernel size
-
+    // float _padding0; 
+  
 }
 
-// Shader specific textures
-Texture2D<float4> noiseTexture : register(t1);
 
-// -------------------------------------------------------------------------
-
-static const float Epsilon = 1e-10;
-
-float3 convertRGBtoHCV(in float3 RGB)
-{
-    float4 P = (RGB.g < RGB.b) ? float4(RGB.bg, -1.0, 2.0 / 3.0) : float4(RGB.gb, 0.0, -1.0 / 3.0);
-    float4 Q = (RGB.r < P.x) ? float4(P.xyw, RGB.r) : float4(RGB.r, P.yzx);
-    float C = Q.x - min(Q.w, Q.y);
-    float H = abs((Q.w - Q.y) / (6 * C + Epsilon) + Q.z);
-    return float3(H, C, Q.x);
-}
-
-// Converts given RGB color to HSV color. RGB = [0..1], HSV = [0..1].
-float3 convertRGBtoHSV(in float3 RGB)
-{
-    float3 HCV = convertRGBtoHCV(RGB);
-    float S = HCV.y / (HCV.z + Epsilon);
-    return float3(HCV.x, S, HCV.z);
-}
-
-// Converts HSV hue channel value to RGB color. H = [0..1].
-float3 hueToRGB(in float H)
-{
-    float R = abs(H * 6.0f - 3.0f) - 1.0f;
-    float G = 2.0f - abs(H * 6.0f - 2.0f);
-    float B = 2.0f - abs(H * 6.0f - 4.0f);
-    return saturate(float3(R, G, B));
-}
-
-// Converts given HSV color to RGB color. HSV = [0..1], RGB = [0..1].
-float3 hsvToRGB(in float3 HSV) {
-    float3 RGB = hueToRGB(HSV.x);
-    return ((RGB - 1.0f) * HSV.y + 1.0f) * HSV.z;
-}
-
-float applyOutlines(in float2 uv) {
+float getEdgeValue(in float2 uv, in float outlineIntensity) {
 
     float3x3 gx = float3x3(-1, 0, 1, -2, 0, 2, -1, 0, 1);
     float3x3 gy = float3x3(-1, -2, -1, 0, 0, 0, 1, 2, 1);
@@ -121,32 +74,27 @@ float applyOutlines(in float2 uv) {
         }
     }
 
-    float outputColor = abs(pixelSumX / 3) + abs(pixelSumY / 3);
-    return outputColor;
+    int value = 20 - 19 * outlineIntensity;
+
+    float outColor = abs(pixelSumX / value) + abs(pixelSumY / value);
+    return outColor;
 }
 
-float3 applyBlur(in float2 uv, in int radius) {
 
-    float n = float((radius * 2) * (radius * 2));
+float3 applyOutlines(in float2 uv, in float outlineIntensity) {
 
+    float3 outColor = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0).rgb;
 
-    float3 sum = float3(0.0f, 0.0f, 0.0f);
+    if (getEdgeValue(uv, outlineIntensity) > 0.1) {
+        outColor = float3(0.0f, 0.0f, 0.0f);
+    } 
 
-    for (int x = -radius; x < radius; x++)  {
-        for (int y = -radius; y < radius; y++)  {
-            float3 pixel = inputTex.SampleLevel(SamplerLinearClamp, uv + float2((float) x / sourceSize[0], (float) y / sourceSize[1]), 0.0, 0.0).rgb;
-            sum += pixel;
-        }
-    }
-
-    float3 outputColor = sum / n;
-    return outputColor;
+    return outColor;
 }
-
 
 float3 applyWatercolor(in float2 uv, in int radius) {
 
-    float n = float((radius + 1) * (radius + 1));
+    int n = (radius + 1) * (radius + 1);
 
     float4x3 mat;
     float4x3 matSquared;
@@ -190,7 +138,7 @@ float3 applyWatercolor(in float2 uv, in int radius) {
     }
 
 
-    float3 outputColor = float3(0.0f, 0.0f, 0.0f);
+    float3 outColor = float3(0.0f, 0.0f, 0.0f);
 
     float min_sigma2 = 100.0f;
 
@@ -201,15 +149,15 @@ float3 applyWatercolor(in float2 uv, in int radius) {
         float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
         if (sigma2 < min_sigma2) {
             min_sigma2 = sigma2;
-            outputColor = mat[i];
+            outColor = mat[i];
         }
     }
 
 
-    return outputColor;
+    return outColor;
 }
 
-float3 applyPencilSketch(in float2 uv) {
+float3 applySketch(in float2 uv, in float sketchIntensity) {
 
     float3 W = float3(0.2125, 0.7154, 0.0721);
     float2 stp0 = float2(1.0 / sourceSize[0], 0.0);
@@ -226,21 +174,43 @@ float3 applyPencilSketch(in float2 uv) {
     float i0m1 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv - st0p, 0.0, 0.0).rgb, W);
     float i0p1 = dot(inputTex.SampleLevel(SamplerLinearClamp, uv + st0p, 0.0, 0.0).rgb, W);
 
-    float h = -im1p1 - 2.0 * i0p1 - ip1p1 + im1m1 + 2.0 * i0m1 + ip1m1;
+    float  h = -im1p1 - 2.0 * i0p1 - ip1p1 + im1m1 + 2.0 * i0m1 + ip1m1;
     float v = -im1m1 - 2.0 * im10 - im1p1 + ip1m1 + 2.0 * ip10 + ip1p1;
 
     float magnitude = 1.0 - length(float2(h, v));
-    float3 outputColor = float3(magnitude, magnitude, magnitude);
 
-    // FragColor = float4(lerp(outColor, target, _Intensity), 1.0);
+    float3 outColor = float3(magnitude, magnitude, magnitude);
 
-
-    return outputColor;
+    return outColor;
 }
 
-// -------------------------------------------------------------------------
+float3 applyPuzzleEffect(in float2 uv) {
 
-// Shader entrypoint
+    int2 puzzle_level = int2(5, 5);
+    int random_puzzle_variation[25] = {17, 21, 15, 22, 4, 0, 10, 23, 6, 9, 19, 12, 11, 2, 14, 5, 13, 24, 1, 7, 20, 8, 16, 18, 3};
+
+    int2 position_SS = int2(uv * sourceSize);
+    int2 chunk_index_SS = position_SS * puzzle_level / sourceSize;
+    int chunk_index = chunk_index_SS.y * puzzle_level.x + chunk_index_SS.x; 
+    int new_chunk_index = random_puzzle_variation[chunk_index];
+    int2 chunk_pos_index_SS = position_SS % (sourceSize / puzzle_level);
+    int2 new_position_SS = int2(new_chunk_index % puzzle_level.x, new_chunk_index / puzzle_level.x) * (sourceSize / puzzle_level) + chunk_pos_index_SS;
+    float2 new_uv = (float2) new_position_SS / sourceSize;
+
+    float3 outColor = inputTex.SampleLevel(SamplerLinearClamp, new_uv, 0.0, 0.0).rgb;
+    return outColor;
+}
+
+float3 applyMirrorEffect(in float2 uv, in float2 mirror_mat) {
+
+    float2 new_uv = abs(mirror_mat - uv);
+
+    float3 outColor = inputTex.SampleLevel(SamplerLinearClamp, new_uv, 0.0, 0.0).rgb;
+    return outColor;
+
+}
+
+
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)] void main(uint3 dispatchThreadID
                                                   : SV_DispatchThreadID) {
     // Calculate thread coordinates
@@ -251,41 +221,38 @@ float3 applyPencilSketch(in float2 uv) {
     float4 origColor = inputTex.Load(int3(thisThread.xy, 0)).rgba;
     float4 color = origColor;
 
-    bool grayscale = false;
-    int clusterSize = 0;
-    float outlineStrength = 0.0f;
 
-    int watercolorRadius = 0;
-    int blurRadius = 30;
-
-    // Grayscale
-    if (grayscale) {
-        float grayscaleValue = round((color.r + color.g + color.b) / 3 * clusterSize) / clusterSize;
+    if (grayscale == 1) {
+        float grayscaleValue = (color.r + color.g + color.b) / 3;
         color.rgb = float3(grayscaleValue, grayscaleValue, grayscaleValue);
     } 
 
-    //Color clustering
     if (clusterSize > 0) {
         color.rgb = round(color.rgb * clusterSize) / clusterSize;
     }
-
-
 
     if (watercolorRadius > 0) {
         color.rgb = applyWatercolor(uv, watercolorRadius);
     }
 
-
-    if (outlineStrength > 0.0f) {
-
-        if (applyOutlines(uv) > 0.1) {
-            color.rgb = float3(0.0f, 0.0f, 0.0f);
-        } 
+    if (outlineIntensity > 0.0f) {
+        color.rgb = applyOutlines(uv, outlineIntensity);
     }
 
-    color.rgb = applyPencilSketch(uv);
+    if (sketchIntensity > 0.0f) {
+        color.rgb = applySketch(uv, sketchIntensity);
+    }
 
 
+    if (mirror_mat.x != 0.0f || mirror_mat.y != 0.0f) {
+        color.rgb = applyMirrorEffect(uv, mirror_mat);
+    }
 
+    if (puzzle == 1) {
+        color.rgb = applyPuzzleEffect(uv);
+    }
+
+
+    
     outputTex[thisThread.xy] = float4(color.rgb, origColor.a);
 }

@@ -57,12 +57,11 @@
 
     TEXTURE2D_X(_InputTexture);
 
-    // our custom variables
 
     float _LineStrength;
 
 
-    float3 Sketch(TEXTURE2D_X(_InputTexture), uint2 positionSS) {
+    float3 Sketch(uint2 positionSS) {
 
         float3 W = float3(0.2125, 0.7154, 0.0721);
         float2 stp0 = float2(1.0 / _ScreenSize[1], 0.0);
@@ -194,7 +193,7 @@
         return outColor;
     }
 
-    float3 Outline(TEXTURE2D_X(_InputTexture), uint2 positionSS, float3 outColor){
+    float3 Outline(uint2 positionSS, float3 outColor){
         
         float3x3 gx = float3x3(
         -1, 0, 1,
@@ -224,10 +223,9 @@
         }
         float value = 20 - _LineStrength * 19;
         float edge_value = abs(pixel_sum_x / value) + abs(pixel_sum_y / value);
-        float3 outputColor = outColor;
 
         if (edge_value > 0.05){
-            return outputColor = float3(0,0,0);
+            return outColor = float3(0,0,0);
         }
         return outColor;
     }

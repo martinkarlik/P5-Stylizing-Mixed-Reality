@@ -33,34 +33,27 @@ struct AppState {
         VarjoExamples::PostProcess::GraphicsAPI graphicsAPI = VarjoExamples::PostProcess::GraphicsAPI::None;
         TestTexture::Type textureType = TestTexture::Type::Noise;
 
-        // Color grading params
-        bool colorEnabled = true;
-        float colorFactor = 1.0f;
-        float colorPreserveSaturated = 1.0f;
-        glm::vec4 colorValue = glm::vec4(0.4f, 0.5f, 0.7f, 1.0f);
-        glm::vec4 colorExp = glm::vec4(0.5f, 0.75f, 1.0f, 1.0f);
-        float colorScale = 1.0f;
-        float colorExpScale = 2.0f;
+        bool textureEnabled = false;
+        bool textureGeneratedOnGPU = false;
 
-        // Texture params
-        bool textureEnabled = true;
-        bool textureGeneratedOnGPU = true;
-        float textureAmount = 0.1f;
-        float textureScale = 1.0f;
+        
+        bool grayscaleEnabled = false;
 
-        // Blur params
-        bool blurEnabled = true;
-        float blurScale = 5.0f;
-        int blurKernelSize = 3;
+        bool clustersEnabled = false;
+        int clusterSize = 0;
 
-        // Animation params
-        bool animate = true;
-        float animFreq = 3.0f;
-        float animAmpl = 0.5f;
-        float animOffs = 0.75f;
+        bool watercolorEnabled = false;
+        int watercolorRadius = 0;
 
-        // Animation timer
-        double animTime = 0.0;
+        bool outlinesEnabled = false;
+        float outlineIntensity = 0.0f;
+
+        bool sketchEnabled = false;
+        float sketchIntensity = 0.0f;
+
+        bool horizontalMirrorFuckery = false;
+        bool verticalMirrorFuckery = false;
+        bool puzzleFuckery = false;
 
     } postProcess;
 };
