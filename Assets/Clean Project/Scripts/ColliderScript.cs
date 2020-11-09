@@ -65,14 +65,14 @@ public class ColliderScript : MonoBehaviour
 
     public void collide(string id)
     {
-        Debug.Log("collision detected");
-        if(id == "outside" && !inVr)
+        //Debug.Log("collision detected");
+        if(id == "outside")
         {
-            enableVST();
+            if (!inVr) { enableVST(); }
             inVrSide = false;
         } else if (id == "inside")
         {
-            disableVST();
+            if (!inVr) { disableVST(); }
             inVrSide = true;
         }
         if(id == "door")
