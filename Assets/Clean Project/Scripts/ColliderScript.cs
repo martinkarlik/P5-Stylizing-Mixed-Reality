@@ -44,6 +44,14 @@ public class ColliderScript : MonoBehaviour
         {
             camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.1f);
         }
+        if (Input.GetKey("q"))
+        {
+          camera.GetComponent<Transform>().Rotate(0.0f, -0.7f, 0.0f);
+        }
+        if (Input.GetKey("e"))
+        {
+          camera.GetComponent<Transform>().Rotate(0.0f, 0.7f, 0.0f);
+        }
 
 
 
@@ -74,7 +82,7 @@ public class ColliderScript : MonoBehaviour
         } else if (id == "inside")
         {
 
-            if (doorEntered) { inVr = true; walls.SetActive(false); } 
+            if (doorEntered) { inVr = true; walls.SetActive(false); }
 
             if (!inVr) { disableVST(); }
             inVrSide = true;
