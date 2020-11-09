@@ -18,8 +18,6 @@ public class ColliderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
-
 
 
     }
@@ -46,6 +44,14 @@ public class ColliderScript : MonoBehaviour
         {
             camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.1f);
         }
+        if (Input.GetKey("q"))
+        {
+          camera.GetComponent<Transform>().Rotate(0.0f, -0.7f, 0.0f);
+        }
+        if (Input.GetKey("e"))
+        {
+          camera.GetComponent<Transform>().Rotate(0.0f, 0.7f, 0.0f);
+        }
 
 
 
@@ -65,15 +71,22 @@ public class ColliderScript : MonoBehaviour
 
     public void collide(string id)
     {
-        Debug.Log("collision detected");
-        if(id == "outside" && !inVr)
+        //Debug.Log("collision detected");
+        if(id == "outside")
         {
-            enableVST();
+            if (doorEntered) { inVr = false; walls.SetActive(true); }
+
+            if (!inVr) { enableVST(); }
             inVrSide = false;
+            Debug.Log("outside collision");
         } else if (id == "inside")
         {
-            disableVST();
+
+            if (doorEntered) { inVr = true; walls.SetActive(false); }
+
+            if (!inVr) { disableVST(); }
             inVrSide = true;
+            Debug.Log("inside collision");
         }
         if(id == "door")
         {
@@ -82,21 +95,27 @@ public class ColliderScript : MonoBehaviour
         }
     }
 
-    public void unCollide(string id)
+    public void uncollide(string id)
     {
-        if(id == "door")
+        if (id == "door")
         {
-            if (inVrSide)
-            {
-                inVr = true;
-                walls.SetActive(false);
-            }
 
-            if (!inVrSide)
-            {
-                inVr = false;
-                walls.SetActive(true);
-            }
+            doorEntered = false;
+
+
+
+            //if (invrside)
+            //{
+            //    invr = true;
+            //    walls.setactive(false);
+            //}
+
+            //if (!invrside)
+            //{
+            //    invr = false;
+            //    walls.setactive(true);
+            //    enablevst();
+            //}
         }
     }
 

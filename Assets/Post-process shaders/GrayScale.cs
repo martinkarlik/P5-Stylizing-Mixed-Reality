@@ -8,7 +8,6 @@ using System;
 
 using UnityEditor;
 
-
 [Serializable, VolumeComponentMenu("Post-processing/Custom/GrayScale")]
 
 public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessComponent
@@ -23,9 +22,9 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
 
     public ClampedFloatParameter lineStrength = new ClampedFloatParameter(0f, 0f, 1f);
 
-    [Tooltip("Controls the radiur of the effect of the effect.")]
+    [Tooltip("Controls the radius of the effect of the effect.")]
 
-    public ClampedIntParameter radius = new ClampedIntParameter(3, 3, 40);
+    public ClampedFloatParameter radius = new ClampedFloatParameter(0f, 0f, 1f);
 
     Material m_Material;
 
@@ -57,7 +56,8 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
 
         // our variables
         m_Material.SetFloat("_LineStrength", lineStrength.value);
-        m_Material.SetInt("_Radius", radius.value);
+
+        m_Material.SetFloat("_Radius", radius.value);
         
 
         HDUtils.DrawFullScreen(cmd, m_Material, destination);
