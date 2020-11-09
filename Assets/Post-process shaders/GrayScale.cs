@@ -6,6 +6,8 @@ using UnityEngine.Rendering.HighDefinition;
 
 using System;
 
+using UnityEditor;
+
 [Serializable, VolumeComponentMenu("Post-processing/Custom/GrayScale")]
 
 public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessComponent
@@ -18,7 +20,7 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
 
     [Tooltip("Controls the strength of the line effect")]
 
-    public clampedFloatParameter lineStrength = new clampedFloatParameter(0f, 0f, 1f);
+    public ClampedFloatParameter lineStrength = new ClampedFloatParameter(0f, 0f, 1f);
 
     Material m_Material;
 
@@ -49,7 +51,7 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
         m_Material.SetTexture("_InputTexture", source);
 
         // our variables
-        m_Material.SetTexture("_LineStrength", lineStrength.value);
+        m_Material.SetFloat("_LineStrength", lineStrength.value);
 
         HDUtils.DrawFullScreen(cmd, m_Material, destination);
 
