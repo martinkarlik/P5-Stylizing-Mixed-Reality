@@ -18,8 +18,6 @@ public class ColliderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
-
 
 
     }
@@ -68,12 +66,19 @@ public class ColliderScript : MonoBehaviour
         //Debug.Log("collision detected");
         if(id == "outside")
         {
+            if (doorEntered) { inVr = false; walls.SetActive(true); }
+
             if (!inVr) { enableVST(); }
             inVrSide = false;
+            Debug.Log("outside collision");
         } else if (id == "inside")
         {
+
+            if (doorEntered) { inVr = true; walls.SetActive(false); } 
+
             if (!inVr) { disableVST(); }
             inVrSide = true;
+            Debug.Log("inside collision");
         }
         if(id == "door")
         {
@@ -82,21 +87,27 @@ public class ColliderScript : MonoBehaviour
         }
     }
 
-    public void unCollide(string id)
+    public void uncollide(string id)
     {
-        if(id == "door")
+        if (id == "door")
         {
-            if (inVrSide)
-            {
-                inVr = true;
-                walls.SetActive(false);
-            }
 
-            if (!inVrSide)
-            {
-                inVr = false;
-                walls.SetActive(true);
-            }
+            doorEntered = false;
+
+
+
+            //if (invrside)
+            //{
+            //    invr = true;
+            //    walls.setactive(false);
+            //}
+
+            //if (!invrside)
+            //{
+            //    invr = false;
+            //    walls.setactive(true);
+            //    enablevst();
+            //}
         }
     }
 

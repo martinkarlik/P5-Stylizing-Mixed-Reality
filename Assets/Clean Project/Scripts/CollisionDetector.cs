@@ -27,6 +27,6 @@ public class CollisionDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider collider)
     {
-        colliderScript.unCollide(id);
+        colliderScript.uncollide(id);
     }
 }
