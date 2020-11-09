@@ -18,7 +18,7 @@ public class ColliderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-       
+
 
 
 
@@ -45,6 +45,14 @@ public class ColliderScript : MonoBehaviour
         if (Input.GetKey("d"))
         {
             camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.1f);
+        }
+        if (Input.GetKey("q"))
+        {
+          camera.GetComponent<Transform>().Rotate(0.0f, -0.7f, 0.0f);
+        }
+        if (Input.GetKey("e"))
+        {
+          camera.GetComponent<Transform>().Rotate(0.0f, 0.7f, 0.0f);
         }
 
 
