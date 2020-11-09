@@ -44,12 +44,18 @@ cbuffer ConstantBuffer : register(b1)
     int clusterSize;
     int watercolorRadius;
     float outlineIntensity;
+
     float sketchIntensity;
 
-    float2 mirror_mat;
-    int puzzle;
+    float pointilismStep;
+    float pointilismThreshold;
 
-    // float _padding0; 
+    int puzzle;
+    float2 mirror_mat;
+    
+    float2 _padding0; 
+
+    
   
 }
 
@@ -184,10 +190,37 @@ float3 applySketch(in float2 uv, in float sketchIntensity) {
     return outColor;
 }
 
+float3 applyPointilism(in float2 uv, in float pointilismStep, in float pointilismThreshold) {
+
+    
+    float3 outColor = float3(0.988235, 0.94902, 0.870588);
+
+    float2 near_uv = float2(round(uv.x * pointilismStep), round(uv.y * pointilismStep));
+    float3 color = inputTex.SampleLevel(SamplerLinearClamp, near_uv / pointilismStep, 0.0, 0.0).rgb;
+
+    float color_max = max(max(color.r, color.b), color.g);
+    float color_min = min(min(color.r, color.b), color.g);
+    float delta = color_max - color_min;
+
+    float threshold = max((color_min + color_max) / 2.0, pointilismThreshold);
+
+    if (distance(uv * pointilismStep, near_uv) < threshold) {
+        outColor = color;
+    }
+
+    return outColor;
+}
+
+
+
+
 float3 applyPuzzleEffect(in float2 uv) {
 
-    int2 puzzle_level = int2(5, 5);
-    int random_puzzle_variation[25] = {17, 21, 15, 22, 4, 0, 10, 23, 6, 9, 19, 12, 11, 2, 14, 5, 13, 24, 1, 7, 20, 8, 16, 18, 3};
+    // int2 puzzle_level = int2(5, 5);
+    // int random_puzzle_variation[25] = {17, 21, 15, 22, 9, 0, 10, 23, 6, 4, 19, 12, 11, 2, 14, 5, 13, 24, 1, 7, 20, 8, 16, 18, 3};
+
+    int2 puzzle_level = int2(2, 2);
+    int random_puzzle_variation[4] = {3, 2, 1, 0};
 
     int2 position_SS = int2(uv * sourceSize);
     int2 chunk_index_SS = position_SS * puzzle_level / sourceSize;
@@ -243,6 +276,9 @@ float3 applyMirrorEffect(in float2 uv, in float2 mirror_mat) {
         color.rgb = applySketch(uv, sketchIntensity);
     }
 
+    if (pointilismStep > 0.0f || pointilismThreshold > 0.0f) {
+        color.rgb = applyPointilism(uv, pointilismStep, pointilismThreshold);
+    }
 
     if (mirror_mat.x != 0.0f || mirror_mat.y != 0.0f) {
         color.rgb = applyMirrorEffect(uv, mirror_mat);
@@ -251,7 +287,6 @@ float3 applyMirrorEffect(in float2 uv, in float2 mirror_mat) {
     if (puzzle == 1) {
         color.rgb = applyPuzzleEffect(uv);
     }
-
 
     
     outputTex[thisThread.xy] = float4(color.rgb, origColor.a);

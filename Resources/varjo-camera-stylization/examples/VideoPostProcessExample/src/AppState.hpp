@@ -51,9 +51,14 @@ struct AppState {
         bool sketchEnabled = false;
         float sketchIntensity = 0.0f;
 
+        bool pointilismEnabled = false;
+        float pointilismStep = 0.0f;
+        float pointilismThreshold = 0.0f;
+
+        bool puzzleFuckery = false;
         bool horizontalMirrorFuckery = false;
         bool verticalMirrorFuckery = false;
-        bool puzzleFuckery = false;
+        
 
     } postProcess;
 };

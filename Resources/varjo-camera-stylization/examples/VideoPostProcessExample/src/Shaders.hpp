@@ -20,11 +20,13 @@ struct PostProcessConstantBuffer {
     int watercolorRadius = 0;
     float outlineIntensity = 0.0f;
     float sketchIntensity = 0.0f;
+    float pointilismStep = 0.0f;
+    float pointilismThreshold = 0.0f;
 
-    float mirrorMatrix[2] = {0.0f, 0.0f};
     int puzzle = 0;
-
-    //float _padding0[1];
+    float mirrorMatrix[2] = {0.0f, 0.0f};
+    
+    float _padding0[2];
  
 };
 
