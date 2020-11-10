@@ -8,9 +8,11 @@ using System;
 
 using UnityEditor;
 
-[Serializable, VolumeComponentMenu("Post-processing/Custom/GrayScale")]
 
-public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessComponent
+[Serializable, VolumeComponentMenu("Post-processing/Custom/vrPostProcess")]
+
+
+public sealed class vrPostProcess : CustomPostProcessVolumeComponent, IPostProcessComponent
 
 {
 
@@ -20,11 +22,12 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
 
     [Tooltip("Controls the lineStrength of the effect.")]
 
-    public ClampedFloatParameter lineStrength = new ClampedFloatParameter(0f, 0f, 1f);
+    public ClampedFloatParameter line_strength = new ClampedFloatParameter(0f, 0f, 1f);
 
-    [Tooltip("Controls the radius of the effect of the effect.")]
 
-    public ClampedFloatParameter radius = new ClampedFloatParameter(0f, 0f, 1f);
+    [Tooltip("Controls the radius of the water color effect.")]
+
+    public ClampedIntParameter water_color_radius = new ClampedIntParameter(1, 1, 6);
 
     Material m_Material;
 
@@ -36,9 +39,9 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
 
     {
 
-        if (Shader.Find("Hidden/Shader/GrayScale") != null)
+        if (Shader.Find("Hidden/Shader/vrPostProcess") != null)
 
-            m_Material = new Material(Shader.Find("Hidden/Shader/GrayScale"));
+            m_Material = new Material(Shader.Find("Hidden/Shader/vrPostProcess"));
 
     }
 
@@ -55,10 +58,9 @@ public sealed class GrayScale : CustomPostProcessVolumeComponent, IPostProcessCo
         m_Material.SetTexture("_InputTexture", source);
 
         // our variables
-        m_Material.SetFloat("_LineStrength", lineStrength.value);
 
-        m_Material.SetFloat("_Radius", radius.value);
-        
+        m_Material.SetFloat("_LineStrength", line_strength.value);
+        m_Material.SetInt("_WaterColorRadius", water_color_radius.value);
 
         HDUtils.DrawFullScreen(cmd, m_Material, destination);
 
