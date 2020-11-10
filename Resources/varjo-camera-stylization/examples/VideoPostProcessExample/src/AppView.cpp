@@ -75,25 +75,21 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
         {
             false, PostProcess::ShaderSource::None, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
             false, false,
-            false, // Grayscale
-            false, 0, // Clusters
+            false, 0, 0.0f, // Cartoon
             false, 0, // Watercolor
-            false, 0.0f, // Outlines
             false, 0.0f, // Sketch
             false, 0.0f, 0.0f, // Pointilism
-            false, false, false // Fuckery
+            false, false, false, false // Fuckery
         }},
     {"Default",
         {
             true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
             false, false,
-            false, // Grayscale
-            false, 0, // Clusters
+            false, 0, 0.0f, // Cartoon
             false, 0, // Watercolor
-            false, 0.0f, // Outlines
             false, 0.0f, // Sketch
             false, 0.0f, 0.0f, // Pointilism
-            false, false, false // Fuckery
+            false, false, false, false // Fuckery
         }},
     // {"Grayscale",
     //     {
@@ -386,25 +382,18 @@ void AppView::updateUI()
         ImGui::Dummy(ImVec2(0.0f, h));
 
 
-#define _TAG "##grayscale"
-        ImGui::Checkbox("Grayscale" _TAG, &appState.postProcess.grayscaleEnabled);
-#undef _TAG
 
-#define _TAG "##clusters"
-        ImGui::Checkbox("Clusters" _TAG, &appState.postProcess.clustersEnabled);
+
+#define _TAG "##cartoon"
+        ImGui::Checkbox("Clusters" _TAG, &appState.postProcess.cartoonEnabled);
         ImGui::SliderInt("Cluster amount" _TAG, &appState.postProcess.clusterSize, 1, 30);
+        ImGui::SliderFloat("Outline intensity" _TAG, &appState.postProcess.outlineIntensity, 0.0f, 1.0f);
         ImGui::Dummy(ImVec2(0.0f, h));
 #undef _TAG
 
 #define _TAG "##watercolor"
         ImGui::Checkbox("Watercolor" _TAG, &appState.postProcess.watercolorEnabled);
         ImGui::SliderInt("Watercolor radius" _TAG, &appState.postProcess.watercolorRadius, 1, 15);
-        ImGui::Dummy(ImVec2(0.0f, h));
-#undef _TAG
-
-#define _TAG "##outlines"
-        ImGui::Checkbox("Outlines" _TAG, &appState.postProcess.outlinesEnabled);
-        ImGui::SliderFloat("Outline intensity" _TAG, &appState.postProcess.outlineIntensity, 0.0f, 1.0f);
         ImGui::Dummy(ImVec2(0.0f, h));
 #undef _TAG
 
@@ -422,6 +411,7 @@ void AppView::updateUI()
 #undef _TAG
 
 #define _TAG "##fuckery"
+        ImGui::Checkbox("Dog view" _TAG, &appState.postProcess.grayscaleEnabled);
         ImGui::Checkbox("Puzzle fuckery" _TAG, &appState.postProcess.puzzleFuckery);
         ImGui::Checkbox("Horizontal mirror fuckery" _TAG, &appState.postProcess.horizontalMirrorFuckery);
         ImGui::Checkbox("Vertical mirror fuckery" _TAG, &appState.postProcess.verticalMirrorFuckery);
