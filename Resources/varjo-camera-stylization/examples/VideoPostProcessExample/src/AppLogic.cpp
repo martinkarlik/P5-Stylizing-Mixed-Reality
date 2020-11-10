@@ -317,14 +317,17 @@ void AppLogic::updatePostProcessing()
     // Set shader constant parameter values
     PostProcessConstantBuffer cBuffer{};
 
-    cBuffer.grayscale = m_appState.postProcess.grayscaleEnabled ? 1 : 0;
-    cBuffer.clusterSize = m_appState.postProcess.clustersEnabled ? m_appState.postProcess.clusterSize : 0;
+    cBuffer.clusterSize = m_appState.postProcess.cartoonEnabled ? m_appState.postProcess.clusterSize : 0;
+    cBuffer.outlineIntensity = m_appState.postProcess.cartoonEnabled ? m_appState.postProcess.outlineIntensity : 0.0f;
+
     cBuffer.watercolorRadius = m_appState.postProcess.watercolorEnabled ? m_appState.postProcess.watercolorRadius : 0;
-    cBuffer.outlineIntensity = m_appState.postProcess.outlinesEnabled ? m_appState.postProcess.outlineIntensity : 0.0f;
+
     cBuffer.sketchIntensity = m_appState.postProcess.sketchEnabled ? m_appState.postProcess.sketchIntensity : 0.0f;
+
     cBuffer.pointilismStep = m_appState.postProcess.pointilismEnabled ? m_appState.postProcess.pointilismStep : 0.0f;
     cBuffer.pointilismThreshold = m_appState.postProcess.pointilismEnabled ? m_appState.postProcess.pointilismThreshold : 0.0f;
 
+    cBuffer.grayscale = m_appState.postProcess.grayscaleEnabled ? 1 : 0;
     cBuffer.puzzle = m_appState.postProcess.puzzleFuckery ? 1 : 0;
     cBuffer.mirrorMatrix[0] = m_appState.postProcess.horizontalMirrorFuckery ? 1.0f : 0.0f; 
     cBuffer.mirrorMatrix[1] = m_appState.postProcess.verticalMirrorFuckery ? 1.0f : 0.0f;

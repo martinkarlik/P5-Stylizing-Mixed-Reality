@@ -15,14 +15,16 @@
 //! Post process constant buffer. Must match with the shader exactly!
 struct PostProcessConstantBuffer {
 
-    int grayscale = 0;
     int clusterSize = 0;
-    int watercolorRadius = 0;
     float outlineIntensity = 0.0f;
+
+    int watercolorRadius = 0;
     float sketchIntensity = 0.0f;
+
     float pointilismStep = 0.0f;
     float pointilismThreshold = 0.0f;
 
+    int grayscale = 0;
     int puzzle = 0;
     float mirrorMatrix[2] = {0.0f, 0.0f};
     
