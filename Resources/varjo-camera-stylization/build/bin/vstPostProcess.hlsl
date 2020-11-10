@@ -40,16 +40,18 @@ cbuffer ConstantBuffer : register(b0)
 cbuffer ConstantBuffer : register(b1)
 {        
 
-    int grayscale;
+    
     int clusterSize;
-    int watercolorRadius;
     float outlineIntensity;
+
+    int watercolorRadius;
 
     float sketchIntensity;
 
     float pointilismStep;
     float pointilismThreshold;
 
+    int grayscale;
     int puzzle;
     float2 mirror_mat;
     
@@ -80,20 +82,22 @@ float getEdgeValue(in float2 uv, in float outlineIntensity) {
         }
     }
 
-    int value = 20 - 19 * outlineIntensity;
+    float value = 10.0f - 9.9 * outlineIntensity;
 
     float outColor = abs(pixelSumX / value) + abs(pixelSumY / value);
     return outColor;
 }
 
 
-float3 applyOutlines(in float2 uv, in float outlineIntensity) {
+float3 applyCartoon(in float2 uv, in int clusterSize, in float outlineIntensity) {
 
     float3 outColor = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0).rgb;
 
-    if (getEdgeValue(uv, outlineIntensity) > 0.1) {
+    if (outlineIntensity > 0.0f && getEdgeValue(uv, outlineIntensity) > 0.05) {
         outColor = float3(0.0f, 0.0f, 0.0f);
-    } 
+    } else if (clusterSize > 0 ) {
+        outColor = round(outColor * clusterSize) / clusterSize;
+    }
 
     return outColor;
 }
@@ -185,7 +189,9 @@ float3 applySketch(in float2 uv, in float sketchIntensity) {
 
     float magnitude = 1.0 - length(float2(h, v));
 
-    float3 outColor = float3(magnitude, magnitude, magnitude);
+    
+
+    float3 outColor = float3(magnitude * sketchIntensity, magnitude * sketchIntensity, magnitude * sketchIntensity);
 
     return outColor;
 }
@@ -254,24 +260,15 @@ float3 applyMirrorEffect(in float2 uv, in float2 mirror_mat) {
     float4 origColor = inputTex.Load(int3(thisThread.xy, 0)).rgba;
     float4 color = origColor;
 
-
-    if (grayscale == 1) {
-        float grayscaleValue = (color.r + color.g + color.b) / 3;
-        color.rgb = float3(grayscaleValue, grayscaleValue, grayscaleValue);
-    } 
-
-    if (clusterSize > 0) {
-        color.rgb = round(color.rgb * clusterSize) / clusterSize;
+    if (clusterSize > 0 || outlineIntensity > 0.0f) {
+        color.rgb = applyCartoon(uv, clusterSize, outlineIntensity);
     }
 
     if (watercolorRadius > 0) {
         color.rgb = applyWatercolor(uv, watercolorRadius);
     }
 
-    if (outlineIntensity > 0.0f) {
-        color.rgb = applyOutlines(uv, outlineIntensity);
-    }
-
+    
     if (sketchIntensity > 0.0f) {
         color.rgb = applySketch(uv, sketchIntensity);
     }
@@ -280,13 +277,21 @@ float3 applyMirrorEffect(in float2 uv, in float2 mirror_mat) {
         color.rgb = applyPointilism(uv, pointilismStep, pointilismThreshold);
     }
 
-    if (mirror_mat.x != 0.0f || mirror_mat.y != 0.0f) {
-        color.rgb = applyMirrorEffect(uv, mirror_mat);
+
+    if (grayscale == 1) {
+        float grayscaleValue = (color.r + color.g + color.b) / 3;
+        color.rgb = float3(grayscaleValue, grayscaleValue, grayscaleValue);
     }
 
     if (puzzle == 1) {
         color.rgb = applyPuzzleEffect(uv);
     }
+
+    if (mirror_mat.x != 0.0f || mirror_mat.y != 0.0f) {
+        color.rgb = applyMirrorEffect(uv, mirror_mat);
+    }
+
+    
 
     
     outputTex[thisThread.xy] = float4(color.rgb, origColor.a);

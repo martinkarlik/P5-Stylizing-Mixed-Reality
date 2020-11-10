@@ -53,11 +53,16 @@
 
     // List of properties to control your post process effect
 
-    float _Intensity;
+    int _CartoonActive;
+    float _LineStrength;
+    int _ClusterSize;
 
+
+    int _WaterColorActive;
     int _WaterColorRadius;
 
-    float _LineStrength;
+    int _SketchActive;
+
 
     TEXTURE2D_X(_InputTexture);
 
@@ -147,7 +152,7 @@
         return outColor;
     }
 
-    float3 Outline(uint2 positionSS, float _LineStrength){
+    float3 Cartoon(uint2 positionSS, float _LineStrength, int _ClusterSize){
         float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).xyz;
         float3x3 gx = float3x3(
         -1, 0, 1,
@@ -177,9 +182,10 @@
         }
         float value = 20 - _LineStrength * 19;
         float edge_value = abs(pixel_sum_x / value) + abs(pixel_sum_y / value);
-
         if (edge_value > 0.05){
-            return outColor = float3(0,0,0);
+            outColor = float3(0,0,0);
+        } else {
+            outColor = round(outColor*_ClusterSize)/_ClusterSize;
         }
         return outColor;
     }
@@ -215,15 +221,21 @@
         
         float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).xyz;
 
-        // for sketch color
-        // outColor = Sketch(positionSS);
 
         // edge detection
-        outColor = Outline(positionSS, _LineStrength);
+        if (_CartoonActive) {
+            outColor = Cartoon(positionSS, _LineStrength, _ClusterSize);
+        } 
 
         // for water color
-        outColor = WaterColor(positionSS, _WaterColorRadius);
+        if(_WaterColorActive) {
+            outColor = WaterColor(positionSS, _WaterColorRadius);
+        }
 
+        // for sketch color
+        if (_SketchActive){
+            outColor = Sketch(positionSS);
+        }
 
         return float4(outColor, 1);
         // return float4(watercolor(positionSS, outColor),1);
@@ -252,7 +264,9 @@
 
                 #pragma vertex Vert
 
-            ENDHLSL }
+            ENDHLSL 
+            
+            }
             
         }
 

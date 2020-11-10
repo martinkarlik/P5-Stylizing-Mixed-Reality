@@ -37,17 +37,14 @@ struct AppState {
         bool textureGeneratedOnGPU = false;
 
         
-        bool grayscaleEnabled = false;
-
-        bool clustersEnabled = false;
+        bool cartoonEnabled = false;
         int clusterSize = 0;
+        float outlineIntensity = 0.0f;
 
         bool watercolorEnabled = false;
         int watercolorRadius = 0;
 
-        bool outlinesEnabled = false;
-        float outlineIntensity = 0.0f;
-
+    
         bool sketchEnabled = false;
         float sketchIntensity = 0.0f;
 
@@ -55,6 +52,8 @@ struct AppState {
         float pointilismStep = 0.0f;
         float pointilismThreshold = 0.0f;
 
+        
+        bool grayscaleEnabled = false;
         bool puzzleFuckery = false;
         bool horizontalMirrorFuckery = false;
         bool verticalMirrorFuckery = false;
