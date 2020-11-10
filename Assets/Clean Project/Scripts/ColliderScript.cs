@@ -9,11 +9,15 @@ public class ColliderScript : MonoBehaviour
     public GameObject door;
     public GameObject walls;
     public GameObject hiddenEnvironment;
+    public GameObject vrOnlyEnvironment;
     public GameObject player;
     public GameObject camera;
     public bool doorEntered;
     public bool inVr = false;
     public bool inVrSide = false;
+    public bool insideColliding;
+    public bool outsideColliding;
+    public float turnSpeed = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -46,11 +50,11 @@ public class ColliderScript : MonoBehaviour
         }
         if (Input.GetKey("q"))
         {
-          camera.GetComponent<Transform>().Rotate(0.0f, -0.7f, 0.0f);
+          camera.GetComponent<Transform>().Rotate(0.0f, -turnSpeed, 0.0f);
         }
         if (Input.GetKey("e"))
         {
-          camera.GetComponent<Transform>().Rotate(0.0f, 0.7f, 0.0f);
+          camera.GetComponent<Transform>().Rotate(0.0f, turnSpeed, 0.0f);
         }
 
 
@@ -60,13 +64,13 @@ public class ColliderScript : MonoBehaviour
     void enableVST()
     {
         hiddenEnvironment.SetActive(true);
-        Debug.Log("VST disbled LMAO");
+        //Debug.Log("VST disbled LMAO");
     }
 
     void disableVST()
     {
         hiddenEnvironment.SetActive(false);
-        Debug.Log("VST disabled LOL");
+        //Debug.Log("VST disabled LOL");
     }
 
     public void collide(string id)
@@ -74,19 +78,25 @@ public class ColliderScript : MonoBehaviour
         //Debug.Log("collision detected");
         if(id == "outside")
         {
-            if (doorEntered) { inVr = false; walls.SetActive(true); }
+            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); }
 
             if (!inVr) { enableVST(); }
+
             inVrSide = false;
-            Debug.Log("outside collision");
+
+            outsideColliding = true;
+            //Debug.Log("outside collision");
         } else if (id == "inside")
         {
 
-            if (doorEntered) { inVr = true; walls.SetActive(false); }
+            if (doorEntered) { inVr = true; walls.SetActive(false); vrOnlyEnvironment.SetActive(true); }
 
             if (!inVr) { disableVST(); }
+
             inVrSide = true;
-            Debug.Log("inside collision");
+
+            insideColliding = true;
+            //Debug.Log("inside collision");
         }
         if(id == "door")
         {
@@ -116,6 +126,17 @@ public class ColliderScript : MonoBehaviour
             //    walls.setactive(true);
             //    enablevst();
             //}
+        }
+
+        if (id == "inside")
+        {
+            insideColliding = false;
+            if (outsideColliding && !doorEntered) { enableVST(); inVrSide = false; }
+        }
+        if (id == "outside")
+        {
+            outsideColliding = false;
+            if (insideColliding && !doorEntered) { disableVST(); inVrSide = true; }
         }
     }
 
