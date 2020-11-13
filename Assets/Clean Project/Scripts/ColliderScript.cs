@@ -10,7 +10,6 @@ public class ColliderScript : MonoBehaviour
     public GameObject walls;
     public GameObject hiddenEnvironment;
     public GameObject vrOnlyEnvironment;
-    public GameObject player;
     public GameObject camera;
     public bool doorEntered;
     public bool inVr = false;
@@ -111,21 +110,6 @@ public class ColliderScript : MonoBehaviour
         {
 
             doorEntered = false;
-
-
-
-            //if (invrside)
-            //{
-            //    invr = true;
-            //    walls.setactive(false);
-            //}
-
-            //if (!invrside)
-            //{
-            //    invr = false;
-            //    walls.setactive(true);
-            //    enablevst();
-            //}
         }
 
         if (id == "inside")
