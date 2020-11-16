@@ -100,7 +100,7 @@ public class ColliderScript : MonoBehaviour
         if(id == "door")
         {
             doorEntered = true;
-
+            Debug.Log("door entered");
         }
     }
 
@@ -110,17 +110,18 @@ public class ColliderScript : MonoBehaviour
         {
 
             doorEntered = false;
+            Debug.Log("Door left");
         }
 
         if (id == "inside")
         {
             insideColliding = false;
-            if (outsideColliding && !doorEntered) { enableVST(); inVrSide = false; }
+            if (outsideColliding && !doorEntered) { if (!inVr) { enableVST(); } inVrSide = false; }
         }
         if (id == "outside")
         {
             outsideColliding = false;
-            if (insideColliding && !doorEntered) { disableVST(); inVrSide = true; }
+            if (insideColliding && !doorEntered) { if (!inVr) { disableVST(); } inVrSide = true; }
         }
     }
 
