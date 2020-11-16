@@ -495,7 +495,7 @@ Transform:
   m_GameObject: {fileID: 920393000}
   m_LocalRotation: {x: 0, y: 0.7372774, z: 0, w: 0.67559016}
   m_LocalPosition: {x: -6.17, y: 0.13, z: 1.19}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.0000001, y: 1, z: 1.0000001}
   m_Children:
   - {fileID: 1551496916}
   m_Father: {fileID: 0}
@@ -12765,7 +12765,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1000011679357960
 GameObject:
   m_ObjectHideFlags: 0
@@ -57416,7 +57416,7 @@ MonoBehaviour:
   walls: {fileID: 919132148981762715}
   hiddenEnvironment: {fileID: 11281978066891709}
   vrOnlyEnvironment: {fileID: 11281977916669642}
-  camera: {fileID: 1826518769}
+  camera: {fileID: 0}
   doorEntered: 0
   inVr: 0
   inVrSide: 0
