@@ -16,11 +16,12 @@
             "."
         ],
         "fbxSavePaths": [
+            "/Users/jakubszura/Downloads",
             "Models",
             ".",
-            "/Users/jakubszura/Downloads"
+            "/Models"
         ],
-        "selectedFbxPath": 2,
+        "selectedFbxPath": 0,
         "selectedPrefabPath": 0,
         "dccOptionNames": [
             "Maya 2020"
