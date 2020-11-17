@@ -468,7 +468,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &920393001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1171,7 +1171,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1826518770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57430,7 +57430,7 @@ MonoBehaviour:
   walls: {fileID: 919132148981762715}
   hiddenEnvironment: {fileID: 11281978066891709}
   vrOnlyEnvironment: {fileID: 11281977916669642}
-  camera: {fileID: 0}
+  camera: {fileID: 1826518769}
   doorEntered: 0
   inVr: 0
   inVrSide: 0

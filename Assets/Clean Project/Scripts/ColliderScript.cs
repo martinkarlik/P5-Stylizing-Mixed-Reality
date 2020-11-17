@@ -30,22 +30,22 @@ public class ColliderScript : MonoBehaviour
     {
         if (Input.GetKey("w"))
         {
-            camera.GetComponent<Transform>().position += new Vector3(0.1f, 0f, 0f);
+            camera.GetComponent<Transform>().position += new Vector3(0.05f, 0f, 0f);
         }
 
         if (Input.GetKey("s"))
         {
-            camera.GetComponent<Transform>().position += new Vector3(-0.1f, 0f, 0f);
+            camera.GetComponent<Transform>().position += new Vector3(-0.05f, 0f, 0f);
         }
 
         if (Input.GetKey("a"))
         {
-            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, 0.1f);
+            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, 0.05f);
         }
 
         if (Input.GetKey("d"))
         {
-            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.1f);
+            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.05f);
         }
         if (Input.GetKey("q"))
         {
