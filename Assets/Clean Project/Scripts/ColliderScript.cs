@@ -77,7 +77,7 @@ public class ColliderScript : MonoBehaviour
         //Debug.Log("collision detected");
         if(id == "outside")
         {
-            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); }
+            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); Debug.Log("Line 80 executed"); }
 
             if (!inVr) { enableVST(); }
 
