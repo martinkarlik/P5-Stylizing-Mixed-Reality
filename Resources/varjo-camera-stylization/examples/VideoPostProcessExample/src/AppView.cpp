@@ -79,7 +79,6 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, // Watercolor
             false, 0.0f, // Sketch
             false, 0.0f, 0.0f, // Pointilism
-            false, false, false, false // Fuckery
         }},
     {"Default",
         {
@@ -89,64 +88,44 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, // Watercolor
             false, 0.0f, // Sketch
             false, 0.0f, 0.0f, // Pointilism
-            false, false, false, false // Fuckery
         }},
-    // {"Grayscale",
-    //     {
-    //         true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
-    //         false, false,
-    //         true, // Grayscale
-    //         false, 0, // Clusters
-    //         false, 0, // Watercolor
-    //         false, 0.0f, // Outlines
-    //         false, 0.0f, // Sketch   
-    //         false, false, false                                                                                                          // Animate
-    //     }},
-    // {"Clusters",
-    //     {
-    //         true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
-    //         false, false,
-    //         false, // Grayscale
-    //         true, 10, // Clusters
-    //         false, 0, // Watercolor
-    //         false, 0.0f, // Outlines
-    //         false, 0.0f, // Sketch 
-    //         false, false, false                                                                       
-    //     }},
-    // {"Watercolor",
-    //     {
-    //         true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
-    //         false, false,
-    //         false, // Grayscale
-    //         false, 0, // Clusters
-    //         true, 6, // Watercolor
-    //         false, 0.0f, // Outlines
-    //         false, 0.0f, // Sketch 
-    //         false, false, false                                                                                                               // Animate
-    //     }},
-    // {"Outlines",
-    //     {
-    //         true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
-    //         false, false,
-    //         false, // Grayscale
-    //         false, 0, // Clusters
-    //         false, 0, // Watercolor
-    //         true, 0.5f, // Outlines
-    //         false, 0.0f, // Sketch      
-    //         false, false, false                                                                                                          // Animate
-    //     }},
-    // {"Sketch",
-    //     {
-    //         true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
-    //         false, false,
-    //         false, // Grayscale
-    //         false, 0, // Clusters
-    //         false, 0, // Watercolor
-    //         false, 0.0f, // Outlines
-    //         true, 0.5f, // Sketch 
-    //         false, false, false                                                                         
-    //     }},
 
+    {"Cartoon",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
+            false, false,
+            true, 15, 0.7f, // Cartoon
+            false, 0, // Watercolor
+            false, 0.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+        }},
+    {"Watercolor",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
+            false, false,
+            false, 0, 0.0f, // Cartoon
+            true, 5, // Watercolor
+            false, 0.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+        }},
+    {"Sketch",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
+            false, false,
+            false, 0, 0.0f, // Cartoon
+            false, 0, // Watercolor
+            true, 1.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+        }},
+    {"Pointilism",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
+            false, false,
+            false, 0, 0.0f, // Cartoon
+            false, 0, // Watercolor
+            false, 0.0f, // Sketch
+            true, 70.0f, 0.7f, // Pointilism
+        }}
     };
 }
 
@@ -409,16 +388,6 @@ void AppView::updateUI()
         ImGui::SliderFloat("Pointilism threshold" _TAG, &appState.postProcess.pointilismThreshold, 0.0f, 1.0f);
         ImGui::Dummy(ImVec2(0.0f, h));
 #undef _TAG
-
-#define _TAG "##fuckery"
-        ImGui::Checkbox("Dog view" _TAG, &appState.postProcess.grayscaleEnabled);
-        ImGui::Checkbox("Puzzle fuckery" _TAG, &appState.postProcess.puzzleFuckery);
-        ImGui::Checkbox("Horizontal mirror fuckery" _TAG, &appState.postProcess.horizontalMirrorFuckery);
-        ImGui::Checkbox("Vertical mirror fuckery" _TAG, &appState.postProcess.verticalMirrorFuckery);
-        ImGui::Dummy(ImVec2(0.0f, h));
-#undef _TAG
-
-
 
 
         ImGui::Text("Apply preset: ");

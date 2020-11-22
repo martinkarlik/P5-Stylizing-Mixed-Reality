@@ -16,6 +16,8 @@
 
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/PostProcessing/Shaders/RTUpscale.hlsl"
 
+
+
     struct VertexIntput {
 
         uint vertexID : SV_VertexID;
@@ -35,7 +37,7 @@
     };
 
     // Type and name, so VertexOutput is the name of the structure, Vert is the name of the function
-    VertexOutput Vert(VertexIntput input) {
+    VertexOutput Vert1(VertexIntput input) {
 
         VertexOutput output;
 
@@ -49,18 +51,15 @@
 
         return output;
 
-    }
+    }   
 
     // List of properties to control your post process effect
 
     int _CartoonActive;
     float _LineStrength;
     int _ClusterSize;
-
-
     int _WaterColorActive;
     int _WaterColorRadius;
-
     int _SketchActive;
 
 
@@ -213,7 +212,7 @@
         return target;
     }
 
-    float4 CustomPostProcess(VertexOutput input) : SV_Target {
+    float4 PostProcess1(VertexOutput input) : SV_Target {
 
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
@@ -230,6 +229,7 @@
         // for water color
         if(_WaterColorActive) {
             outColor = WaterColor(positionSS, _WaterColorRadius);
+
         }
 
         // for sketch color
@@ -260,15 +260,57 @@
 
             HLSLPROGRAM
 
-                #pragma fragment CustomPostProcess
-
-                #pragma vertex Vert
+                #pragma vertex Vert1
+                #pragma fragment PostProcess1       
 
             ENDHLSL 
             
-            }
-            
         }
+
+        Pass {
+            Name "vrPostProcess"
+            ZWrite Off
+            ZTest Always
+            Blend Off
+            Cull Off
+
+
+            HLSLPROGRAM
+
+                #pragma vertex Vert2
+                #pragma fragment PostProcess2
+
+                // Type and name, so VertexOutput is the name of the structure, Vert is the name of the function
+                VertexOutput Vert2(VertexIntput input) {
+
+                    VertexOutput output;
+
+                    UNITY_SETUP_INSTANCE_ID(input);
+
+                    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
+
+                    output.positionCS = GetFullScreenTriangleVertexPosition(input.vertexID);
+
+                    output.texcoord = GetFullScreenTriangleTexCoord(input.vertexID);
+
+                    return output;
+                }   
+
+                float4 PostProcess2(VertexOutput input) : SV_Target {
+
+                    UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
+
+                    uint2 positionSS = input.texcoord * _ScreenSize.xy;
+                    
+                    float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).xyz;
+                    return float4(1,0,0,1);
+                }
+
+            ENDHLSL
+        }
+            
+    }
+
 
     Fallback Off
 

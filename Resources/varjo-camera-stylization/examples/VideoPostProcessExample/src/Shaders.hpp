@@ -23,10 +23,6 @@ struct PostProcessConstantBuffer {
 
     float pointilismStep = 0.0f;
     float pointilismThreshold = 0.0f;
-
-    int grayscale = 0;
-    int puzzle = 0;
-    float mirrorMatrix[2] = {0.0f, 0.0f};
     
     float _padding0[2];
  
