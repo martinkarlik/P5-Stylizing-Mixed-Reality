@@ -494,7 +494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &920393001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,6 +524,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1551496916}
+  - {fileID: 3303907277340816115}
+  - {fileID: 2548852987197221687}
   m_Father: {fileID: 1311588640}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 95, z: 0}
@@ -650,8 +652,6 @@ Transform:
   m_Children:
   - {fileID: 920393002}
   - {fileID: 7842644006173840526}
-  - {fileID: 3303907277340816115}
-  - {fileID: 2548852987197221687}
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -919,7 +919,7 @@ GameObject:
   - component: {fileID: 1551496923}
   m_Layer: 0
   m_Name: Main Camera
-  m_TagString: MainCamera
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1440,7 +1440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1826518770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93689,7 +93689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OtherHandReference: {fileID: 0}
-  InputName: Oculus_CrossPlatform_PrimaryHandTrigger
+  InputName: XRI_Left_Trigger
   GrabLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -93721,13 +93721,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2548852987197221684}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3902893, y: -0.85360736, z: -2.5539281}
+  m_LocalRotation: {x: -0, y: -0.7372774, z: -0, w: 0.67559016}
+  m_LocalPosition: {x: 2.452805, y: 0.29500002, z: 1.2796459}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 2548852988361800084}
-  m_Father: {fileID: 1311588640}
-  m_RootOrder: 3
+  m_Father: {fileID: 920393002}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2548852987197221688
 MonoBehaviour:
@@ -93948,7 +93948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OtherHandReference: {fileID: 0}
-  InputName: Oculus_CrossPlatform_SecondaryHandTrigger
+  InputName: XRI_Right_Trigger
   GrabLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -93980,13 +93980,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3303907277340816117}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.8132896, y: -0.7486074, z: -2.501928}
+  m_LocalRotation: {x: -0, y: -0.7372774, z: -0, w: 0.67559016}
+  m_LocalPosition: {x: 0.029767368, y: 1.1486074, z: -0.32794297}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 3303907276308911978}
-  m_Father: {fileID: 1311588640}
-  m_RootOrder: 2
+  m_Father: {fileID: 920393002}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3303907277340816117
 GameObject:
@@ -94297,7 +94297,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7842644006173840523}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.2092896, y: 1.0233927, z: -1.7489281}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 432646795}
