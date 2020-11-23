@@ -30,22 +30,22 @@ public class ColliderScript : MonoBehaviour
     {
         if (Input.GetKey("w"))
         {
-            camera.GetComponent<Transform>().position += new Vector3(0.1f, 0f, 0f);
+            camera.GetComponent<Transform>().position += new Vector3(0.05f, 0f, 0f);
         }
 
         if (Input.GetKey("s"))
         {
-            camera.GetComponent<Transform>().position += new Vector3(-0.1f, 0f, 0f);
+            camera.GetComponent<Transform>().position += new Vector3(-0.05f, 0f, 0f);
         }
 
         if (Input.GetKey("a"))
         {
-            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, 0.1f);
+            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, 0.05f);
         }
 
         if (Input.GetKey("d"))
         {
-            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.1f);
+            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.05f);
         }
         if (Input.GetKey("q"))
         {
@@ -77,7 +77,7 @@ public class ColliderScript : MonoBehaviour
         //Debug.Log("collision detected");
         if(id == "outside")
         {
-            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); }
+            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); Debug.Log("Line 80 executed"); }
 
             if (!inVr) { enableVST(); }
 
