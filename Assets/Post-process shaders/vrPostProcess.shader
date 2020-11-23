@@ -212,7 +212,9 @@
         return target;
     }
 
-    float4 PostProcess1(VertexOutput input) : SV_Target {
+    
+
+    float4 PostProcess(VertexOutput input) : SV_Target {
 
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
@@ -238,7 +240,6 @@
         }
 
         return float4(outColor, 1);
-        // return float4(watercolor(positionSS, outColor),1);
     }
 
 
@@ -260,53 +261,11 @@
 
             HLSLPROGRAM
 
-                #pragma vertex Vert1
-                #pragma fragment PostProcess1       
+                #pragma vertex Vert
+                #pragma fragment PostProcess     
 
             ENDHLSL 
             
-        }
-
-        Pass {
-            Name "vrPostProcess"
-            ZWrite Off
-            ZTest Always
-            Blend Off
-            Cull Off
-
-
-            HLSLPROGRAM
-
-                #pragma vertex Vert2
-                #pragma fragment PostProcess2
-
-                // Type and name, so VertexOutput is the name of the structure, Vert is the name of the function
-                VertexOutput Vert2(VertexIntput input) {
-
-                    VertexOutput output;
-
-                    UNITY_SETUP_INSTANCE_ID(input);
-
-                    UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(output);
-
-                    output.positionCS = GetFullScreenTriangleVertexPosition(input.vertexID);
-
-                    output.texcoord = GetFullScreenTriangleTexCoord(input.vertexID);
-
-                    return output;
-                }   
-
-                float4 PostProcess2(VertexOutput input) : SV_Target {
-
-                    UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
-
-                    uint2 positionSS = input.texcoord * _ScreenSize.xy;
-                    
-                    float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).xyz;
-                    return float4(1,0,0,1);
-                }
-
-            ENDHLSL
         }
             
     }
