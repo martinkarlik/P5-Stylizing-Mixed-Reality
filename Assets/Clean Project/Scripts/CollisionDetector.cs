@@ -22,11 +22,12 @@ public class CollisionDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
-        colliderScript.collide(id);
+        colliderScript.collide(id,collider.tag);
+        //Debug.Log(collider.tag);
     }
 
     private void OnTriggerExit(Collider collider)
     {
-        colliderScript.uncollide(id);
+        colliderScript.uncollide(id, collider.tag);
     }
 }

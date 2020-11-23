@@ -72,12 +72,12 @@ public class ColliderScript : MonoBehaviour
         //Debug.Log("VST disabled LOL");
     }
 
-    public void collide(string id)
+    public void collide(string id,string collidingObjectId)
     {
         //Debug.Log("collision detected");
-        if(id == "outside")
+        if(id == "outside" && collidingObjectId == "Player")
         {
-            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); Debug.Log("Line 80 executed"); }
+            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); }
 
             if (!inVr) { enableVST(); }
 
@@ -85,7 +85,7 @@ public class ColliderScript : MonoBehaviour
 
             outsideColliding = true;
             //Debug.Log("outside collision");
-        } else if (id == "inside")
+        } else if (id == "inside" && collidingObjectId == "Player")
         {
 
             if (doorEntered) { inVr = true; walls.SetActive(false); vrOnlyEnvironment.SetActive(true); }
@@ -95,30 +95,35 @@ public class ColliderScript : MonoBehaviour
             inVrSide = true;
 
             insideColliding = true;
-            //Debug.Log("inside collision");
+            Debug.Log("inside collision");
         }
-        if(id == "door")
+        if(id == "door" && collidingObjectId == "Player")
         {
             doorEntered = true;
             Debug.Log("door entered");
         }
+
+        if(id == "KeyHole" && collidingObjectId == "Grabbable")
+        {
+            Debug.Log("YOURE WINNER");
+        }
     }
 
-    public void uncollide(string id)
+    public void uncollide(string id, string collidingObjectId)
     {
-        if (id == "door")
+        if (id == "door" && collidingObjectId == "Player")
         {
 
             doorEntered = false;
             Debug.Log("Door left");
         }
 
-        if (id == "inside")
+        if (id == "inside" && collidingObjectId == "Player")
         {
             insideColliding = false;
             if (outsideColliding && !doorEntered) { if (!inVr) { enableVST(); } inVrSide = false; }
         }
-        if (id == "outside")
+        if (id == "outside" && collidingObjectId == "Player")
         {
             outsideColliding = false;
             if (insideColliding && !doorEntered) { if (!inVr) { disableVST(); } inVrSide = true; }
