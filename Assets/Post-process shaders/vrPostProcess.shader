@@ -16,6 +16,8 @@
 
     #include "Packages/com.unity.render-pipelines.high-definition/Runtime/PostProcessing/Shaders/RTUpscale.hlsl"
 
+
+
     struct VertexIntput {
 
         uint vertexID : SV_VertexID;
@@ -35,7 +37,7 @@
     };
 
     // Type and name, so VertexOutput is the name of the structure, Vert is the name of the function
-    VertexOutput Vert(VertexIntput input) {
+    VertexOutput Vert1(VertexIntput input) {
 
         VertexOutput output;
 
@@ -49,18 +51,15 @@
 
         return output;
 
-    }
+    }   
 
     // List of properties to control your post process effect
 
     int _CartoonActive;
     float _LineStrength;
     int _ClusterSize;
-
-
     int _WaterColorActive;
     int _WaterColorRadius;
-
     int _SketchActive;
 
 
@@ -213,7 +212,9 @@
         return target;
     }
 
-    float4 CustomPostProcess(VertexOutput input) : SV_Target {
+    
+
+    float4 PostProcess(VertexOutput input) : SV_Target {
 
         UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
 
@@ -230,6 +231,7 @@
         // for water color
         if(_WaterColorActive) {
             outColor = WaterColor(positionSS, _WaterColorRadius);
+
         }
 
         // for sketch color
@@ -238,7 +240,6 @@
         }
 
         return float4(outColor, 1);
-        // return float4(watercolor(positionSS, outColor),1);
     }
 
 
@@ -260,15 +261,15 @@
 
             HLSLPROGRAM
 
-                #pragma fragment CustomPostProcess
-
                 #pragma vertex Vert
+                #pragma fragment PostProcess     
 
             ENDHLSL 
             
-            }
-            
         }
+            
+    }
+
 
     Fallback Off
 
