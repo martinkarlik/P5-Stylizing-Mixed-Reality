@@ -37,7 +37,7 @@
     };
 
     // Type and name, so VertexOutput is the name of the structure, Vert is the name of the function
-    VertexOutput Vert1(VertexIntput input) {
+    VertexOutput Vert(VertexIntput input) {
 
         VertexOutput output;
 
