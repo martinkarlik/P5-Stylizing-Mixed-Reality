@@ -39,6 +39,8 @@ Assets/Materials.meta
 Assets/Textures.meta
 Packages/packages-lock.json
 ProjectSettings/HDRPProjectSettings.asset
+Packages/packages-lock.json
+Packages/manifest.json
 Assets/Optimize Mesh/Runtime/Whinarn.UnityMeshSimplifier.Runtime.asmdef.meta
 Assets/Optimize Mesh/Runtime/Whinarn.UnityMeshSimplifier.Runtime.asmdef
 Assets/Optimize Mesh/Runtime/Utility/Vector3d.cs.meta
