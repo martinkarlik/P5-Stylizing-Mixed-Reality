@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{B9D96E02-3272-5529-16CB-6E1A1764E526}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whinarn.UnityMeshSimplifier.Runtime", "Whinarn.UnityMeshSimplifier.Runtime.csproj", "{7287FF2F-C6B3-47E1-6EBB-40C9B5CDA759}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Whinarn.UnityMeshSimplifier.Editor", "Whinarn.UnityMeshSimplifier.Editor.csproj", "{71B905C6-DAC2-9F12-A385-837E7EC29C98}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,14 +13,6 @@ Global
 		{B9D96E02-3272-5529-16CB-6E1A1764E526}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9D96E02-3272-5529-16CB-6E1A1764E526}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9D96E02-3272-5529-16CB-6E1A1764E526}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7287FF2F-C6B3-47E1-6EBB-40C9B5CDA759}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7287FF2F-C6B3-47E1-6EBB-40C9B5CDA759}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7287FF2F-C6B3-47E1-6EBB-40C9B5CDA759}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7287FF2F-C6B3-47E1-6EBB-40C9B5CDA759}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71B905C6-DAC2-9F12-A385-837E7EC29C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71B905C6-DAC2-9F12-A385-837E7EC29C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71B905C6-DAC2-9F12-A385-837E7EC29C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71B905C6-DAC2-9F12-A385-837E7EC29C98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
