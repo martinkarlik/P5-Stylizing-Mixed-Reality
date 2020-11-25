@@ -12,8 +12,9 @@ public class ColliderScript : MonoBehaviour
     public GameObject vrOnlyEnvironment;
     public GameObject camera;
     public GameObject key;
-    public GameObject magnet;
+    public GameObject grabber;
     public GameObject center;
+    public Material grabberMaterial;
     public bool doorEntered;
     public bool inVr = false;
     public bool inVrSide = false;
@@ -26,7 +27,7 @@ public class ColliderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        grabberMaterial.SetColor("_Color", Color.red);
 
     }
 
@@ -65,11 +66,13 @@ public class ColliderScript : MonoBehaviour
         if (Input.GetAxis("XRI_Right_Trigger") > 0.01f)
         {
             grabKey();
+            grabberMaterial.SetColor("_Color", Color.blue);
         }
 
         if (Input.GetAxis("XRI_Right_Trigger") < 0.01f)
         {
             unGrabKey();
+            grabberMaterial.SetColor("_Color", Color.blue);
         }
 
     }
@@ -117,7 +120,7 @@ public class ColliderScript : MonoBehaviour
             Debug.Log("door entered");
         }
 
-        if(id == "KeyHole" && collidingObjectId == "Grabbable")
+        if(id == "KeyHole" && collidingObjectId == "Key")
         {
             Debug.Log("YOURE WINNER");
         }
@@ -158,7 +161,7 @@ public class ColliderScript : MonoBehaviour
     {
         grabbing = true;
         key.GetComponent<Rigidbody>().isKinematic = true;
-        key.transform.parent = magnet.transform;
+        key.transform.parent = grabber.transform;
     }
 
     private void unGrabKey()
