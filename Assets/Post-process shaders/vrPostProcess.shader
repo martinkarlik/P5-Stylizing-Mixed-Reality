@@ -245,29 +245,29 @@
 
         uint2 positionSS = input.texcoord * _ScreenSize.xy;
         
-        float3 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS).xyz;
+        float4 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS);
 
 
         // edge detection
         if (_CartoonActive) {
-            outColor = Cartoon(positionSS, 0.7f, 15);
+            outColor.rgb = Cartoon(positionSS, 0.7f, 15);
         } 
 
         // for water color
         if(_WaterColorActive) {
-            outColor = WaterColor(positionSS, 6);
+            outColor.rgb = WaterColor(positionSS, 6);
         }
 
         // for sketch color
-        if (_SketchActive){
-            outColor = Sketch(positionSS);
+        if (_SketchActive) {
+            outColor.rgb = Sketch(positionSS);
         }
 
         if (_PointilismActive){
-            outColor = ApplyPointilism(positionSS, 65.0, 0.5);
+            outColor.rgb = ApplyPointilism(positionSS, 70.0, 0.7);
         }
 
-        return float4(outColor, 1);
+        return outColor;
         // return float4(watercolor(positionSS, outColor),1);
     }
 
