@@ -69,14 +69,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "VideoPostProcess::@2907c505a2256c39cd64",
-					"jsonFile" : "target-VideoPostProcess-Debug-71e8b310e9410301cb97.json",
+					"jsonFile" : "target-VideoPostProcess-Debug-76b2bac8d93210dd2bb0.json",
 					"name" : "VideoPostProcess",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ZERO_CHECK-Debug-5246b7988490ab1d31b7.json",
+					"jsonFile" : "target-ZERO_CHECK-Debug-ab23d76b26c6a88740bd.json",
 					"name" : "ZERO_CHECK",
 					"projectIndex" : 0
 				},
@@ -157,14 +157,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "VideoPostProcess::@2907c505a2256c39cd64",
-					"jsonFile" : "target-VideoPostProcess-Release-387e095f676ed8f8059f.json",
+					"jsonFile" : "target-VideoPostProcess-Release-663fcd8c1cbbbae8218b.json",
 					"name" : "VideoPostProcess",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ZERO_CHECK-Release-5246b7988490ab1d31b7.json",
+					"jsonFile" : "target-ZERO_CHECK-Release-ab23d76b26c6a88740bd.json",
 					"name" : "ZERO_CHECK",
 					"projectIndex" : 0
 				},
@@ -245,14 +245,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "VideoPostProcess::@2907c505a2256c39cd64",
-					"jsonFile" : "target-VideoPostProcess-MinSizeRel-684337df9ae14e7c678e.json",
+					"jsonFile" : "target-VideoPostProcess-MinSizeRel-fd2410eae7c9ad3096e0.json",
 					"name" : "VideoPostProcess",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ZERO_CHECK-MinSizeRel-5246b7988490ab1d31b7.json",
+					"jsonFile" : "target-ZERO_CHECK-MinSizeRel-ab23d76b26c6a88740bd.json",
 					"name" : "ZERO_CHECK",
 					"projectIndex" : 0
 				},
@@ -333,14 +333,14 @@
 				{
 					"directoryIndex" : 1,
 					"id" : "VideoPostProcess::@2907c505a2256c39cd64",
-					"jsonFile" : "target-VideoPostProcess-RelWithDebInfo-25298357e04cc6293083.json",
+					"jsonFile" : "target-VideoPostProcess-RelWithDebInfo-62c6d55f19c9b5f875bb.json",
 					"name" : "VideoPostProcess",
 					"projectIndex" : 0
 				},
 				{
 					"directoryIndex" : 0,
 					"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-ZERO_CHECK-RelWithDebInfo-5246b7988490ab1d31b7.json",
+					"jsonFile" : "target-ZERO_CHECK-RelWithDebInfo-ab23d76b26c6a88740bd.json",
 					"name" : "ZERO_CHECK",
 					"projectIndex" : 0
 				},
@@ -357,8 +357,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build",
-		"source" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples"
+		"build" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build",
+		"source" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples"
 	},
 	"version" : 
 	{

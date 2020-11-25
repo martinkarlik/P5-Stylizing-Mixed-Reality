@@ -1,1 +1,1 @@
-C:\Users\stud\Documents\Student projects\P5-we-are-live\Resources\varjo-camera-stylization\build\bin\vstPostProcess.cso
+C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\build\bin\vstPostProcess.cso

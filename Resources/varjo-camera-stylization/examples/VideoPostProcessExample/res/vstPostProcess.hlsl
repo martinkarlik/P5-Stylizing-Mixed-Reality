@@ -76,20 +76,20 @@ float getEdgeValue(in float2 uv, in float outlineIntensity) {
     return outColor;
 }
 
-float3 applyCartoon(in float2 uv, in int clusterSize, in float outlineIntensity) {
+float4 applyCartoon(in float2 uv, in int clusterSize, in float outlineIntensity) {
 
-    float3 outColor = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0);
+    float4 outColor = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
 
     if (outlineIntensity > 0.0f && getEdgeValue(uv, outlineIntensity) > 0.05) {
-        outColor = float3(0.0, 0.0, 0.0);
+        outColor.rgb = float3(0.0, 0.0, 0.0);
     } else if (clusterSize > 0 ) {
-        outColor = round(outColor * clusterSize) / clusterSize;
+        outColor.rgb = round(outColor * clusterSize) / clusterSize;
     }
 
     return outColor;
 }
 
-float3 applyWatercolor(in float2 uv, in int radius) {
+float4 applyWatercolor(in float2 uv, in int radius) {
 
     int n = (radius + 1) * (radius + 1);
 
@@ -135,7 +135,7 @@ float3 applyWatercolor(in float2 uv, in int radius) {
     }
 
 
-    float3 outColor = float3(0.0, 0.0, 0.0);
+    float4 outColor = float4(0.0, 0.0, 0.0, 0.0);
 
     float min_sigma2 = 100.0f;
 
@@ -146,7 +146,7 @@ float3 applyWatercolor(in float2 uv, in int radius) {
         float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
         if (sigma2 < min_sigma2) {
             min_sigma2 = sigma2;
-            outColor = mat[i];
+            outColor.rgb = mat[i];
         }
     }
 
@@ -155,7 +155,7 @@ float3 applyWatercolor(in float2 uv, in int radius) {
 }
 
 
-float3 applySketch(in float2 uv, in float sketchIntensity) {
+float4 applySketch(in float2 uv, in float sketchIntensity) {
 
     float3 W = float3(0.2125, 0.7154, 0.0721);
     float2 stp0 = float2(1.0 / sourceSize[0], 0.0);
@@ -179,15 +179,15 @@ float3 applySketch(in float2 uv, in float sketchIntensity) {
 
     
 
-    float3 outColor = float3(magnitude, magnitude, magnitude);
+    float4 outColor = float4(magnitude * sketchIntensity, magnitude * sketchIntensity, magnitude * sketchIntensity, 1.0);
 
     return outColor;
 }
 
-float3 applyPointilism(in float2 uv, in float pointilismStep, in float pointilismThreshold) {
+float4 applyPointilism(in float2 uv, in float pointilismStep, in float pointilismThreshold) {
 
     
-    float3 outColor = float3(0.988235, 0.94902, 0.870588);
+    float4 outColor = float4(0.988235, 0.94902, 0.870588, 1.0);
 
     float2 near_uv = float2(round(uv.x * pointilismStep), round(uv.y * pointilismStep));
     float4 color = inputTex.SampleLevel(SamplerLinearClamp, near_uv / pointilismStep, 0.0, 0.0);
@@ -199,7 +199,7 @@ float3 applyPointilism(in float2 uv, in float pointilismStep, in float pointilis
     float threshold = max((color_min + color_max) / 2.0, pointilismThreshold);
 
     if (distance(uv * pointilismStep, near_uv) < threshold) {
-        outColor = color.rgb;
+        outColor.rgb = color.rgb;
     }
 
     return outColor;
@@ -212,22 +212,22 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID) {
     const int2 thisThread = dispatchThreadID.xy + int2(destRect.xy);
     const float2 uv = float2(thisThread) / sourceSize;
 
-    float4 color = float4(inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0).rgb, 1.0);
+    float4 color = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);;
 
     if (clusterSize > 0) {
-        color.rgb = applyCartoon(uv, clusterSize, outlineIntensity);
+        color = applyCartoon(uv, clusterSize, outlineIntensity);
     }
 
     if (watercolorRadius > 0) {
-        color.rgb = applyWatercolor(uv, watercolorRadius);
+        color = applyWatercolor(uv, watercolorRadius);
     }
 
     if (sketchIntensity > 0.0) {
-        color.rgb = applySketch(uv, sketchIntensity);
+        color = applySketch(uv, sketchIntensity);
     }
 
     if (pointilismStep > 0.0) {
-        color.rgb = applyPointilism(uv, pointilismStep, pointilismThreshold);
+        color = applyPointilism(uv, pointilismStep, pointilismThreshold);
     }
 
 

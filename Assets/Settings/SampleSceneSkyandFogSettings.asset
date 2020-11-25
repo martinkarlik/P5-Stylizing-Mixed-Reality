@@ -118,7 +118,6 @@ MonoBehaviour:
   - {fileID: -1658960478407648048}
   - {fileID: 5321722785694334585}
   - {fileID: 635229864914456097}
-  - {fileID: 8270358517987165148}
 --- !u!114 &635229864914456097
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -285,37 +284,3 @@ MonoBehaviour:
   filter:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &8270358517987165148
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acea5b5f06baf85468149d4220d58eaf, type: 3}
-  m_Name: vrPostProcess
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  cartoon_active:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 1
-    max: 1
-  wc_active:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 1
-    max: 1
-  sketch_active:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 1
-    max: 1
-  pointilism_active:
-    m_OverrideState: 0
-    m_Value: 1
-    min: 1
-    max: 1

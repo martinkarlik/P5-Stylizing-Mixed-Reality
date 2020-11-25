@@ -93683,7 +93683,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7caf46dda13be73409e638a97ed37d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OtherHandReference: {fileID: 3303907277340816113}
+  OtherHandReference: {fileID: 0}
   InputName: XRI_Left_Trigger
   GrabLayer:
     serializedVersion: 2
@@ -93747,7 +93747,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.14
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!137 &2548852988348101171
 SkinnedMeshRenderer:
@@ -95613,7 +95613,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: e003b85279cbf354592c90cc91cb32d6, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -95706,7 +95706,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.08
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3303907277340816112
 MonoBehaviour:
@@ -95732,7 +95732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7caf46dda13be73409e638a97ed37d55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OtherHandReference: {fileID: 2548852987197221685}
+  OtherHandReference: {fileID: 0}
   InputName: XRI_Right_Trigger
   GrabLayer:
     serializedVersion: 2
@@ -95753,7 +95753,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Device: 1
-  m_PoseSource: 4
+  m_PoseSource: 5
   m_PoseProviderComponent: {fileID: 0}
   m_TrackingType: 0
   m_UpdateType: 0
@@ -96024,6 +96024,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7654625399399385705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7842644006173840523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94e4cd72a8c91b146b48f55fc71b1da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabIndicatorPrefab: {fileID: 8564866872222421703, guid: 7b14b149ef580844586e63c79b666d88,
+    type: 3}
+  selectedSprite: {fileID: 21300000, guid: 6cf03b1b7d8790c469535936b3d9b285, type: 3}
+  grabbedSprite: {fileID: 21300000, guid: 98b462488d8f82d4d807065d68532dda, type: 3}
 --- !u!54 &7842644006173840522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -96050,6 +96066,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7842644006173840526}
   - component: {fileID: 7842644006173840522}
+  - component: {fileID: 7654625399399385705}
   - component: {fileID: 7842644006173840525}
   - component: {fileID: 7842644006173840524}
   m_Layer: 9

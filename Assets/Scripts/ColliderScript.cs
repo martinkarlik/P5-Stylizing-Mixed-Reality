@@ -10,7 +10,7 @@ public class ColliderScript : MonoBehaviour
     public GameObject walls;
     public GameObject hiddenEnvironment;
     public GameObject vrOnlyEnvironment;
-    public Camera camera;
+    public GameObject camera;
     public bool doorEntered;
     public bool inVr = false;
     public bool inVrSide = false;
@@ -28,33 +28,33 @@ public class ColliderScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (Input.GetKey("w"))
-        //{
-        //    camera.GetComponent<Transform>().position += new Vector3(0.05f, 0f, 0f);
-        //}
+        if (Input.GetKey("w"))
+        {
+            camera.GetComponent<Transform>().position += new Vector3(0.05f, 0f, 0f);
+        }
 
-        //if (Input.GetKey("s"))
-        //{
-        //    camera.GetComponent<Transform>().position += new Vector3(-0.05f, 0f, 0f);
-        //}
+        if (Input.GetKey("s"))
+        {
+            camera.GetComponent<Transform>().position += new Vector3(-0.05f, 0f, 0f);
+        }
 
-        //if (Input.GetKey("a"))
-        //{
-        //    camera.GetComponent<Transform>().position += new Vector3(0f, 0f, 0.05f);
-        //}
+        if (Input.GetKey("a"))
+        {
+            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, 0.05f);
+        }
 
-        //if (Input.GetKey("d"))
-        //{
-        //    camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.05f);
-        //}
-        //if (Input.GetKey("q"))
-        //{
-        //  camera.GetComponent<Transform>().Rotate(0.0f, -turnSpeed, 0.0f);
-        //}
-        //if (Input.GetKey("e"))
-        //{
-        //  camera.GetComponent<Transform>().Rotate(0.0f, turnSpeed, 0.0f);
-        //}
+        if (Input.GetKey("d"))
+        {
+            camera.GetComponent<Transform>().position += new Vector3(0f, 0f, -0.05f);
+        }
+        if (Input.GetKey("q"))
+        {
+          camera.GetComponent<Transform>().Rotate(0.0f, -turnSpeed, 0.0f);
+        }
+        if (Input.GetKey("e"))
+        {
+          camera.GetComponent<Transform>().Rotate(0.0f, turnSpeed, 0.0f);
+        }
 
 
 
