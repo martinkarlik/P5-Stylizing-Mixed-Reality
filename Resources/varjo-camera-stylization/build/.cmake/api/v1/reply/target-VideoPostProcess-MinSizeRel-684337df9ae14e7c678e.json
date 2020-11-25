@@ -70,7 +70,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1"
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O1 /Ob1 /DNDEBUG"
 				}
 			],
 			"defines" : 
@@ -96,43 +96,43 @@
 			[
 				{
 					"backtrace" : 6,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/VideoPostProcessExample/../Common"
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/VideoPostProcessExample/../Common"
 				},
 				{
 					"backtrace" : 6,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/VideoPostProcessExample/../CommonExperimental"
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/VideoPostProcessExample/../CommonExperimental"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/vendor/D3DX12/include"
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/vendor/D3DX12/include"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/vendor/GLM/include"
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/vendor/GLM/include"
 				},
 				{
 					"backtrace" : 2,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/vendor/cxxopts/include"
-				},
-				{
-					"backtrace" : 2,
-					"isSystem" : true,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/vendor/ImGuiSDK/include"
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/vendor/cxxopts/include"
 				},
 				{
 					"backtrace" : 2,
 					"isSystem" : true,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/vendor/Glew/include"
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/vendor/ImGuiSDK/include"
 				},
 				{
 					"backtrace" : 2,
 					"isSystem" : true,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/../include"
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/vendor/Glew/include"
 				},
 				{
 					"backtrace" : 2,
 					"isSystem" : true,
-					"path" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples/../include_experimental"
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/../include"
+				},
+				{
+					"backtrace" : 2,
+					"isSystem" : true,
+					"path" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples/../include_experimental"
 				}
 			],
 			"language" : "CXX",
@@ -181,26 +181,26 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MDd /Zi /Ob0 /Od /RTC1",
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /O1 /Ob1 /DNDEBUG",
 				"role" : "flags"
 			},
 			{
-				"fragment" : "/machine:x64 /debug /INCREMENTAL /subsystem:console /SUBSYSTEM:WINDOWS",
+				"fragment" : "/machine:x64 /INCREMENTAL:NO /subsystem:console /SUBSYSTEM:WINDOWS",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\ImGuiSDK\\lib\\x86_64\\Debug\\ImGui.lib",
+				"fragment" : "ImGui-NOTFOUND",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\ImGuiSDK\\lib\\x86_64\\Debug\\ImGuiBackends.lib",
+				"fragment" : "ImGuiBackends-NOTFOUND",
 				"role" : "libraries"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\vendor\\Glew\\lib\\x86_64\\Debug\\libglew32d.lib",
+				"fragment" : "GLEW-NOTFOUND",
 				"role" : "libraries"
 			},
 			{
@@ -235,7 +235,7 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "C:\\martinkarlik\\Codables\\UnityProjects\\P5\\Resources\\varjo-camera-stylization\\examples\\lib\\VarjoLib.lib",
+				"fragment" : "\"C:\\Users\\stud\\Documents\\Student projects\\P5-we-are-live\\Resources\\varjo-camera-stylization\\examples\\lib\\VarjoLib.lib\"",
 				"role" : "libraries"
 			},
 			{

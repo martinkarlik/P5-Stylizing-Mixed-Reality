@@ -1,6 +1,6 @@
-^C:\MARTINKARLIK\CODABLES\UNITYPROJECTS\P5\RESOURCES\VARJO-CAMERA-STYLIZATION\EXAMPLES\VIDEOPOSTPROCESSEXAMPLE\CMAKELISTS.TXT
+^C:\USERS\STUD\DOCUMENTS\STUDENT PROJECTS\P5-WE-ARE-LIVE\RESOURCES\VARJO-CAMERA-STYLIZATION\EXAMPLES\VIDEOPOSTPROCESSEXAMPLE\CMAKELISTS.TXT
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SC:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples -BC:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build --check-stamp-file C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/VideoPostProcessExample/CMakeFiles/generate.stamp
+"C:\Program Files\CMake\bin\cmake.exe" "-SC:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples" "-BC:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build" --check-stamp-file "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build/VideoPostProcessExample/CMakeFiles/generate.stamp"
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
