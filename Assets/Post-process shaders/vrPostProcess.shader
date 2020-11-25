@@ -214,7 +214,7 @@
         float v = -im1m1 - 2.0 * im10 - im1p1 + ip1m1 + 2.0 * ip10 + ip1p1;
 
         float mag = 1.0 - length(float2(h, v));
-        float3 target = float3(mag, mag *0.9, mag*0.65);
+        float3 target = float3(mag, mag * 0.9, mag * 0.6) * 0.7;
         return target;
     }
 
@@ -245,7 +245,7 @@
 
         uint2 positionSS = input.texcoord * _ScreenSize.xy;
         
-        float4 outColor = LOAD_TEXTURE2D_X(_InputTexture, positionSS);
+        float4 outColor = float4(LOAD_TEXTURE2D_X(_InputTexture, positionSS).rgb, 1.0);
 
 
         // edge detection
@@ -255,7 +255,7 @@
 
         // for water color
         if(_WaterColorActive) {
-            outColor.rgb = WaterColor(positionSS, 6);
+            outColor.rgb = WaterColor(positionSS, 4);
         }
 
         // for sketch color
