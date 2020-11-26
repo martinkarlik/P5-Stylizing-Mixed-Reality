@@ -10,11 +10,11 @@ public class ColliderScript : MonoBehaviour
     public GameObject walls;
     public GameObject hiddenEnvironment;
     public GameObject vrOnlyEnvironment;
+    public GameObject realOnlyEnvironment;
     public GameObject camera;
     public GameObject key;
     public GameObject grabber;
     public GameObject center;
-    public Material grabberMaterial;
     public bool doorEntered;
     public bool inVr = false;
     public bool inVrSide = false;
@@ -22,6 +22,7 @@ public class ColliderScript : MonoBehaviour
     public bool outsideColliding;
     public bool grabbing = false;
     public bool grabbableIsNear = false;
+    public bool debugging;
     public float turnSpeed = 0.5f;
     public float grabberBaseSize = 0.1777344f;
     public float grabberGrabSize = 0.1288948f;
@@ -29,7 +30,6 @@ public class ColliderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        grabberMaterial.SetColor("_Color", Color.red);
 
     }
 
@@ -82,52 +82,51 @@ public class ColliderScript : MonoBehaviour
     void enableVST()
     {
         hiddenEnvironment.SetActive(true);
-        //Debug.Log("VST disbled LMAO");
+        if (debugging) { Debug.Log("VST disbled"); }
     }
 
     void disableVST()
     {
         hiddenEnvironment.SetActive(false);
-        //Debug.Log("VST disabled LOL");
+        if (debugging) { Debug.Log("VST disabled"); }
     }
 
     
 
     public void collide(string id,string collidingObjectId)
     {
-        //Debug.Log("collision detected");
+        if (debugging) { Debug.Log("collision detected"); }
         if(id == "outside" && collidingObjectId == "Player")
         {
-            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); }
+            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); realOnlyEnvironment.SetActive(true); }
 
             if (!inVr) { enableVST(); }
 
             inVrSide = false;
 
             outsideColliding = true;
-            //Debug.Log("outside collision");
+
+            if (debugging) { Debug.Log("outside collision"); }
+
         } else if (id == "inside" && collidingObjectId == "Player")
         {
 
-            if (doorEntered) { inVr = true; walls.SetActive(false); vrOnlyEnvironment.SetActive(true); }
+            if (doorEntered) { inVr = true; walls.SetActive(false); vrOnlyEnvironment.SetActive(true); realOnlyEnvironment.SetActive(false); }
 
             if (!inVr) { disableVST(); }
 
             inVrSide = true;
 
             insideColliding = true;
-            Debug.Log("inside collision");
+            if (debugging) { Debug.Log("inside collision"); }
         }
+
         if(id == "door" && collidingObjectId == "Player")
         {
             doorEntered = true;
-            Debug.Log("door entered");
+            if (debugging) { Debug.Log("door entered"); }
         }
 
-        if(id == "KeyHole" && collidingObjectId == "Key")
-        {
-            Debug.Log("YOURE WINNER");
-        }
 
         if (id == "Grabber" && collidingObjectId == "Key") 
         {
@@ -141,7 +140,7 @@ public class ColliderScript : MonoBehaviour
         {
 
             doorEntered = false;
-            Debug.Log("Door left");
+            if (debugging) { Debug.Log("Door left"); }
         }
 
         if (id == "inside" && collidingObjectId == "Player")
