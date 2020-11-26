@@ -213,8 +213,8 @@
         float h = -im1p1 - 2.0 * i0p1 - ip1p1 + im1m1 + 2.0 * i0m1 + ip1m1;
         float v = -im1m1 - 2.0 * im10 - im1p1 + ip1m1 + 2.0 * ip10 + ip1p1;
 
-        float mag = 1.0 - length(float2(h, v));
-        float3 target = float3(mag, mag *0.9, mag*0.65);
+        float mag = length(float2(h, v));
+        float3 target = float3(mag, mag, mag);
         return target;
     }
 
