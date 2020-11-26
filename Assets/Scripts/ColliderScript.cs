@@ -12,9 +12,6 @@ public class ColliderScript : MonoBehaviour
     public GameObject vrOnlyEnvironment;
     public GameObject camera;
     private GameObject key;
-    public GameObject key1;
-    public GameObject key2;
-    public GameObject key3;
     public GameObject grabber;
     public GameObject center;
     public Material grabberMaterial;
