@@ -11,7 +11,10 @@ public class ColliderScript : MonoBehaviour
     public GameObject hiddenEnvironment;
     public GameObject vrOnlyEnvironment;
     public GameObject camera;
-    public GameObject key;
+    private GameObject key;
+    public GameObject key1;
+    public GameObject key2;
+    public GameObject key3;
     public GameObject grabber;
     public GameObject center;
     public Material grabberMaterial;
@@ -29,7 +32,6 @@ public class ColliderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        grabberMaterial.SetColor("_Color", Color.red);
 
     }
 
