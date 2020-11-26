@@ -23,6 +23,8 @@ public class ColliderScript : MonoBehaviour
     public bool grabbing = false;
     public bool grabbableIsNear = false;
     public float turnSpeed = 0.5f;
+    public float grabberBaseSize = 0.1777344f;
+    public float grabberGrabSize = 0.1288948f;
 
     // Start is called before the first frame update
     void Start()
@@ -66,13 +68,13 @@ public class ColliderScript : MonoBehaviour
         if (Input.GetAxis("XRI_Right_Trigger") > 0.01f)
         {
             grabKey();
-            grabberMaterial.SetColor("_Color", Color.blue);
+            grabber.GetComponent<Transform>().localScale = new Vector3(grabberGrabSize, grabberGrabSize, grabberGrabSize);
         }
 
         if (Input.GetAxis("XRI_Right_Trigger") < 0.01f)
         {
             unGrabKey();
-            grabberMaterial.SetColor("_Color", Color.blue);
+            grabber.GetComponent<Transform>().localScale = new Vector3(grabberBaseSize, grabberBaseSize, grabberBaseSize);
         }
 
     }
@@ -88,6 +90,8 @@ public class ColliderScript : MonoBehaviour
         hiddenEnvironment.SetActive(false);
         //Debug.Log("VST disabled LOL");
     }
+
+    
 
     public void collide(string id,string collidingObjectId)
     {
