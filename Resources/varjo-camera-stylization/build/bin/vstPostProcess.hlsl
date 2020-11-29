@@ -15,9 +15,8 @@
 Texture2D<float4> inputTex : register(t0);  // NOTICE! This is sRGBA data bound as RGBA so fetched values are in screen gamma.
 
 
-RWTexture2D<float4> outputTex : register(u0);
-RWTexture2D<float4> bufferHTex : register(u1);
-RWTexture2D<float4> bufferHVTex : register(u2);
+globallycoherent RWTexture2D<float4> outputTex : register(u0);
+globallycoherent RWTexture2D<float4> bufferTex : register(u1);
 
 
 // Texture samplers
@@ -41,9 +40,7 @@ cbuffer ConstantBuffer : register(b1)
     int watercolorRadius;
     float sketchIntensity;
 
-    float pointilismStep;
-    float pointilismThreshold;
-    float2 _padding0; 
+    //float2 _padding0; 
 
 }
 
@@ -175,35 +172,39 @@ float4 applySketch(in float2 uv, in float sketchIntensity) {
     float  h = -im1p1 - 2.0 * i0p1 - ip1p1 + im1m1 + 2.0 * i0m1 + ip1m1;
     float v = -im1m1 - 2.0 * im10 - im1p1 + ip1m1 + 2.0 * ip10 + ip1p1;
 
-    float magnitude = 1.0 - length(float2(h, v));
+    float mag = length(float2(h, v));
 
     
 
-    float4 outColor = float4(magnitude * sketchIntensity, magnitude * sketchIntensity, magnitude * sketchIntensity, 1.0);
+    float4 outColor = float4(mag * sketchIntensity, mag * sketchIntensity, mag * sketchIntensity, 1.0);
 
     return outColor;
 }
 
-float4 applyPointilism(in float2 uv, in float pointilismStep, in float pointilismThreshold) {
 
-    
-    float4 outColor = float4(0.988235, 0.94902, 0.870588, 1.0);
+// [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)] 
+// void main(uint3 dispatchThreadID : SV_DispatchThreadID) {
 
-    float2 near_uv = float2(round(uv.x * pointilismStep), round(uv.y * pointilismStep));
-    float4 color = inputTex.SampleLevel(SamplerLinearClamp, near_uv / pointilismStep, 0.0, 0.0);
+//     const int2 thisThread = dispatchThreadID.xy + int2(destRect.xy);
+//     const float2 uv = float2(thisThread) / sourceSize;
 
-    float color_max = max(max(color.r, color.b), color.g);
-    float color_min = min(min(color.r, color.b), color.g);
-    float delta = color_max - color_min;
+//     float4 color = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
 
-    float threshold = max((color_min + color_max) / 2.0, pointilismThreshold);
+//     if (clusterSize > 0) {
+//         color = applyCartoon(uv, clusterSize, outlineIntensity);
+//     }
 
-    if (distance(uv * pointilismStep, near_uv) < threshold) {
-        outColor.rgb = color.rgb;
-    }
+//     if (watercolorRadius > 0) {
+//         color = applyWatercolor(uv, watercolorRadius);
+//     }
 
-    return outColor;
-}
+//     if (sketchIntensity > 0.0) {
+//         color = applySketch(uv, sketchIntensity);
+//     }
+
+//     outputTex[thisThread.xy] = color;
+
+// }
 
 
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)] 
@@ -211,26 +212,145 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID) {
 
     const int2 thisThread = dispatchThreadID.xy + int2(destRect.xy);
     const float2 uv = float2(thisThread) / sourceSize;
+    uint2 dims;
+    outputTex.GetDimensions(dims.x, dims.y);
 
-    float4 color = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);;
 
-    if (clusterSize > 0) {
-        color = applyCartoon(uv, clusterSize, outlineIntensity);
+    if (dispatchThreadID.x < dims.x && dispatchThreadID.y < dims.y) {
+
+        outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+        bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+
+        float4x3 mat;
+        float4x3 matSquared;
+
+        for (int i = 0; i < 4; i++) {
+            mat[i] = float3(0.0f, 0.0f, 0.0f);
+            matSquared[i] = float3(0.0f, 0.0f, 0.0f);
+        }
+
+        
+        // start
+
+        for (int i = 0; i < 10; ++i) {
+                mat[0] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
+                matSquared[0] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
+        }
+
+        mat[0] /= 10;
+        matSquared[0] /= 10;
+
+        DeviceMemoryBarrier();
+        outputTex[thisThread.xy] = float4(mat[0], 1.0);
+        bufferTex[thisThread.xy] = float4(matSquared[0], 1.0);
+        DeviceMemoryBarrier();
+
+        for (int i = 0; i < 10; ++i) {
+            mat[0] += outputTex[thisThread.xy + uint2(0, i)].rgb;
+            matSquared[0] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
+        }
+
+        mat[0] /= 10;
+        matSquared[0] /= 10;
+
+        DeviceMemoryBarrier();
+        outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+        bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+        DeviceMemoryBarrier();
+
+        for (int i = -10; i < 0; ++i) {
+                mat[1] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
+                matSquared[1] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
+        }
+
+        mat[1] /= 10;
+        matSquared[1] /= 10;
+
+        DeviceMemoryBarrier();
+        outputTex[thisThread.xy] = float4(mat[1], 1.0);
+        bufferTex[thisThread.xy] = float4(matSquared[1], 1.0);
+        DeviceMemoryBarrier();
+
+        for (int i = 0; i < 10; ++i) {
+            mat[1] += outputTex[thisThread.xy + uint2(0, i)].rgb;
+            matSquared[1] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
+        }
+
+        mat[1] /= 10;
+        matSquared[1] /= 10;
+
+        // line
+        DeviceMemoryBarrier();
+        outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+        bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+
+        for (int i = -10; i < 0; ++i) {
+                mat[2] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
+                matSquared[2] +=  bufferTex[thisThread.xy + uint2(i, 0)].rgb *  bufferTex[thisThread.xy + uint2(i, 0)].rgb;
+        }
+
+        mat[2] /= 10;
+        matSquared[2] /= 10;
+
+        DeviceMemoryBarrier();
+        outputTex[thisThread.xy] = float4(mat[2], 1.0);
+        bufferTex[thisThread.xy] = float4(matSquared[2], 1.0);
+        DeviceMemoryBarrier();
+
+        for (int i = -10; i < 0; ++i) {
+            mat[2] += outputTex[thisThread.xy + uint2(0, i)].rgb;
+            matSquared[2] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
+        }
+
+        mat[2] /= 10;
+        matSquared[2] /= 10;
+
+        // line
+        DeviceMemoryBarrier();
+        outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+        bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+        DeviceMemoryBarrier();
+
+        for (int i = 0; i < 10; ++i) {
+                mat[3] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
+                matSquared[3] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
+        }
+
+        mat[3] /= 10;
+        matSquared[3] /= 10;
+
+        DeviceMemoryBarrier();
+        outputTex[thisThread.xy] = float4(mat[3], 1.0);
+        bufferTex[thisThread.xy] = float4(matSquared[3], 1.0);
+        DeviceMemoryBarrier();
+
+        for (int i = -10; i < 0; ++i) {
+            mat[3] += outputTex[thisThread.xy + uint2(0, i)].rgb;
+            matSquared[3] += outputTex[thisThread.xy + uint2(0, i)].rgb * outputTex[thisThread.xy + uint2(0, i)].rgb;
+        }
+
+        mat[3] /= 10;
+        matSquared[3] /= 10;
+
+
+        float min_sigma2 = 100.0f;
+        float3 outColor = float3(0.0, 0.0, 0.0);
+
+        for (int i = 0; i < 4; i++) {
+            matSquared[i] = abs(matSquared[i] - mat[i] * mat[i]);
+
+            float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
+            if (sigma2 < min_sigma2) {
+                min_sigma2 = sigma2;
+                outColor = mat[i];
+            }
+        }
+
+
+        DeviceMemoryBarrier();
+        outputTex[thisThread.xy] = float4(outColor, 1.0);
+
     }
 
-    if (watercolorRadius > 0) {
-        color = applyWatercolor(uv, watercolorRadius);
-    }
-
-    if (sketchIntensity > 0.0) {
-        color = applySketch(uv, sketchIntensity);
-    }
-
-    if (pointilismStep > 0.0) {
-        color = applyPointilism(uv, pointilismStep, pointilismThreshold);
-    }
-
-
-    outputTex[thisThread.xy] = color;
 
 }

@@ -21,10 +21,8 @@ struct PostProcessConstantBuffer {
     int watercolorRadius = 0;
     float sketchIntensity = 0.0f;
 
-    float pointilismStep = 0.0f;
-    float pointilismThreshold = 0.0f;
     
-    float _padding0[2];
+    // float _padding0[2];
  
 };
 

@@ -291,13 +291,39 @@
 
             HLSLPROGRAM
 
+                #pragma vertex Vert
+
                 #pragma fragment CustomPostProcess
+  
+
+            ENDHLSL 
+            
+        }
+
+        Pass {
+
+            Name "vrPostProcess"
+
+            ZWrite Off
+
+            ZTest Always
+
+            Blend Off
+
+            Cull Off
+
+            HLSLPROGRAM
 
                 #pragma vertex Vert
+
+                #pragma fragment CustomPostProcess
+                
 
             ENDHLSL 
             
             }
+
+        
             
         }
 

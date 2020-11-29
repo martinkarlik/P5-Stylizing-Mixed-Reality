@@ -78,7 +78,6 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, 0.0f, // Cartoon
             false, 0, // Watercolor
             false, 0.0f, // Sketch
-            false, 0.0f, 0.0f, // Pointilism
         }},
     {"Default",
         {
@@ -87,7 +86,6 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, 0.0f, // Cartoon
             false, 0, // Watercolor
             false, 0.0f, // Sketch
-            false, 0.0f, 0.0f, // Pointilism
         }},
 
     {"Cartoon",
@@ -97,7 +95,6 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             true, 15, 0.7f, // Cartoon
             false, 0, // Watercolor
             false, 0.0f, // Sketch
-            false, 0.0f, 0.0f, // Pointilism
         }},
     {"Watercolor",
         {
@@ -106,7 +103,6 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, 0.0f, // Cartoon
             true, 5, // Watercolor
             false, 0.0f, // Sketch
-            false, 0.0f, 0.0f, // Pointilism
         }},
     {"Sketch",
         {
@@ -115,16 +111,6 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, 0.0f, // Cartoon
             false, 0, // Watercolor
             true, 1.0f, // Sketch
-            false, 0.0f, 0.0f, // Pointilism
-        }},
-    {"Pointilism",
-        {
-            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
-            false, false,
-            false, 0, 0.0f, // Cartoon
-            false, 0, // Watercolor
-            false, 0.0f, // Sketch
-            true, 70.0f, 0.7f, // Pointilism
         }}
     };
 }
@@ -364,7 +350,7 @@ void AppView::updateUI()
 
 
 #define _TAG "##cartoon"
-        ImGui::Checkbox("Clusters" _TAG, &appState.postProcess.cartoonEnabled);
+        ImGui::Checkbox("Cartoon" _TAG, &appState.postProcess.cartoonEnabled);
         ImGui::SliderInt("Cluster amount" _TAG, &appState.postProcess.clusterSize, 1, 30);
         ImGui::SliderFloat("Outline intensity" _TAG, &appState.postProcess.outlineIntensity, 0.0f, 1.0f);
         ImGui::Dummy(ImVec2(0.0f, h));
@@ -379,13 +365,6 @@ void AppView::updateUI()
 #define _TAG "##sketch"
         ImGui::Checkbox("Sketch" _TAG, &appState.postProcess.sketchEnabled);
         ImGui::SliderFloat("Sketch intensity" _TAG, &appState.postProcess.sketchIntensity, 0.0f, 1.0f);
-        ImGui::Dummy(ImVec2(0.0f, h));
-#undef _TAG
-
-#define _TAG "##pointilism"
-        ImGui::Checkbox("Pointilism" _TAG, &appState.postProcess.pointilismEnabled);
-        ImGui::SliderFloat("Pointilism step" _TAG, &appState.postProcess.pointilismStep, 0.0f, 400.0f);
-        ImGui::SliderFloat("Pointilism threshold" _TAG, &appState.postProcess.pointilismThreshold, 0.0f, 1.0f);
         ImGui::Dummy(ImVec2(0.0f, h));
 #undef _TAG
 
