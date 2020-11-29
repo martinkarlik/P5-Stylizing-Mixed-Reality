@@ -212,7 +212,7 @@ void main(uint3 dispatchThreadID : SV_DispatchThreadID) {
     const int2 thisThread = dispatchThreadID.xy + int2(destRect.xy);
     const float2 uv = float2(thisThread) / sourceSize;
 
-    float4 color;
+    float4 color = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);;
 
     if (clusterSize > 0) {
         color = applyCartoon(uv, clusterSize, outlineIntensity);

@@ -27,8 +27,6 @@ set(_sources_app
     ${_src_dir}/TestTextureD3D12.cpp
     ${_src_dir}/TestTextureGL.hpp
     ${_src_dir}/TestTextureGL.cpp
-    ${_src_dir}/TestScene.hpp
-    ${_src_dir}/TestScene.cpp
     ${_src_dir}/Shaders.hpp
 )
 

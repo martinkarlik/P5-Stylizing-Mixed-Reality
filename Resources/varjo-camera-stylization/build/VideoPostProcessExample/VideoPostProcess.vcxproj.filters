@@ -25,9 +25,6 @@
     <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureGL.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\Common\D3D11LayerView.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -85,9 +82,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureGL.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\Shaders.hpp">

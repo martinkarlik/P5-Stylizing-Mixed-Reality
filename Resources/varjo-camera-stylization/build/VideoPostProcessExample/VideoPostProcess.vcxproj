@@ -393,8 +393,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureD3D12.cpp" />
     <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureGL.hpp" />
     <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestTextureGL.cpp" />
-    <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestScene.hpp" />
-    <ClCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\TestScene.cpp" />
     <ClInclude Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\src\Shaders.hpp" />
     <FXCompile Include="C:\martinkarlik\Codables\UnityProjects\P5\Resources\varjo-camera-stylization\examples\VideoPostProcessExample\res\vstPostProcess.hlsl">
       <ShaderType>Compute</ShaderType>

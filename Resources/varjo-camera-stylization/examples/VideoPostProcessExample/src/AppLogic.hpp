@@ -66,13 +66,9 @@ private:
 private:
     varjo_Session* m_session = nullptr;  //!< Varjo session
 
-#if (!USE_HEADLESS_MODE)
     std::unique_ptr<VarjoExamples::Renderer> m_renderer;    //!< Renderer instance
     std::unique_ptr<VarjoExamples::LayerView> m_varjoView;  //!< Varjo layer view instance
     std::unique_ptr<VarjoExamples::Scene> m_scene;          //!< Application scene instance
-#else
-    std::unique_ptr<VarjoExamples::HeadlessView> m_varjoView;  //!< Varjo headless view instance
-#endif
 
     std::unique_ptr<VarjoExamples::PostProcess> m_postProcess;  //!< VST post processor
     std::unique_ptr<TestTexture> m_texture;                     //!< Test texture instance

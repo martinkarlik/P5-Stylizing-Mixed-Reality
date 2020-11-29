@@ -5,7 +5,6 @@
 // Compile time flag to disable swapchain creation, rendering, and layer submission.
 // In headless mode this application only alters the video-see-through image feed,
 // but does not render anything by itself.
-#define USE_HEADLESS_MODE 0
 
 #include <glm/glm.hpp>
 
@@ -21,9 +20,6 @@ struct AppState {
         int64_t frameCount = 0;    //!< Current frame count
         bool mrAvailable = false;  //!< Mixed reality available flag
         bool vstEnabled = true;    //!< Render VST image flag
-#if (!USE_HEADLESS_MODE)
-        bool vrEnabled = false;  //!< Render VR scene flag
-#endif
     } general;
 
     // VST Post process params

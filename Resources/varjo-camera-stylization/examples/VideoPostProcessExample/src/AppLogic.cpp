@@ -16,7 +16,7 @@
 #include "D3D11LayerView.hpp"
 
 #include "Shaders.hpp"
-#include "TestScene.hpp"
+// #include "TestScene.hpp"
 
 #include "TestTextureGL.hpp"
 #include "TestTextureD3D11.hpp"
@@ -42,22 +42,13 @@ AppLogic::~AppLogic()
     // Free post processor
     m_postProcess.reset();
 
-#if (!USE_HEADLESS_MODE)
-
-    // Free scene resources
-    m_scene.reset();
-
-#endif
-
     // Free view resources
     m_varjoView.reset();
 
-#if (!USE_HEADLESS_MODE)
 
     // Free renderer resources
     m_renderer.reset();
 
-#endif
 
     // Shutdown the varjo session. Can't check errors anymore after this.
     LOGD("Shutting down Varjo session..");
@@ -88,54 +79,28 @@ bool AppLogic::init(GfxContext& context)
     // context you are using in your application for rendering.
 
     {
-#if (!USE_HEADLESS_MODE)
+    // Get graphics adapter used by Varjo session
+    auto dxgiAdapter = D3D11LayerView::getAdapter(m_session);
 
-        // Get graphics adapter used by Varjo session
-        auto dxgiAdapter = D3D11LayerView::getAdapter(m_session);
+    // Init graphics
+    context.init(dxgiAdapter.Get());
 
-        // Init graphics
-        context.init(dxgiAdapter.Get());
+    // Create D3D11 renderer instance.
+    auto d3d11Renderer = std::make_unique<D3D11Renderer>(dxgiAdapter.Get());
 
-        // Create D3D11 renderer instance.
-        auto d3d11Renderer = std::make_unique<D3D11Renderer>(dxgiAdapter.Get());
+    // Set post process D3D11 support
+    m_postProcess->initD3D11(d3d11Renderer->getD3DDevice());
 
-        // Set post process D3D11 support
-        m_postProcess->initD3D11(d3d11Renderer->getD3DDevice());
+    // Set post process D3D12 support
+    m_postProcess->initD3D12(context.getD3D12CommandQueue());
 
-        // Set post process D3D12 support
-        m_postProcess->initD3D12(context.getD3D12CommandQueue());
+    // Create varjo layer view
+    m_varjoView = std::make_unique<D3D11LayerView>(m_session, *d3d11Renderer);
 
-        // Create varjo layer view
-        m_varjoView = std::make_unique<D3D11LayerView>(m_session, *d3d11Renderer);
+    // Store as generic renderer
+    m_renderer = std::move(d3d11Renderer);
 
-        // Create scene instance
-        m_scene = std::make_unique<TestScene>(*d3d11Renderer);
 
-        // Store as generic renderer
-        m_renderer = std::move(d3d11Renderer);
-
-#else
-
-        // Get graphics adapter used by Varjo session
-        auto dxgiAdapter = D3D11LayerView::getAdapter(m_session);
-
-        // Init graphics
-        context.init(dxgiAdapter.Get());
-
-        // Set post process D3D11 support
-        m_postProcess->initD3D11(context.getD3D11Device());
-
-        // Set post process D3D12 support
-        m_postProcess->initD3D12(context.getD3D12CommandQueue());
-
-        // Set application Z order so that this application is on background behind other apps. Only
-        // used if application runs in headless mode not intended to render anything by itself.
-        varjo_SessionSetPriority(m_session, c_appOrderBg);
-        CHECK_VARJO_ERR(m_session);
-
-        // Create varjo headless view
-        m_varjoView = std::make_unique<HeadlessView>(m_session);
-#endif
     }
 
     // Check if Mixed Reality features are available.
@@ -208,13 +173,7 @@ void AppLogic::setState(const AppState& state, bool force)
         setVSTRendering(state.general.vstEnabled);
     }
 
-    // Render VR scene
-#if (!USE_HEADLESS_MODE)
-    if (force || state.general.vrEnabled != prevState.general.vrEnabled) {
-        LOGI("Render VR scene: %s", state.general.vrEnabled ? "ON" : "OFF");
-        m_appState.general.vrEnabled = state.general.vrEnabled;
-    }
-#endif
+
 }
 
 bool AppLogic::loadPostProcessing(PostProcess::ShaderSource shaderSource, PostProcess::GraphicsAPI graphicsAPI, TestTexture::Type textureType)
@@ -366,15 +325,9 @@ void AppLogic::update()
     m_appState.general.frameTime += m_varjoView->getDeltaTime();
     m_appState.general.frameCount = m_varjoView->getFrameNumber();
 
-
-    // Update scene
-    m_scene->update(m_varjoView->getFrameTime(), m_varjoView->getDeltaTime(), m_varjoView->getFrameNumber(), Scene::UpdateParams());
-
-#if (!USE_HEADLESS_MODE)
-
     // Setup render params
     LayerView::SubmitParams submitParams{};
-    submitParams.submitLayer = m_appState.general.vrEnabled;
+    submitParams.submitLayer = false;
     submitParams.submitDepth = true;
     submitParams.depthTestEnabled = false;
     submitParams.depthTestRangeEnabled = false;
@@ -388,13 +341,9 @@ void AppLogic::update()
     // Clear frame
     m_varjoView->clear();
 
-    // Render frame
-    m_varjoView->renderScene(*m_scene);
-
     // End and submit frmae
     m_varjoView->endFrame();
 
-#endif
 
     // Update video post processing if active
     if (m_appState.general.mrAvailable && m_postProcess->isActive()) {
