@@ -30,7 +30,7 @@ public class ColliderScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+       
     }
 
     // Update is called once per frame
@@ -162,16 +162,20 @@ public class ColliderScript : MonoBehaviour
 
     private void grabKey()
     {
+        if(grabbableIsNear){
         grabbing = true;
         key.GetComponent<Rigidbody>().isKinematic = true;
         key.transform.parent = grabber.transform;
+        }
     }
 
     private void unGrabKey()
     {
+        if(grabbableIsNear){
         grabbing = false;
         key.GetComponent<Rigidbody>().isKinematic = false;
         key.transform.parent = center.transform;
+        }
     }
 
 

@@ -182,175 +182,175 @@ float4 applySketch(in float2 uv, in float sketchIntensity) {
 }
 
 
-// [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)] 
-// void main(uint3 dispatchThreadID : SV_DispatchThreadID) {
-
-//     const int2 thisThread = dispatchThreadID.xy + int2(destRect.xy);
-//     const float2 uv = float2(thisThread) / sourceSize;
-
-//     float4 color = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-
-//     if (clusterSize > 0) {
-//         color = applyCartoon(uv, clusterSize, outlineIntensity);
-//     }
-
-//     if (watercolorRadius > 0) {
-//         color = applyWatercolor(uv, watercolorRadius);
-//     }
-
-//     if (sketchIntensity > 0.0) {
-//         color = applySketch(uv, sketchIntensity);
-//     }
-
-//     outputTex[thisThread.xy] = color;
-
-// }
-
-
 [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)] 
 void main(uint3 dispatchThreadID : SV_DispatchThreadID) {
 
     const int2 thisThread = dispatchThreadID.xy + int2(destRect.xy);
     const float2 uv = float2(thisThread) / sourceSize;
-    uint2 dims;
-    outputTex.GetDimensions(dims.x, dims.y);
 
+    float4 color = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
 
-    if (dispatchThreadID.x < dims.x && dispatchThreadID.y < dims.y) {
-
-        outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-        bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-
-        float4x3 mat;
-        float4x3 matSquared;
-
-        for (int i = 0; i < 4; i++) {
-            mat[i] = float3(0.0f, 0.0f, 0.0f);
-            matSquared[i] = float3(0.0f, 0.0f, 0.0f);
-        }
-
-        
-        // start
-
-        for (int i = 0; i < 10; ++i) {
-                mat[0] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
-                matSquared[0] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
-        }
-
-        mat[0] /= 10;
-        matSquared[0] /= 10;
-
-        DeviceMemoryBarrier();
-        outputTex[thisThread.xy] = float4(mat[0], 1.0);
-        bufferTex[thisThread.xy] = float4(matSquared[0], 1.0);
-        DeviceMemoryBarrier();
-
-        for (int i = 0; i < 10; ++i) {
-            mat[0] += outputTex[thisThread.xy + uint2(0, i)].rgb;
-            matSquared[0] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
-        }
-
-        mat[0] /= 10;
-        matSquared[0] /= 10;
-
-        DeviceMemoryBarrier();
-        outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-        bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-        DeviceMemoryBarrier();
-
-        for (int i = -10; i < 0; ++i) {
-                mat[1] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
-                matSquared[1] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
-        }
-
-        mat[1] /= 10;
-        matSquared[1] /= 10;
-
-        DeviceMemoryBarrier();
-        outputTex[thisThread.xy] = float4(mat[1], 1.0);
-        bufferTex[thisThread.xy] = float4(matSquared[1], 1.0);
-        DeviceMemoryBarrier();
-
-        for (int i = 0; i < 10; ++i) {
-            mat[1] += outputTex[thisThread.xy + uint2(0, i)].rgb;
-            matSquared[1] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
-        }
-
-        mat[1] /= 10;
-        matSquared[1] /= 10;
-
-        // line
-        DeviceMemoryBarrier();
-        outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-        bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-
-        for (int i = -10; i < 0; ++i) {
-                mat[2] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
-                matSquared[2] +=  bufferTex[thisThread.xy + uint2(i, 0)].rgb *  bufferTex[thisThread.xy + uint2(i, 0)].rgb;
-        }
-
-        mat[2] /= 10;
-        matSquared[2] /= 10;
-
-        DeviceMemoryBarrier();
-        outputTex[thisThread.xy] = float4(mat[2], 1.0);
-        bufferTex[thisThread.xy] = float4(matSquared[2], 1.0);
-        DeviceMemoryBarrier();
-
-        for (int i = -10; i < 0; ++i) {
-            mat[2] += outputTex[thisThread.xy + uint2(0, i)].rgb;
-            matSquared[2] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
-        }
-
-        mat[2] /= 10;
-        matSquared[2] /= 10;
-
-        // line
-        DeviceMemoryBarrier();
-        outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-        bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
-        DeviceMemoryBarrier();
-
-        for (int i = 0; i < 10; ++i) {
-                mat[3] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
-                matSquared[3] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
-        }
-
-        mat[3] /= 10;
-        matSquared[3] /= 10;
-
-        DeviceMemoryBarrier();
-        outputTex[thisThread.xy] = float4(mat[3], 1.0);
-        bufferTex[thisThread.xy] = float4(matSquared[3], 1.0);
-        DeviceMemoryBarrier();
-
-        for (int i = -10; i < 0; ++i) {
-            mat[3] += outputTex[thisThread.xy + uint2(0, i)].rgb;
-            matSquared[3] += outputTex[thisThread.xy + uint2(0, i)].rgb * outputTex[thisThread.xy + uint2(0, i)].rgb;
-        }
-
-        mat[3] /= 10;
-        matSquared[3] /= 10;
-
-
-        float min_sigma2 = 100.0f;
-        float3 outColor = float3(0.0, 0.0, 0.0);
-
-        for (int i = 0; i < 4; i++) {
-            matSquared[i] = abs(matSquared[i] - mat[i] * mat[i]);
-
-            float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
-            if (sigma2 < min_sigma2) {
-                min_sigma2 = sigma2;
-                outColor = mat[i];
-            }
-        }
-
-
-        DeviceMemoryBarrier();
-        outputTex[thisThread.xy] = float4(outColor, 1.0);
-
+    if (clusterSize > 0) {
+        color = applyCartoon(uv, clusterSize, outlineIntensity);
     }
 
+    if (watercolorRadius > 0) {
+        color = applyWatercolor(uv, watercolorRadius);
+    }
+
+    if (sketchIntensity > 0.0) {
+        color = applySketch(uv, sketchIntensity);
+    }
+
+    outputTex[thisThread.xy] = color;
 
 }
+
+
+// [numthreads(BLOCK_SIZE, BLOCK_SIZE, 1)] 
+// void main(uint3 dispatchThreadID : SV_DispatchThreadID) {
+
+//     const int2 thisThread = dispatchThreadID.xy + int2(destRect.xy);
+//     const float2 uv = float2(thisThread) / sourceSize;
+//     uint2 dims;
+//     outputTex.GetDimensions(dims.x, dims.y);
+
+
+//     if (dispatchThreadID.x < dims.x && dispatchThreadID.y < dims.y) {
+
+//         outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+//         bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+
+//         float4x3 mat;
+//         float4x3 matSquared;
+
+//         for (int i = 0; i < 4; i++) {
+//             mat[i] = float3(0.0f, 0.0f, 0.0f);
+//             matSquared[i] = float3(0.0f, 0.0f, 0.0f);
+//         }
+
+        
+//         // start
+
+//         for (int i = 0; i < 10; ++i) {
+//                 mat[0] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
+//                 matSquared[0] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
+//         }
+
+//         mat[0] /= 10;
+//         matSquared[0] /= 10;
+
+//         DeviceMemoryBarrier();
+//         outputTex[thisThread.xy] = float4(mat[0], 1.0);
+//         bufferTex[thisThread.xy] = float4(matSquared[0], 1.0);
+//         DeviceMemoryBarrier();
+
+//         for (int i = 0; i < 10; ++i) {
+//             mat[0] += outputTex[thisThread.xy + uint2(0, i)].rgb;
+//             matSquared[0] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
+//         }
+
+//         mat[0] /= 10;
+//         matSquared[0] /= 10;
+
+//         DeviceMemoryBarrier();
+//         outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+//         bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+//         DeviceMemoryBarrier();
+
+//         for (int i = -10; i < 0; ++i) {
+//                 mat[1] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
+//                 matSquared[1] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
+//         }
+
+//         mat[1] /= 10;
+//         matSquared[1] /= 10;
+
+//         DeviceMemoryBarrier();
+//         outputTex[thisThread.xy] = float4(mat[1], 1.0);
+//         bufferTex[thisThread.xy] = float4(matSquared[1], 1.0);
+//         DeviceMemoryBarrier();
+
+//         for (int i = 0; i < 10; ++i) {
+//             mat[1] += outputTex[thisThread.xy + uint2(0, i)].rgb;
+//             matSquared[1] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
+//         }
+
+//         mat[1] /= 10;
+//         matSquared[1] /= 10;
+
+//         // line
+//         DeviceMemoryBarrier();
+//         outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+//         bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+
+//         for (int i = -10; i < 0; ++i) {
+//                 mat[2] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
+//                 matSquared[2] +=  bufferTex[thisThread.xy + uint2(i, 0)].rgb *  bufferTex[thisThread.xy + uint2(i, 0)].rgb;
+//         }
+
+//         mat[2] /= 10;
+//         matSquared[2] /= 10;
+
+//         DeviceMemoryBarrier();
+//         outputTex[thisThread.xy] = float4(mat[2], 1.0);
+//         bufferTex[thisThread.xy] = float4(matSquared[2], 1.0);
+//         DeviceMemoryBarrier();
+
+//         for (int i = -10; i < 0; ++i) {
+//             mat[2] += outputTex[thisThread.xy + uint2(0, i)].rgb;
+//             matSquared[2] += bufferTex[thisThread.xy + uint2(0, i)].rgb * bufferTex[thisThread.xy + uint2(0, i)].rgb;
+//         }
+
+//         mat[2] /= 10;
+//         matSquared[2] /= 10;
+
+//         // line
+//         DeviceMemoryBarrier();
+//         outputTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+//         bufferTex[thisThread.xy] = inputTex.SampleLevel(SamplerLinearClamp, uv, 0.0, 0.0);
+//         DeviceMemoryBarrier();
+
+//         for (int i = 0; i < 10; ++i) {
+//                 mat[3] += outputTex[thisThread.xy + uint2(i, 0)].rgb;
+//                 matSquared[3] += bufferTex[thisThread.xy + uint2(i, 0)].rgb * bufferTex[thisThread.xy + uint2(i, 0)].rgb;
+//         }
+
+//         mat[3] /= 10;
+//         matSquared[3] /= 10;
+
+//         DeviceMemoryBarrier();
+//         outputTex[thisThread.xy] = float4(mat[3], 1.0);
+//         bufferTex[thisThread.xy] = float4(matSquared[3], 1.0);
+//         DeviceMemoryBarrier();
+
+//         for (int i = -10; i < 0; ++i) {
+//             mat[3] += outputTex[thisThread.xy + uint2(0, i)].rgb;
+//             matSquared[3] += outputTex[thisThread.xy + uint2(0, i)].rgb * outputTex[thisThread.xy + uint2(0, i)].rgb;
+//         }
+
+//         mat[3] /= 10;
+//         matSquared[3] /= 10;
+
+
+//         float min_sigma2 = 100.0f;
+//         float3 outColor = float3(0.0, 0.0, 0.0);
+
+//         for (int i = 0; i < 4; i++) {
+//             matSquared[i] = abs(matSquared[i] - mat[i] * mat[i]);
+
+//             float sigma2 = matSquared[i].r + matSquared[i].g + matSquared[i].b;
+//             if (sigma2 < min_sigma2) {
+//                 min_sigma2 = sigma2;
+//                 outColor = mat[i];
+//             }
+//         }
+
+
+//         DeviceMemoryBarrier();
+//         outputTex[thisThread.xy] = float4(outColor, 1.0);
+
+//     }
+
+
+// }
