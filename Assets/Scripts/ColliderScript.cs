@@ -15,6 +15,7 @@ public class ColliderScript : MonoBehaviour
     public GameObject key;
     public GameObject grabber;
     public GameObject center;
+    public GameObject vstWall;
     public bool doorEntered;
     public bool inVr = false;
     public bool inVrSide = false;
@@ -98,9 +99,9 @@ public class ColliderScript : MonoBehaviour
         if (debugging) { Debug.Log("collision detected"); }
         if(id == "outside" && collidingObjectId == "Player")
         {
-            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); realOnlyEnvironment.SetActive(true); }
+            if (doorEntered) { inVr = false; walls.SetActive(true); vrOnlyEnvironment.SetActive(false); realOnlyEnvironment.SetActive(true); vstWall.SetActive(true); }
 
-            if (!inVr) { enableVST(); }
+            if (!inVr) { enableVST(); vstWall.SetActive(true); }
 
             inVrSide = false;
 
@@ -111,9 +112,9 @@ public class ColliderScript : MonoBehaviour
         } else if (id == "inside" && collidingObjectId == "Player")
         {
 
-            if (doorEntered) { inVr = true; walls.SetActive(false); vrOnlyEnvironment.SetActive(true); realOnlyEnvironment.SetActive(false); }
+            if (doorEntered) { inVr = true; walls.SetActive(false); vrOnlyEnvironment.SetActive(true); realOnlyEnvironment.SetActive(false); vstWall.SetActive(false); }
 
-            if (!inVr) { disableVST(); }
+            if (!inVr) { disableVST(); vstWall.SetActive(false); }
 
             inVrSide = true;
 
@@ -174,7 +175,7 @@ public class ColliderScript : MonoBehaviour
         if(grabbableIsNear){
         grabbing = false;
         key.GetComponent<Rigidbody>().isKinematic = false;
-        key.transform.parent = center.transform;
+        if(inVr){key.transform.parent = center.transform;} else {key.transform.parent = outsideCollider.transform;}
         }
     }
 

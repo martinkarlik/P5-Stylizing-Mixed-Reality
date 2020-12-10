@@ -69,10 +69,9 @@ constexpr int c_logHeight = 230;
 // Default preset
  constexpr int c_defaultPresetIndex = 3; // Default - 1, Cartoon - 2, Watercolor - 3, Sketch - 4
 
+int count = 0;
 float fps = 0.0f;
-float latency = 0.0f;
 float average_fps = 0.0f;
-float average_latency = 0.0f;
 
 // Post process GUI presets
 const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = {
@@ -439,11 +438,12 @@ void AppView::updateUI()
         ImGui::Text("Average FPS: %.3f fps.", average_fps);
         ImGui::End();
 
-        if (appState.general.frameTime < 60.0) {
+        if (appState.general.frameTime > 10.0 && appState.general.frameTime < 60.0) {
             fps += ImGui::GetIO().Framerate;
+            count++;
 
             if (appState.general.frameCount % 100 == 0) {
-                average_fps = fps / appState.general.frameCount;
+                average_fps = fps / count;
             }
         }
         

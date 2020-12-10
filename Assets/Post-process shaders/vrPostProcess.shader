@@ -255,7 +255,7 @@
 
         // for water color
         if(_WaterColorActive) {
-            outColor.rgb = WaterColor(positionSS, 6);
+            outColor.rgb = WaterColor(positionSS, 3);
         }
 
         // for sketch color
