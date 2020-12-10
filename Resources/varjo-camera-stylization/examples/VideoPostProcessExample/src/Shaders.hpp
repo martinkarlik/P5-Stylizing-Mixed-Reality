@@ -17,9 +17,13 @@ struct PostProcessConstantBuffer {
 
     int clusterSize = 0;
     float outlineIntensity = 0.0f;
-
     int watercolorRadius = 0;
     float sketchIntensity = 0.0f;
+
+    float pointilismStep = 0.0f;
+    float pointilismThreshold = 0.0f;
+    int blurRadius = 0;
+    int separableFilter = 0;
 
     
     // float _padding0[2];
