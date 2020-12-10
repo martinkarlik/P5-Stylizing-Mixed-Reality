@@ -1,0 +1,10 @@
+^C:\MARTINKARLIK\CODABLES\UNITYPROJECTS\P5\RESOURCES\VARJO-CAMERA-STYLIZATION\BUILD\CMAKEFILES\B68D1BCE29A230003470BA1135727CF4\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples -BC:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/VarjoExamples.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
