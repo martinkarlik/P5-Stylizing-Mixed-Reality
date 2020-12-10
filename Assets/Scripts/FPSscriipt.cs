@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FPSscript : MonoBehaviour
+public class FPSscriipt : MonoBehaviour
 {
     public Text fpsText;
     bool showFps = true;
     bool firstFrame = true;
     public float averageFps;
     int totalFrames = 0;
-    float current;
+    public float current;
 
     // Start is called before the first frame update
     void Start()
