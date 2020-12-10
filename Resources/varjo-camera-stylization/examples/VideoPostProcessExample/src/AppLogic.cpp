@@ -281,6 +281,12 @@ void AppLogic::updatePostProcessing()
     cBuffer.watercolorRadius = m_appState.postProcess.watercolorEnabled ? m_appState.postProcess.watercolorRadius : 0;
     cBuffer.sketchIntensity = m_appState.postProcess.sketchEnabled ? m_appState.postProcess.sketchIntensity : 0.0f;
     
+    cBuffer.pointilismStep = m_appState.postProcess.pointilismEnabled ? m_appState.postProcess.pointilismStep : 0.0f;
+    cBuffer.pointilismThreshold = m_appState.postProcess.pointilismEnabled ? m_appState.postProcess.pointilismThreshold : 0.0f;
+    cBuffer.blurRadius = m_appState.postProcess.blurEnabled ? m_appState.postProcess.blurRadius : 0;
+    cBuffer.separableFilter = m_appState.postProcess.separableFilterEnabled ? 1 : 0;
+    
+
     // List of shader input texture indices updated
     std::vector<int32_t> updatedTextures;
 

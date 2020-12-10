@@ -67,7 +67,12 @@ constexpr glm::ivec2 c_windowClientSize(720, 900);
 constexpr int c_logHeight = 230;
 
 // Default preset
-constexpr int c_defaultPresetIndex = 1;
+ constexpr int c_defaultPresetIndex = 3; // Default - 1, Cartoon - 2, Watercolor - 3, Sketch - 4
+
+float fps = 0.0f;
+float latency = 0.0f;
+float average_fps = 0.0f;
+float average_latency = 0.0f;
 
 // Post process GUI presets
 const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = {
@@ -78,6 +83,8 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, 0.0f, // Cartoon
             false, 0, // Watercolor
             false, 0.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+            false, 0, false // Blur
         }},
     {"Default",
         {
@@ -86,6 +93,8 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, 0.0f, // Cartoon
             false, 0, // Watercolor
             false, 0.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+            false, 0, false // Blur
         }},
 
     {"Cartoon",
@@ -95,14 +104,18 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             true, 15, 0.7f, // Cartoon
             false, 0, // Watercolor
             false, 0.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+            false, 0, false // Blur
         }},
     {"Watercolor",
         {
             true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
             false, false,
             false, 0, 0.0f, // Cartoon
-            true, 5, // Watercolor
+            true, 3, // Watercolor
             false, 0.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+            false, 0, false // Blur
         }},
     {"Sketch",
         {
@@ -111,6 +124,28 @@ const std::vector<std::pair<std::string, AppState::PostProcess>> c_guiPresets = 
             false, 0, 0.0f, // Cartoon
             false, 0, // Watercolor
             true, 1.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+            false, 0, false // Blur
+        }},
+    {"Pointilism",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
+            false, false,
+            false, 0, 0.0f, // Cartoon
+            false, 0, // Watercolor
+            false, 0.0f, // Sketch
+            true, 70.0f, 0.7f, // Pointilism
+            false, 0, false // Blur
+        }},
+    {"Blur",
+        {
+            true, PostProcess::ShaderSource::Binary, PostProcess::GraphicsAPI::D3D11, TestTexture::Type::Noise,
+            false, false,
+            false, 0, 0.0f, // Cartoon
+            false, 0, // Watercolor
+            false, 0.0f, // Sketch
+            false, 0.0f, 0.0f, // Pointilism
+            true, 20, false // Blur
         }}
     };
 }
@@ -368,6 +403,20 @@ void AppView::updateUI()
         ImGui::Dummy(ImVec2(0.0f, h));
 #undef _TAG
 
+#define _TAG "##pointilism"
+        ImGui::Checkbox("Pointilism" _TAG, &appState.postProcess.pointilismEnabled);
+        ImGui::SliderFloat("Pointilism step" _TAG, &appState.postProcess.pointilismStep, 0.0f, 400.0f);
+        ImGui::SliderFloat("Pointilism threshold" _TAG, &appState.postProcess.pointilismThreshold, 0.0f, 1.0f);
+        ImGui::Dummy(ImVec2(0.0f, h));
+#undef _TAG
+
+#define _TAG "##blur"
+        ImGui::Checkbox("Blur" _TAG, &appState.postProcess.blurEnabled);
+        ImGui::SliderInt("Blur radius" _TAG, &appState.postProcess.blurRadius, 0, 100);
+        ImGui::Checkbox("Separable filter" _TAG, &appState.postProcess.separableFilterEnabled);
+        ImGui::Dummy(ImVec2(0.0f, h));
+#undef _TAG
+
 
         ImGui::Text("Apply preset: ");
         const auto presets = c_guiPresets;
@@ -383,11 +432,21 @@ void AppView::updateUI()
         }
 
         ImGui::Dummy(ImVec2(0.0f, h));
-        ImGui::Text("Frame timing: %.3f fps / %.3f ms / %.3f s / %d frames",  //
+        ImGui::Text("Frame timing: %.3f fps / %.3f ms / %.3f s / %d frames.",  //
             ImGui::GetIO().Framerate,                                         //
             1000.0f / ImGui::GetIO().Framerate,                               //
             appState.general.frameTime, appState.general.frameCount);
+        ImGui::Text("Average FPS: %.3f fps.", average_fps);
         ImGui::End();
+
+        if (appState.general.frameTime < 60.0) {
+            fps += ImGui::GetIO().Framerate;
+
+            if (appState.general.frameCount % 100 == 0) {
+                average_fps = fps / appState.general.frameCount;
+            }
+        }
+        
     }
 
     // Log window

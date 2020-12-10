@@ -23,7 +23,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build"
+			"value" : "c:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -475,7 +475,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples"
+			"value" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -599,7 +599,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "CMAKE_MT-NOTFOUND"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/bin/10.0.19041.0/x64/mt.exe"
 		},
 		{
 			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
@@ -675,7 +675,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "rc"
+			"value" : "C:/Program Files (x86)/Windows Kits/10/bin/10.0.19041.0/x64/rc.exe"
 		},
 		{
 			"name" : "CMAKE_RC_COMPILER_WORKS",
@@ -999,7 +999,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/build"
+			"value" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build"
 		},
 		{
 			"name" : "VarjoExamples_SOURCE_DIR",
@@ -1011,7 +1011,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/stud/Documents/Student projects/P5-we-are-live/Resources/varjo-camera-stylization/examples"
+			"value" : "C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/examples"
 		}
 	],
 	"kind" : "cache",
