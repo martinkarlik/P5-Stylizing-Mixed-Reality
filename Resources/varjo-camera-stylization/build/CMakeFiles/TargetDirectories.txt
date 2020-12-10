@@ -1,4 +1,0 @@
-C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/CMakeFiles/copyLibs.dir
-C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/CMakeFiles/ALL_BUILD.dir
-C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/CMakeFiles/ZERO_CHECK.dir
-C:/martinkarlik/Codables/UnityProjects/P5/Resources/varjo-camera-stylization/build/VideoPostProcessExample/CMakeFiles/VideoPostProcess.dir
